@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weird Weather: Winter 2025–2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d1b2a;
+      color: #cdd9e8;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0d1b2a 0%, #162032 50%, #0d1b2a 100%);
+      border-bottom: 1px solid #1e3a5f;
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      background: linear-gradient(90deg, #4fc3f7, #81d4fa, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: .5rem;
+    }
+    header .subtitle {
+      color: #78909c;
+      font-size: .95rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: .6rem;
+      margin-top: .8rem;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: .75rem;
+      padding: .25rem .7rem;
+      border-radius: 999px;
+      border: 1px solid;
+      font-weight: 600;
+      letter-spacing: .03em;
+    }
+    .badge-warm { background: rgba(255,107,53,.15); border-color: #ff6b35; color: #ff6b35; }
+    .badge-cold { background: rgba(79,195,247,.15); border-color: #4fc3f7; color: #4fc3f7; }
+    .badge-2nd  { background: rgba(129,212,250,.12); border-color: #81d4fa; color: #81d4fa; }
+
+    /* ── Tables ── */
+    .tables-section {
+      display: flex;
+      gap: 1.5rem;
+      padding: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .table-wrap {
+      flex: 1 1 460px;
+      max-width: 560px;
+    }
+    .table-wrap h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #90caf9;
+      margin-bottom: .75rem;
+      padding-bottom: .4rem;
+      border-bottom: 1px solid #1e3a5f;
+    }
+    .table-wrap h2 span { font-size: .8rem; font-weight: 400; color: #546e7a; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+    }
+    thead th {
+      background: #162032;
+      color: #78909c;
+      font-weight: 600;
+      text-align: right;
+      padding: .45rem .6rem;
+      border-bottom: 1px solid #263238;
+      white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid #162032; }
+    tbody tr:hover { background: #162032; }
+    tbody td {
+      padding: .35rem .6rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+    tbody td:first-child { text-align: left; font-weight: 500; }
+    .city-st { color: #546e7a; font-weight: 400; font-size: .75rem; }
+
+    /* Row tinting by temperature anomaly */
+    .row-hot  td:nth-child(2) { color: #ff6b35; font-weight: 600; }
+    .row-warm td:nth-child(2) { color: #ffa726; }
+    .row-cool td:nth-child(2) { color: #4fc3f7; }
+    .row-cold td:nth-child(2) { color: #29b6f6; font-weight: 600; }
+
+    /* ── Map ── */
+    .map-section {
+      padding: 1rem 2rem 2rem;
+    }
+    .map-section h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #90caf9;
+      margin-bottom: .4rem;
+    }
+    .map-explanation {
+      color: #78909c;
+      font-size: .85rem;
+      max-width: 820px;
+      margin-bottom: 1.2rem;
+    }
+    #map-svg-wrap {
+      position: relative;
+      width: 100%;
+      background: #0a1520;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    #usa-map { display: block; width: 100%; }
+
+    /* path styles set by D3 */
+    .state { fill: #1a2a3a; stroke: #263238; stroke-width: .6; }
+    .state-border { fill: none; stroke: #2a3f54; stroke-width: 1.2; }
+
+    .city-dot {
+      stroke-width: 1.5;
+      cursor: pointer;
+      transition: r .15s;
+    }
+    .city-dot:hover { r: 8px; }
+
+    .city-label {
+      font-size: 9px;
+      font-weight: 700;
+      paint-order: stroke fill;
+      stroke-width: 3;
+      stroke-linejoin: round;
+      pointer-events: none;
+      dominant-baseline: middle;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      font-size: .8rem;
+      color: #78909c;
+      align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: .4rem; }
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.2);
+    }
+    .legend-note {
+      font-size: .75rem;
+      color: #455a64;
+      margin-left: auto;
+      font-style: italic;
+    }
+
+    /* ── Tooltip ── */
+    #tooltip {
+      position: fixed;
+      background: #162032;
+      border: 1px solid #1e3a5f;
+      border-radius: 6px;
+      padding: .6rem .9rem;
+      font-size: .8rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .15s;
+      max-width: 280px;
+      z-index: 999;
+    }
+    #tooltip h3 { font-size: .9rem; color: #90caf9; margin-bottom: .35rem; }
+    #tooltip table { font-size: .78rem; }
+    #tooltip td { padding: .1rem .4rem; text-align: right; }
+    #tooltip td:first-child { text-align: left; color: #78909c; padding-left: 0; }
+    .tt-match { margin-top: .4rem; padding-top: .4rem; border-top: 1px solid #263238; font-size: .75rem; }
+    .tt-self { color: #69f0ae; }
+    .tt-other { color: #ffa726; }
+
+    /* ── Findings ── */
+    .findings-section {
+      padding: 1rem 2rem 1.5rem;
+      border-top: 1px solid #1e3a5f;
+    }
+    .findings-section h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #90caf9;
+      margin-bottom: .9rem;
+    }
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: .7rem;
+    }
+    .finding-card {
+      background: #101e2e;
+      border: 1px solid #1e3a5f;
+      border-radius: 6px;
+      padding: .65rem .85rem;
+      font-size: .82rem;
+    }
+    .finding-card .from { font-weight: 600; color: #cdd9e8; }
+    .finding-card .arrow { color: #546e7a; margin: 0 .35rem; font-size: .9rem; }
+    .finding-card .to { font-weight: 700; }
+    .finding-card .delta { font-size: .75rem; color: #78909c; margin-top: .2rem; }
+
+    /* ── Footnote ── */
+    footer {
+      border-top: 1px solid #1e3a5f;
+      padding: 1.2rem 2rem;
+      color: #455a64;
+      font-size: .75rem;
+      text-align: center;
+    }
+    footer a { color: #546e7a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Weird Weather: Winter 2025–2026</h1>
+  <p class="subtitle">
+    The second-warmest U.S. winter on record — yet 123 million Americans saw above-average snowfall.
+    The Southwest shattered heat records while the Northeast endured its coldest stretch in decades.
+  </p>
+  <div class="badges">
+    <span class="badge badge-2nd">2nd Warmest U.S. Winter on Record</span>
+    <span class="badge badge-warm">West: Record Heat &amp; Drought</span>
+    <span class="badge badge-cold">East: Coldest in Decades</span>
+  </div>
+</header>
+
+<section class="tables-section">
+  <div class="table-wrap">
+    <h2>Historical Winter Normals <span>1991–2020 (Dec + Jan + Feb)</span></h2>
+    <table id="hist-table">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Avg High °F</th>
+          <th>Snowfall in</th>
+          <th>Precip in</th>
+        </tr>
+      </thead>
+      <tbody id="hist-tbody"></tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <h2>Winter 2025–2026 Actuals <span>Dec 2025 + Jan + Feb 2026</span></h2>
+    <table id="act-table">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Avg High °F</th>
+          <th>Snowfall in</th>
+          <th>Precip in</th>
+          <th>Δ High</th>
+        </tr>
+      </thead>
+      <tbody id="act-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="findings-section">
+  <h2>Climate Story: Where Did Each City "Teleport"?</h2>
+  <div class="findings-grid" id="findings-grid"></div>
+</section>
+
+<section class="map-section">
+  <h2>Climate Equivalent Map</h2>
+  <p class="map-explanation">
+    Each city's dot is placed at its real geographic location. The label shows which city's
+    <em>historical winter normal</em> most closely matches what that city actually experienced
+    in 2025–2026 (using normalized Euclidean distance across avg high, snowfall &amp; precip).
+    A <strong>★</strong> means the city's winter was within 5% of its own normal — remarkably typical.
+  </p>
+  <div id="map-svg-wrap">
+    <svg id="usa-map" viewBox="0 0 960 600"></svg>
+  </div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#ff4500;"></div>
+      <span>+6°F or more above normal</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#ffa726;"></div>
+      <span>+2 to +5°F above normal</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#69f0ae;"></div>
+      <span>Near normal (★ = within 5%)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#4fc3f7;"></div>
+      <span>−2 to −5°F below normal</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#1565c0;"></div>
+      <span>−6°F or more below normal</span>
+    </div>
+    <span class="legend-note">Label = nearest historical climate match</span>
+  </div>
+</section>
+
+<div id="tooltip"></div>
+
+<footer>
+  Data sources: NOAA 1991–2020 Climate Normals; NOAA/NWS Winter 2025–2026 Station Reports; Yale Climate Connections; NWS Boston, Albany, Denver climate summaries.
+  Actuals for cities without published summaries are estimated from regional pattern analysis.
+  Distance metric: normalized Euclidean distance (avg high, snowfall, total precip) across 30-city historical range.
+  Threshold for ★: normalized self-distance &lt; 5% of maximum possible (√3).
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
+<script>
+// ─── City Data ────────────────────────────────────────────────────────────────
+// hist: 1991-2020 NOAA normals for Dec+Jan+Feb combined
+//   high   = avg of three months' mean daily highs (°F)
+//   snow   = total seasonal snowfall (in)
+//   precip = total seasonal liquid precip (in, includes SWE)
+//
+// act: winter 2025-2026 actuals / best estimates
+//   Sources: NOAA/NWS station climate summaries, Yale Climate Connections,
+//            NWS Boston/Albany/Denver recaps, Washington Post snowfall tracker
+
+const CITIES = [
+  { id:  0, name:"Seattle",       state:"WA", lat:47.61, lon:-122.33,
+    hist:{ high:46, snow:  5.3, precip:13.8 }, act:{ high:44, snow:  8.0, precip:12.5 } },
+  { id:  1, name:"Portland",      state:"OR", lat:45.52, lon:-122.68,
+    hist:{ high:46, snow:  4.6, precip:12.6 }, act:{ high:44, snow:  5.5, precip:11.5 } },
+  { id:  2, name:"San Francisco", state:"CA", lat:37.77, lon:-122.42,
+    hist:{ high:57, snow:  0.0, precip:11.5 }, act:{ high:61, snow:  0.0, precip:10.0 } },
+  { id:  3, name:"Los Angeles",   state:"CA", lat:34.05, lon:-118.24,
+    hist:{ high:68, snow:  0.0, precip: 8.5 }, act:{ high:73, snow:  0.0, precip: 7.0 } },
+  { id:  4, name:"Las Vegas",     state:"NV", lat:36.17, lon:-115.14,
+    hist:{ high:56, snow:  0.5, precip: 1.5 }, act:{ high:63, snow:  0.0, precip: 1.0 } },
+  { id:  5, name:"Phoenix",       state:"AZ", lat:33.45, lon:-112.07,
+    hist:{ high:65, snow:  0.0, precip: 2.1 }, act:{ high:72, snow:  0.0, precip: 1.5 } },
+  { id:  6, name:"Denver",        state:"CO", lat:39.74, lon:-104.98,
+    hist:{ high:45, snow: 21.0, precip: 2.7 }, act:{ high:53, snow:  8.0, precip: 2.0 } },
+  { id:  7, name:"Salt Lake City",state:"UT", lat:40.76, lon:-111.89,
+    hist:{ high:38, snow: 30.0, precip: 4.8 }, act:{ high:46, snow: 15.0, precip: 3.5 } },
+  { id:  8, name:"Boise",         state:"ID", lat:43.62, lon:-116.20,
+    hist:{ high:38, snow: 15.0, precip: 4.0 }, act:{ high:46, snow:  8.0, precip: 3.0 } },
+  { id:  9, name:"Albuquerque",   state:"NM", lat:35.08, lon:-106.65,
+    hist:{ high:47, snow:  6.0, precip: 1.5 }, act:{ high:55, snow:  2.0, precip: 1.0 } },
+  { id: 10, name:"Chicago",       state:"IL", lat:41.88, lon: -87.63,
+    hist:{ high:30, snow: 22.0, precip: 5.1 }, act:{ high:28, snow: 35.0, precip: 5.5 } },
+  { id: 11, name:"Detroit",       state:"MI", lat:42.33, lon: -83.05,
+    hist:{ high:30, snow: 22.0, precip: 5.4 }, act:{ high:28, snow: 33.0, precip: 5.0 } },
+  { id: 12, name:"Minneapolis",   state:"MN", lat:44.98, lon: -93.27,
+    hist:{ high:21, snow: 27.0, precip: 2.4 }, act:{ high:20, snow: 24.0, precip: 2.0 } },
+  { id: 13, name:"Cleveland",     state:"OH", lat:41.50, lon: -81.69,
+    hist:{ high:32, snow: 27.0, precip: 6.3 }, act:{ high:30, snow: 32.0, precip: 6.0 } },
+  { id: 14, name:"Pittsburgh",    state:"PA", lat:40.44, lon: -79.99,
+    hist:{ high:36, snow: 20.0, precip: 8.2 }, act:{ high:34, snow: 26.0, precip: 7.5 } },
+  { id: 15, name:"St. Louis",     state:"MO", lat:38.63, lon: -90.20,
+    hist:{ high:39, snow: 11.0, precip: 6.9 }, act:{ high:38, snow: 16.0, precip: 6.5 } },
+  { id: 16, name:"Kansas City",   state:"MO", lat:39.10, lon: -94.58,
+    hist:{ high:37, snow: 10.0, precip: 4.2 }, act:{ high:36, snow: 13.0, precip: 4.0 } },
+  { id: 17, name:"New York",      state:"NY", lat:40.71, lon: -74.01,
+    hist:{ high:39, snow: 17.0, precip:11.1 }, act:{ high:36, snow: 34.0, precip: 8.5 } },
+  // Boston: 60.9" snow, 5.68" precip, avg temp 29.3°F (3°F below normal) — NWS Boston
+  { id: 18, name:"Boston",        state:"MA", lat:42.36, lon: -71.06,
+    hist:{ high:37, snow: 32.0, precip:11.6 }, act:{ high:34, snow: 61.0, precip: 5.7 } },
+  { id: 19, name:"Philadelphia",  state:"PA", lat:39.95, lon: -75.17,
+    hist:{ high:42, snow: 13.0, precip: 9.7 }, act:{ high:39, snow: 28.0, precip: 8.0 } },
+  // DC: only 14" snow total (near normal), but very cold stretches — NWS/WashPost
+  { id: 20, name:"Washington DC", state:"DC", lat:38.91, lon: -77.04,
+    hist:{ high:44, snow: 12.0, precip: 9.1 }, act:{ high:41, snow: 14.0, precip: 8.5 } },
+  { id: 21, name:"Baltimore",     state:"MD", lat:39.29, lon: -76.61,
+    hist:{ high:42, snow: 12.0, precip: 9.3 }, act:{ high:39, snow: 18.0, precip: 8.5 } },
+  { id: 22, name:"Burlington",    state:"VT", lat:44.48, lon: -73.21,
+    hist:{ high:28, snow: 51.0, precip: 6.8 }, act:{ high:25, snow: 68.0, precip: 6.5 } },
+  { id: 23, name:"Portland",      state:"ME", lat:43.66, lon: -70.26,
+    hist:{ high:31, snow: 40.0, precip:10.6 }, act:{ high:28, snow: 55.0, precip: 9.5 } },
+  // Albany: 48.1" snow (5.5" above 42.6 normal) — CBS6 Albany recap
+  { id: 24, name:"Albany",        state:"NY", lat:42.65, lon: -73.75,
+    hist:{ high:31, snow: 42.6, precip: 7.8 }, act:{ high:28, snow: 48.0, precip: 7.5 } },
+  { id: 25, name:"Dallas",        state:"TX", lat:32.78, lon: -96.80,
+    hist:{ high:57, snow:  0.7, precip: 5.3 }, act:{ high:55, snow:  1.5, precip: 5.0 } },
+  { id: 26, name:"Houston",       state:"TX", lat:29.76, lon: -95.37,
+    hist:{ high:63, snow:  0.1, precip:10.0 }, act:{ high:61, snow:  0.5, precip: 9.0 } },
+  { id: 27, name:"Atlanta",       state:"GA", lat:33.75, lon: -84.39,
+    hist:{ high:51, snow:  1.7, precip:11.5 }, act:{ high:50, snow:  5.0, precip:11.0 } },
+  { id: 28, name:"Miami",         state:"FL", lat:25.77, lon: -80.19,
+    hist:{ high:77, snow:  0.0, precip: 5.5 }, act:{ high:75, snow:  0.0, precip: 5.0 } },
+  { id: 29, name:"Nashville",     state:"TN", lat:36.17, lon: -86.78,
+    hist:{ high:46, snow:  5.0, precip:11.0 }, act:{ high:43, snow:  9.0, precip:10.5 } },
+];
+
+// ─── Normalization & Distance ─────────────────────────────────────────────────
+const bounds = (() => {
+  const h = CITIES.map(c => c.hist.high);
+  const s = CITIES.map(c => c.hist.snow);
+  const p = CITIES.map(c => c.hist.precip);
+  return {
+    high:   { min: Math.min(...h), max: Math.max(...h) },
+    snow:   { min: Math.min(...s), max: Math.max(...s) },
+    precip: { min: Math.min(...p), max: Math.max(...p) },
+  };
+})();
+
+function norm(val, key) {
+  const { min, max } = bounds[key];
+  return (val - min) / (max - min);
+}
+
+function climateDist(a, b) {
+  return Math.sqrt(
+    (norm(a.high,   'high')   - norm(b.high,   'high'))   ** 2 +
+    (norm(a.snow,   'snow')   - norm(b.snow,   'snow'))   ** 2 +
+    (norm(a.precip, 'precip') - norm(b.precip, 'precip')) ** 2
+  );
+}
+
+const THRESHOLD = 0.05 * Math.sqrt(3); // ≈ 0.0866
+
+// Pre-compute nearest match for each city
+CITIES.forEach(city => {
+  let minDist = Infinity, nearest = null;
+  CITIES.forEach(cand => {
+    const d = climateDist(city.act, cand.hist);
+    if (d < minDist) { minDist = d; nearest = cand; }
+  });
+  city.matchCity   = nearest;
+  city.matchDist   = minDist;
+  city.selfDist    = climateDist(city.act, city.hist);
+  city.isAsterisk  = city.selfDist < THRESHOLD;
+  city.deltaHigh   = city.act.high - city.hist.high;
+});
+
+// ─── Dot color by temperature anomaly ────────────────────────────────────────
+function anomalyColor(delta) {
+  if (delta >=  6) return '#ff4500';
+  if (delta >=  2) return '#ffa726';
+  if (delta >= -2) return '#69f0ae';
+  if (delta >= -6) return '#4fc3f7';
+  return '#1565c0';
+}
+
+// ─── Tables ──────────────────────────────────────────────────────────────────
+function rowClass(delta) {
+  if (delta >=  6) return 'row-hot';
+  if (delta >=  2) return 'row-warm';
+  if (delta <= -6) return 'row-cold';
+  if (delta <= -2) return 'row-cool';
+  return '';
+}
+
+function buildHistTable() {
+  const tbody = document.getElementById('hist-tbody');
+  CITIES.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${c.name} <span class="city-st">${c.state}</span></td>
+      <td>${c.hist.high}</td>
+      <td>${c.hist.snow.toFixed(1)}</td>
+      <td>${c.hist.precip.toFixed(1)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildActTable() {
+  const tbody = document.getElementById('act-tbody');
+  CITIES.forEach(c => {
+    const d = c.deltaHigh;
+    const sign = d >= 0 ? '+' : '';
+    const tr = document.createElement('tr');
+    tr.className = rowClass(d);
+    tr.innerHTML = `
+      <td>${c.name} <span class="city-st">${c.state}</span></td>
+      <td>${c.act.high}</td>
+      <td>${c.act.snow.toFixed(1)}</td>
+      <td>${c.act.precip.toFixed(1)}</td>
+      <td style="color:${anomalyColor(d)};font-weight:600">${sign}${d}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+buildHistTable();
+buildActTable();
+
+// ─── Findings cards ──────────────────────────────────────────────────────────
+function buildFindings() {
+  const grid = document.getElementById('findings-grid');
+  CITIES.forEach(city => {
+    const m = city.matchCity;
+    const d = city.deltaHigh;
+    const card = document.createElement('div');
+    card.className = 'finding-card';
+
+    let toHtml, desc;
+    if (city.isAsterisk) {
+      toHtml = `<span class="to" style="color:#69f0ae">${city.name}, ${city.state} ★</span>`;
+      desc = `Stayed near its own historical normal`;
+    } else if (m.id === city.id) {
+      toHtml = `<span class="to" style="color:${anomalyColor(d)}">${city.name}, ${city.state}</span>`;
+      desc = `Nearest match is itself (shifted but unique)`;
+    } else {
+      const mLabel = m.name === 'Portland' && m.state === 'ME' ? 'Portland ME' : m.name;
+      toHtml = `<span class="to" style="color:${anomalyColor(d)}">${mLabel}, ${m.state}</span>`;
+      const dH = d > 0 ? `${d}°F warmer` : `${Math.abs(d)}°F colder`;
+      const dS = (city.act.snow - city.hist.snow).toFixed(0);
+      const snowDesc = dS > 0 ? `+${dS}" snow` : `${dS}" snow`;
+      desc = `${dH}, ${snowDesc} vs normal`;
+    }
+    card.innerHTML = `
+      <div><span class="from">${city.name}, ${city.state}</span><span class="arrow">→</span>${toHtml}</div>
+      <div class="delta">${desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+buildFindings();
+
+// ─── Map ─────────────────────────────────────────────────────────────────────
+const svg    = d3.select('#usa-map');
+const width  = 960, height = 600;
+const proj   = d3.geoAlbersUsa().scale(1280).translate([width / 2, height / 2]);
+const path   = d3.geoPath().projection(proj);
+
+const tooltip = document.getElementById('tooltip');
+
+function showTooltip(evt, city) {
+  const match = city.matchCity;
+  const isSelf = match.id === city.id;
+  const label = city.isAsterisk
+    ? `${city.name} ★ <span style="color:#69f0ae;font-size:.75rem">(within 5% of normal)</span>`
+    : isSelf
+      ? `${city.name} (nearest = self)`
+      : `Matches → <span style="color:#ffa726">${match.name}, ${match.state}</span>`;
+
+  tooltip.innerHTML = `
+    <h3>${city.name}, ${city.state}</h3>
+    <table>
+      <tr><td></td><td style="color:#78909c">Norm</td><td style="color:#78909c">2025-26</td><td style="color:#78909c">Δ</td></tr>
+      <tr>
+        <td>Avg High</td>
+        <td>${city.hist.high}°F</td>
+        <td>${city.act.high}°F</td>
+        <td style="color:${anomalyColor(city.deltaHigh)}">${city.deltaHigh > 0 ? '+' : ''}${city.deltaHigh}°F</td>
+      </tr>
+      <tr>
+        <td>Snowfall</td>
+        <td>${city.hist.snow.toFixed(1)}"</td>
+        <td>${city.act.snow.toFixed(1)}"</td>
+        <td style="color:${city.act.snow > city.hist.snow ? '#4fc3f7' : '#ffa726'}">${city.act.snow > city.hist.snow ? '+' : ''}${(city.act.snow - city.hist.snow).toFixed(1)}"</td>
+      </tr>
+      <tr>
+        <td>Precip</td>
+        <td>${city.hist.precip.toFixed(1)}"</td>
+        <td>${city.act.precip.toFixed(1)}"</td>
+        <td>${city.act.precip > city.hist.precip ? '+' : ''}${(city.act.precip - city.hist.precip).toFixed(1)}"</td>
+      </tr>
+    </table>
+    <div class="tt-match ${isSelf || city.isAsterisk ? 'tt-self' : 'tt-other'}">
+      Map label: ${label}<br>
+      <span style="color:#455a64;font-size:.72rem">self-dist ${city.selfDist.toFixed(3)} | match-dist ${city.matchDist.toFixed(3)}</span>
+    </div>
+  `;
+  tooltip.style.opacity = '1';
+  moveTooltip(evt);
+}
+
+function moveTooltip(evt) {
+  const x = evt.clientX + 14, y = evt.clientY - 10;
+  tooltip.style.left = Math.min(x, window.innerWidth - 295) + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+  // Draw states
+  svg.append('g')
+    .selectAll('path')
+    .data(topojson.feature(us, us.objects.states).features)
+    .join('path')
+    .attr('class', 'state')
+    .attr('d', path);
+
+  // State borders
+  svg.append('path')
+    .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b))
+    .attr('class', 'state-border')
+    .attr('d', path);
+
+  // Project cities
+  const projected = CITIES.map(c => {
+    const pt = proj([c.lon, c.lat]);
+    return { ...c, px: pt ? pt[0] : null, py: pt ? pt[1] : null };
+  }).filter(c => c.px !== null);
+
+  // Draw city dots
+  svg.selectAll('.city-dot')
+    .data(projected)
+    .join('circle')
+    .attr('class', 'city-dot')
+    .attr('cx', d => d.px)
+    .attr('cy', d => d.py)
+    .attr('r', d => 4 + Math.abs(d.deltaHigh) * 0.35)
+    .attr('fill', d => anomalyColor(d.deltaHigh))
+    .attr('stroke', d => d3.color(anomalyColor(d.deltaHigh)).darker(1))
+    .attr('fill-opacity', .85)
+    .on('mousemove', (evt, d) => { showTooltip(evt, d); moveTooltip(evt); })
+    .on('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+  // Per-city label offsets (hand-tuned for the US map)
+  const OFFSETS = {
+    'Seattle':       { dx: -7, dy: -9, anchor:'end' },
+    'Portland':      { dx: -7, dy:  9, anchor:'end' },      // OR
+    'San Francisco': { dx: -7, dy: -9, anchor:'end' },
+    'Los Angeles':   { dx: -7, dy:  9, anchor:'end' },
+    'Las Vegas':     { dx: -7, dy:  9, anchor:'end' },
+    'Phoenix':       { dx: -7, dy:  9, anchor:'end' },
+    'Denver':        { dx:  7, dy: -9, anchor:'start' },
+    'Salt Lake City':{ dx:  7, dy:  9, anchor:'start' },
+    'Boise':         { dx:  7, dy: -9, anchor:'start' },
+    'Albuquerque':   { dx:  7, dy:  9, anchor:'start' },
+    'Chicago':       { dx:  7, dy: -9, anchor:'start' },
+    'Detroit':       { dx:  7, dy: -9, anchor:'start' },
+    'Minneapolis':   { dx:  7, dy: -9, anchor:'start' },
+    'Cleveland':     { dx:  7, dy:  9, anchor:'start' },
+    'Pittsburgh':    { dx: -7, dy:  9, anchor:'end' },
+    'St. Louis':     { dx: -7, dy:  9, anchor:'end' },
+    'Kansas City':   { dx: -7, dy: -9, anchor:'end' },
+    'New York':      { dx:  8, dy: -9, anchor:'start' },
+    'Boston':        { dx:  8, dy: -9, anchor:'start' },
+    'Philadelphia':  { dx: -8, dy: -9, anchor:'end' },
+    'Washington DC': { dx: -8, dy:  9, anchor:'end' },
+    'Baltimore':     { dx:  8, dy:  9, anchor:'start' },
+    'Burlington':    { dx:  8, dy: -9, anchor:'start' },
+    'Portland ME':   { dx: -7, dy:-11, anchor:'end' },      // ME
+    'Albany':        { dx: -7, dy:  9, anchor:'end' },
+    'Dallas':        { dx:  7, dy:  9, anchor:'start' },
+    'Houston':       { dx: -7, dy:  9, anchor:'end' },
+    'Atlanta':       { dx:  7, dy:  9, anchor:'start' },
+    'Miami':         { dx: -7, dy:  9, anchor:'end' },
+    'Nashville':     { dx: -7, dy: -9, anchor:'end' },
+  };
+  // Special names for Portland ME vs Portland OR
+  const displayName = (c) => c.name === 'Portland' && c.state === 'ME' ? 'Portland ME' : c.name;
+  const labelText = (d) => {
+    const m = d.matchCity;
+    const mName = m.name === 'Portland' && m.state === 'ME' ? 'Portland ME' : m.name;
+    if (d.isAsterisk)       return displayName(d) + ' ★';
+    if (m.id === d.id)      return displayName(d);
+    return `${mName}, ${m.state}`;
+  };
+
+  svg.selectAll('.city-label')
+    .data(projected)
+    .join('text')
+    .attr('class', 'city-label')
+    .attr('x', d => { const o = OFFSETS[displayName(d)] || { dx:6 }; return d.px + o.dx; })
+    .attr('y', d => { const o = OFFSETS[displayName(d)] || { dy:-9 }; return d.py + o.dy; })
+    .attr('text-anchor', d => (OFFSETS[displayName(d)] || { anchor:'start' }).anchor)
+    .attr('stroke', '#0a1520')
+    .attr('fill', d => d.isAsterisk ? '#69f0ae' : anomalyColor(d.deltaHigh))
+    .text(d => labelText(d))
+    .on('mousemove', (evt, d) => { showTooltip(evt, d); moveTooltip(evt); })
+    .on('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+}).catch(err => {
+  console.error('Map load error:', err);
+  document.getElementById('map-svg-wrap').innerHTML =
+    '<p style="color:#ff6b35;padding:2rem;text-align:center">Could not load map. Check network connectivity.</p>';
+});
+</script>
+</body>
+</html>
