@@ -5,14 +5,17 @@ fetching historical weather data, climate normals, and running
 comparison analysis.
 
 Quick start:
-    from weather import get_winter_actuals, find_city, build_comparison_table
+    # 1. Fetch data (run once, requires network)
+    #    python fetch_data.py
 
-    # Get winter 2025-2026 actuals for Boston
+    # 2. Use the data
+    from weather import build_comparison_table
+    table = build_comparison_table()
+
+    # Or fetch live for a single city
+    from weather import get_winter_actuals, get_coords
     lat, lon = get_coords("Boston")
     actuals = get_winter_actuals(lat, lon, year=2025)
-
-    # Build full comparison table (uses built-in reference data)
-    table = build_comparison_table()
 """
 
 from .cities import CITIES, all_cities, find_city, get_coords
@@ -26,7 +29,7 @@ from .analysis import (
     build_comparison_table,
     compare_actual_vs_normal,
     find_climate_match,
-    find_climate_match_from_registry,
+    load_fetched_data,
 )
 
 __all__ = [
@@ -40,6 +43,6 @@ __all__ = [
     "get_multi_city_weather",
     "compare_actual_vs_normal",
     "find_climate_match",
-    "find_climate_match_from_registry",
+    "load_fetched_data",
     "build_comparison_table",
 ]

@@ -2,9 +2,15 @@
 
 Reimplements the normalized Euclidean distance algorithm from index.html
 for comparing actual weather against historical normals.
+
+Can work with either:
+  - Data loaded from data/cities_weather.json (after running fetch_data.py)
+  - Live API calls to Open-Meteo
 """
 
+import json
 import math
+import os
 import time
 
 import pandas as pd
@@ -13,24 +19,30 @@ from .cities import CITIES
 from .openmeteo import get_winter_actuals
 
 
+def load_fetched_data(path="data/cities_weather.json"):
+    """Load city weather data from the JSON file produced by fetch_data.py."""
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
 def compare_actual_vs_normal(actuals, normals):
     """Compare actual weather against normals, returning deltas.
 
     Args:
-        actuals: dict with keys avg_high, total_snow, total_precip
-        normals: dict with keys avg_high (or avg_high), avg_snow (or total_snow),
-                 avg_precip (or total_precip)
+        actuals: dict with keys high, snow, precip (or avg_high, total_snow, total_precip)
+        normals: dict with same key patterns
 
     Returns:
         dict with delta and percent change for each metric
     """
-    # Normalize key names
-    a_high = actuals.get("avg_high", 0)
-    n_high = normals.get("avg_high", 0)
-    a_snow = actuals.get("total_snow", 0)
-    n_snow = normals.get("avg_snow", normals.get("total_snow", 0))
-    a_precip = actuals.get("total_precip", 0)
-    n_precip = normals.get("avg_precip", normals.get("total_precip", 0))
+    a_high = actuals.get("high", actuals.get("avg_high", 0))
+    n_high = normals.get("high", normals.get("avg_high", 0))
+    a_snow = actuals.get("snow", actuals.get("total_snow", 0))
+    n_snow = normals.get("snow", normals.get("avg_snow", 0))
+    a_precip = actuals.get("precip", actuals.get("total_precip", 0))
+    n_precip = normals.get("precip", normals.get("avg_precip", 0))
 
     def pct(actual, normal):
         if normal == 0:
@@ -50,8 +62,7 @@ def compare_actual_vs_normal(actuals, normals):
 def find_climate_match(city_actuals, all_normals):
     """Find which city's historical normal best matches the given actuals.
 
-    Uses normalized Euclidean distance across avg_high, snowfall, precip
-    (same algorithm as index.html lines 433-444).
+    Uses normalized Euclidean distance across avg_high, snowfall, precip.
 
     Args:
         city_actuals: dict with keys high, snow, precip
@@ -60,7 +71,6 @@ def find_climate_match(city_actuals, all_normals):
     Returns:
         (matched_city_name, distance)
     """
-    # Compute bounds for normalization
     all_highs = [n["high"] for n in all_normals.values()]
     all_snows = [n["snow"] for n in all_normals.values()]
     all_precips = [n["precip"] for n in all_normals.values()]
@@ -95,105 +105,63 @@ def find_climate_match(city_actuals, all_normals):
     return (best_name, round(best_dist, 4))
 
 
-def find_climate_match_from_registry(city_name):
-    """Find climate match for a city using the built-in registry data.
+def build_comparison_table(data_path="data/cities_weather.json"):
+    """Build a comparison table for all cities.
 
-    Uses the hardcoded hist/act data from cities.py (same as index.html).
-    Returns (matched_city_name, distance, self_distance, is_asterisk).
-    """
-    # Build normals dict from all cities
-    all_normals = {}
-    for c in CITIES:
-        all_normals[c["name"]] = c["hist"]
-
-    # Find the target city
-    target = None
-    for c in CITIES:
-        if c["name"].lower() == city_name.lower():
-            target = c
-            break
-
-    if not target:
-        raise ValueError(f"City not found: {city_name}")
-
-    matched, dist = find_climate_match(target["act"], all_normals)
-    self_dist = find_climate_match(target["act"], {target["name"]: target["hist"]})[1]
-
-    threshold = 0.05 * math.sqrt(3)  # ~0.0866, same as index.html
-    is_asterisk = self_dist < threshold
-
-    return {
-        "city": city_name,
-        "matched_to": matched,
-        "match_distance": dist,
-        "self_distance": round(self_dist, 4),
-        "stayed_typical": is_asterisk,
-    }
-
-
-def build_comparison_table(cities=None, use_registry=True):
-    """Build a comparison table for multiple cities.
-
-    Args:
-        cities: List of city names (default: all 30 from registry)
-        use_registry: If True, use hardcoded data from cities.py.
-                      If False, fetch live data from Open-Meteo (slower).
+    Loads data from JSON file (run fetch_data.py first).
+    Falls back to live API calls if no data file exists.
 
     Returns:
         DataFrame with columns: city, state, normal_high, actual_high, delta_high,
         normal_snow, actual_snow, delta_snow, normal_precip, actual_precip,
-        delta_precip, climate_match, match_distance
+        delta_precip, climate_match, match_distance, stayed_typical
     """
-    if cities is None:
-        city_list = CITIES
-    else:
-        city_list = []
-        for name in cities:
-            for c in CITIES:
-                if c["name"].lower() == name.lower():
-                    city_list.append(c)
-                    break
-
-    # Build normals dict
-    all_normals = {c["name"]: c["hist"] for c in CITIES}
-
-    rows = []
-    for c in city_list:
-        if use_registry:
-            actuals = c["act"]
-        else:
-            result = get_winter_actuals(c["lat"], c["lon"])
-            actuals = {
-                "high": result["avg_high"],
-                "snow": result["total_snow"],
-                "precip": result["total_precip"],
-            }
-            time.sleep(0.2)
-
-        matched, dist = find_climate_match(
-            actuals if "high" in actuals else {
-                "high": actuals.get("avg_high", actuals.get("high")),
-                "snow": actuals.get("total_snow", actuals.get("snow")),
-                "precip": actuals.get("total_precip", actuals.get("precip")),
-            },
-            all_normals,
+    data = load_fetched_data(data_path)
+    if data is None:
+        raise FileNotFoundError(
+            f"No data file at {data_path}. Run fetch_data.py first:\n"
+            "  pip install -r requirements.txt\n"
+            "  python fetch_data.py"
         )
 
+    # Filter to cities that have both hist and act data
+    complete = [c for c in data if "hist" in c and "act" in c]
+    if not complete:
+        raise ValueError("No cities have both historical and actual data. Run fetch_data.py.")
+
+    # Build normals dict for matching
+    all_normals = {f"{c['name']}, {c['state']}": c["hist"] for c in complete}
+
+    threshold = 0.05 * math.sqrt(3)  # ~0.0866
+
+    rows = []
+    for c in complete:
+        label = f"{c['name']}, {c['state']}"
+        actuals = c["act"]
         normals = c["hist"]
+
+        matched, dist = find_climate_match(actuals, all_normals)
+
+        # Self-distance
+        self_dist = find_climate_match(actuals, {label: normals})[1]
+        stayed = self_dist < threshold
+
         rows.append({
             "city": c["name"],
             "state": c["state"],
             "normal_high": normals["high"],
-            "actual_high": actuals.get("high", actuals.get("avg_high")),
-            "delta_high": round(actuals.get("high", actuals.get("avg_high", 0)) - normals["high"], 1),
+            "actual_high": actuals["high"],
+            "delta_high": round(actuals["high"] - normals["high"], 1),
             "normal_snow": normals["snow"],
-            "actual_snow": actuals.get("snow", actuals.get("total_snow")),
-            "delta_snow": round(actuals.get("snow", actuals.get("total_snow", 0)) - normals["snow"], 1),
+            "actual_snow": actuals["snow"],
+            "delta_snow": round(actuals["snow"] - normals["snow"], 1),
             "normal_precip": normals["precip"],
-            "actual_precip": actuals.get("precip", actuals.get("total_precip")),
-            "delta_precip": round(actuals.get("precip", actuals.get("total_precip", 0)) - normals["precip"], 1),
+            "actual_precip": actuals["precip"],
+            "delta_precip": round(actuals["precip"] - normals["precip"], 1),
             "climate_match": matched,
             "match_distance": dist,
+            "self_distance": round(self_dist, 4),
+            "stayed_typical": stayed,
         })
 
     return pd.DataFrame(rows)
