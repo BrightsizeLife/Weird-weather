@@ -1,0 +1,114 @@
+THE WINTER THAT MOVED
+
+Fifty American cities, one strange season, and the mathematics of displacement
+
+March 2026
+
+---
+
+There is a moment, sometime around the second week of February, when a winter declares itself. By then the cumulative evidence is in: the coats you needed or did not, the mornings you scraped ice or skipped the step entirely. By February you know what kind of winter it was, even if you lack the vocabulary to say so precisely. This past winter, in many American cities, the vocabulary failed.
+
+In Denver, February felt like early April. In Boston, winter held a grudge. Snow piled on snow. The T ran late, then later, then not at all.
+
+We set out to measure this. Fifty cities across the United States, compared against thirty years of their own history. Winter 2025-26 -- December through February -- against the 1991-2020 period, which climatologists call the "normal." The word deserves its quotation marks. Normal is just the past tense of weather, averaged.
+
+A note on what we measured and what we did not. Fifty cities is not America. Our sample skews toward the Northeast and toward large metros. Rural weather, which is most of the country's geography if not its population, is absent here. The Southern Plains are underrepresented. Hawaii is missing entirely. What follows is a portrait of fifty places, not a census. That said: even in this biased sample, the patterns are striking.
+
+THE NATIONAL PICTURE
+
+The national average temperature anomaly across our fifty cities came out to +1.4 degrees Fahrenheit. A small number. But national averages are to weather what GDP is to the economy -- a figure that describes no one's actual experience. Twenty cities ran warmer than their norms. Fifteen ran cooler. Fifteen landed within the range of the expected.
+
+The average itself carries a quiet limitation. Our baseline, 1991-2020, already includes three decades of warming. The "normal" is not some fixed, Platonic climate. It is a sliding window that absorbs the recent past, making each generation's strange weather the next generation's ordinary. A +1.4-degree anomaly measured against an already-warm baseline is more remarkable than it sounds.
+
+THE WEST-EAST DIVIDE
+
+The West ran warm. Denver posted +11.1 degrees Fahrenheit above its thirty-year average. Billings, Montana came in +9.1 degrees above. Las Vegas, +7.0. Phoenix, +6.7. Boise, Reno, Albuquerque, Tucson, Salt Lake City -- all five or more degrees above the script.
+
+The East cooled. New York posted -5.3 degrees below normal. Boston dropped -3.7 and added snow beyond what history would suggest is plenty. Buffalo added to its surplus. Cleveland, Detroit, the great frozen crescent of the Northeast and Great Lakes -- they all bent deeper.
+
+This east-west dipole is not random. The jet stream -- that atmospheric river at thirty thousand feet -- buckled and held its shape for much of the season. A persistent ridge of high pressure sat over the West like a warm lid, while a trough funneled Arctic air south and east. This pattern has a name in meteorology: an amplified Rossby wave. It is consistent with what La Nina winters tend to produce -- the tropical Pacific's cold phase nudges the jet stream northward over the West and drops it southward over the East, splitting the continent thermally.
+
+NOAA's Climate Prediction Center had forecast a "tilt of the odds" toward exactly this pattern for a La Nina winter. The forecast was correct in direction, though the magnitude -- eleven degrees hot in Denver, five degrees cold in New York -- exceeded what seasonal outlooks typically capture. The atmosphere followed the script's stage directions but ad-libbed the dialogue.
+
+THE TELEPORTATION QUESTION
+
+The most useful thing we did with this data was to ask a question borrowed from science fiction: if your city's winter was teleported, where did it land?
+
+The method is straightforward. Take each city's actual winter and compare it to the thirty-year normal of every other city. The closest match, measured by normalized Euclidean distance, tells you whose winter you actually had.
+
+Denver became Albuquerque. Boston became Burlington, Vermont. New York became Albany. Las Vegas turned into El Paso. Anchorage, which expected snow and did not get it, landed nearest to Burlington -- not because Anchorage got warm, but because its snow deficit made it unrecognizable as itself.
+
+Seven cities stayed close enough to their own norms that their nearest match was themselves. Phoenix was among them, though barely. These are the places where winter still resembles winter. The autobiography holds.
+
+THE GEOMETRY OF STRANGENESS
+
+The teleportation question tells you where your city went. But the distance matrix tells you something more fundamental: how alone your city is. Not emotionally. Mathematically. Every city sits at a point in climate space, and some points have neighbors and some do not.
+
+Cities at the temperature extremes -- Miami, Anchorage, Phoenix -- live in a kind of climate solitude. Their nearest neighbor in the distance matrix is still far away. Anchorage's nearest match is Burlington, VT, at a distance of 0.259. Miami's is Tampa at 0.149. These cities have no close twins in our dataset. Their weather is too distinctive for comparison. They are the only copies of themselves.
+
+Anchorage was the most displaced city in the dataset. Its self-distance -- the distance between its actual winter and its own thirty-year normal -- was 0.492, the highest of all fifty cities. Its winter was the furthest from its own autobiography. And yet its z-scores are modest: -1.18 for temperature. This is the interesting part. The model and the distance metric agree: Anchorage was weird, but weird across multiple dimensions simultaneously. Temperature alone does not capture it. The combination of warmer temperatures, less snow, and less precipitation pushed Anchorage far from itself -- a displacement that no single variable reveals.
+
+Richmond, VA occupies the opposite position. Its average distance to all other cities was 0.371, the lowest in the dataset. Richmond sits in the mathematical center of American winter -- close enough to many cities that it could almost belong anywhere south of the Mason-Dixon line and east of the Mississippi. Portland, Oregon is its inverse: the highest average distance at 0.779. Portland is climatically alone, a mild wet anomaly in a dataset of cold dry winters and hot dry ones.
+
+At the pair level, the extremes confirm what intuition suspects. Albany and Burlington are practically the same city, climatically, with a distance of 0.038. Miami and Anchorage are the most different pair at 1.443 -- which surprises no one, but it is nice when the math confirms the obvious.
+
+More interesting are the cities that stayed themselves. Ten cities matched themselves -- their actual winter was closer to their own thirty-year normal than to any other city's. Tampa was the most emphatically itself, with a self-distance of just 0.040. Minneapolis was right behind at 0.042. Seven of the ten self-matching cities were either in very warm climates (Miami, Tampa, Phoenix) or very cold ones (Minneapolis, Burlington). The extremes held. The middle drifted.
+
+There is a pattern in that. The cities with the most distinctive climates -- the ones that sit at the edges of the distribution -- are the ones that stayed put. They have nowhere to go. A mild winter in Miami is still Miami. A warm winter in Minneapolis is still, recognizably, Minneapolis. But a warm winter in Denver is Albuquerque. A cold winter in New York is Albany. The cities in the middle of the distribution have more neighbors, and when the weather shifts, it shifts them into someone else's territory. The center does not hold because the center has options.
+
+A NOTE ON SNOWFALL DATA
+
+Our snowfall figures come from Open-Meteo's reanalysis archive, which derives snowfall from precipitation and temperature using the ERA5 climate model. This method systematically underestimates actual measured snowfall, particularly in lake-effect regions (Buffalo, Cleveland) and mountain cities (Denver, Salt Lake City), where local atmospheric dynamics produce more snow than a gridded model captures. Buffalo's historical average appears as roughly 28 inches in our data; the actual measured December-February average is closer to 55 inches.
+
+The analysis remains valid because we are comparing each city against its own baseline from the same source. The deltas, z-scores, and climate matches are internally consistent. But the absolute snowfall numbers should not be taken at face value.
+
+THE MODEL
+
+How strange was this winter, statistically? To answer that, you need a model.
+
+Ours begins with a smooth curve fitted through thirty years of data: a B-spline, which bends to follow the data without chasing every wiggle. This gives the national trajectory -- the slow, nonlinear drift of American winters over three decades.
+
+But cities are not the nation. Miami is not Minneapolis. So each city gets its own intercept (its baseline personality) and its own slope (its individual rate of change over time). The technical name is a mixed-effects model. The fixed effect is the national trend. The random effects are each city's departures from it.
+
+There is a further refinement. Not all cities are equally predictable. Miami's winter temperature varies little from year to year. Billings swings wildly. Our model assigns each city its own error variance -- its own sigma -- so that a two-sigma event in Miami (where sigma is 1.18 degrees) means something different from a two-sigma event in Billings (where sigma is 4.84 degrees). The technical term is heteroscedastic, from the Greek for "different scatter." It sounds like a disease but describes something sensible.
+
+Denver's temperature z-score was 2.70. In a normal distribution, that occurs less than one percent of the time. Only two of the fifty cities exceeded the two-sigma threshold for temperature. The mean absolute z-score across all cities was 1.06 -- broadly unusual, not just locally.
+
+THE CORRELATION NO ONE EXPECTED
+
+When you give each city its own intercept and slope, you can ask: do warmer cities warm faster?
+
+They do. The correlation between random intercepts and random slopes for temperature is 0.591 -- a moderately strong positive relationship. Cities that start warmer in our thirty-year baseline also tend to have steeper warming trends over time. This is not a trivial finding. It suggests that whatever is driving the warming is amplified in places that are already warm -- possibly through feedback mechanisms like reduced snow cover, urban heat island intensification, or changes in regional circulation.
+
+For snowfall, the correlation reverses: -0.287. Snowier cities tend to be losing snow faster, though the signal is weaker. For precipitation, there is essentially no correlation (0.097). Temperature is where the feedback loop lives.
+
+Why would warmer cities warm faster? Three possibilities, none mutually exclusive. First, the urban heat island: warmer cities tend to be larger, sunbelt metros with more concrete and less vegetation, and these features amplify warming. Zhao et al. (2014) documented the nonlinear relationship between city size and heat island intensity. Second, snow-albedo feedback: cities that start warmer have less snow cover, which means less solar reflection, which means more absorbed heat, which means faster warming. The loop feeds itself. Third, regional circulation changes: the jet stream patterns that warmed the West this winter may disproportionately affect cities that were already on the warm side of the continental divide.
+
+The correlation is not proof of any of these mechanisms. It is an observation that demands explanation. In the literature, it rhymes with what Manabe and Wetherald found as early as 1975 regarding polar amplification -- though here we are seeing it not at the poles but at the warm end of the urban spectrum. The pattern deserves more investigation than a dashboard can provide.
+
+TRENDS
+
+The national temperature trend across our fifty cities is +0.506 degrees per decade. This is not statistically significant at conventional levels (p = 0.16), which may surprise people accustomed to hearing that warming is settled science. It is settled -- but a thirty-year window with fifty cities is a small lens through which to measure a global phenomenon, and the year-to-year noise in winter temperatures is substantial. Our model explains 94.5% of the temperature variance, but almost all of that (94.2%) is city-to-city differences, not temporal trends. Winter temperature is overwhelmingly a function of where you are, not when you are.
+
+Snowfall shows no meaningful trend (+0.038 per decade, p = 0.94). Neither does precipitation (-0.004 per decade, p = 0.99). If winter is changing, it is changing in the background, beneath a fog of natural variability that a three-decade sample cannot fully resolve.
+
+WHAT THE RESEARCH SAYS
+
+Our findings are consistent with the broader literature. La Nina winters have been linked to amplified jet stream patterns that warm the western US and cool the east since at least Ropelewski and Halpert's 1986 work on ENSO teleconnections. The warm-cities-warming-faster pattern echoes research on urban heat islands and temperature feedback loops documented by Zhao et al. (2014) and others. The heteroscedasticity we observe -- continental interiors varying more than coastal or tropical cities -- reflects the well-documented influence of maritime moderation and distance from oceanic heat reservoirs.
+
+What is newer, and less well-studied, is the magnitude of the current displacement. Denver running eleven degrees above normal is not merely a warm winter. It is a winter that no longer belongs to Denver. Whether the frequency of such displacements is itself increasing -- whether the dice are not just loaded but increasingly so -- is a question our thirty-year sample can gesture toward but not resolve.
+
+THE MOVING BASELINE
+
+The thirty-year average will update next year. It always does. The window slides forward, absorbing anomalies, making the strange familiar. In a decade, this winter will be part of the baseline.
+
+This is both a feature and a limitation of how we measure climate normals. The 1991-2020 baseline already includes significant warming compared to the mid-twentieth century. An anomaly measured against it is an anomaly against an already-shifting reference point. Denver's +11.1 degrees is extraordinary even by modern standards. Against a 1961-1990 baseline, it would be more extraordinary still.
+
+Seven cities out of fifty had a normal winter. The other forty-three did not, and each of them did not in its own way. The strangeness was not evenly distributed. It rarely is.
+
+---
+
+Data: Open-Meteo Archive API
+Normals: 1991-2020 winter seasons (Dec-Feb)
+Model: weather ~ spline(year) + (year | city); sigma ~ city
+Sample: 50 US cities (not nationally representative)

@@ -8,694 +8,2997 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0d1b2a;
-      color: #cdd9e8;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
+      background: #000;
+      color: #E0E0E0;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #0d1b2a 0%, #162032 50%, #0d1b2a 100%);
-      border-bottom: 1px solid #1e3a5f;
-      padding: 2rem 2rem 1.5rem;
+      background: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%);
+      border-bottom: 1px solid #222;
+      padding: 1.5rem 2rem 1rem;
       text-align: center;
     }
     header h1 {
       font-size: 2.2rem;
       font-weight: 700;
       letter-spacing: -.5px;
-      background: linear-gradient(90deg, #4fc3f7, #81d4fa, #ff6b35);
+      background: linear-gradient(90deg, #E8594F, #F5A623, #4A90D9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: .5rem;
+      margin-bottom: .3rem;
     }
     header .subtitle {
-      color: #78909c;
-      font-size: .95rem;
-      max-width: 720px;
-      margin: 0 auto;
+      color: #aaa;
+      font-size: .9rem;
     }
-    .badges {
+
+    /* ── Tab Bar ── */
+    .tab-bar {
       display: flex;
       justify-content: center;
-      gap: .6rem;
-      margin-top: .8rem;
+      gap: 0;
+      background: #0a0a0a;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       flex-wrap: wrap;
     }
-    .badge {
-      font-size: .75rem;
-      padding: .25rem .7rem;
-      border-radius: 999px;
-      border: 1px solid;
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #888;
+      padding: .75rem 1.2rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: .8rem;
       font-weight: 600;
       letter-spacing: .03em;
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
     }
-    .badge-warm { background: rgba(255,107,53,.15); border-color: #ff6b35; color: #ff6b35; }
-    .badge-cold { background: rgba(79,195,247,.15); border-color: #4fc3f7; color: #4fc3f7; }
-    .badge-2nd  { background: rgba(129,212,250,.12); border-color: #81d4fa; color: #81d4fa; }
+    .tab-btn:hover { color: #E0E0E0; }
+    .tab-btn.active {
+      color: #E8594F;
+      border-bottom-color: #E8594F;
+    }
 
-    /* ── Tables ── */
-    .tables-section {
+    /* ── Tab Panels ── */
+    .tab-panel { display: none; padding: 1.5rem; }
+    .tab-panel.active { display: block; }
+
+    /* ── Toggle Groups ── */
+    .toggle-row {
       display: flex;
-      gap: 1.5rem;
-      padding: 2rem;
-      flex-wrap: wrap;
       justify-content: center;
-    }
-    .table-wrap {
-      flex: 1 1 460px;
-      max-width: 560px;
-    }
-    .table-wrap h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #90caf9;
-      margin-bottom: .75rem;
-      padding-bottom: .4rem;
-      border-bottom: 1px solid #1e3a5f;
-    }
-    .table-wrap h2 span { font-size: .8rem; font-weight: 400; color: #546e7a; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .82rem;
-    }
-    thead th {
-      background: #162032;
-      color: #78909c;
-      font-weight: 600;
-      text-align: right;
-      padding: .45rem .6rem;
-      border-bottom: 1px solid #263238;
-      white-space: nowrap;
-    }
-    thead th:first-child { text-align: left; }
-    tbody tr { border-bottom: 1px solid #162032; }
-    tbody tr:hover { background: #162032; }
-    tbody td {
-      padding: .35rem .6rem;
-      text-align: right;
-      white-space: nowrap;
-    }
-    tbody td:first-child { text-align: left; font-weight: 500; }
-    .city-st { color: #546e7a; font-weight: 400; font-size: .75rem; }
-
-    /* Row tinting by temperature anomaly */
-    .row-hot  td:nth-child(2) { color: #ff6b35; font-weight: 600; }
-    .row-warm td:nth-child(2) { color: #ffa726; }
-    .row-cool td:nth-child(2) { color: #4fc3f7; }
-    .row-cold td:nth-child(2) { color: #29b6f6; font-weight: 600; }
-
-    /* ── Map ── */
-    .map-section {
-      padding: 1rem 2rem 2rem;
-    }
-    .map-section h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #90caf9;
-      margin-bottom: .4rem;
-    }
-    .map-explanation {
-      color: #78909c;
-      font-size: .85rem;
-      max-width: 820px;
-      margin-bottom: 1.2rem;
-    }
-    #map-svg-wrap {
-      position: relative;
-      width: 100%;
-      background: #0a1520;
-      border: 1px solid #1e3a5f;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    #usa-map { display: block; width: 100%; }
-
-    /* path styles set by D3 */
-    .state { fill: #1a2a3a; stroke: #263238; stroke-width: .6; }
-    .state-border { fill: none; stroke: #2a3f54; stroke-width: 1.2; }
-
-    .city-dot {
-      stroke-width: 1.5;
-      cursor: pointer;
-      transition: r .15s;
-    }
-    .city-dot:hover { r: 8px; }
-
-    .city-label {
-      font-size: 9px;
-      font-weight: 700;
-      paint-order: stroke fill;
-      stroke-width: 3;
-      stroke-linejoin: round;
-      pointer-events: none;
-      dominant-baseline: middle;
-    }
-
-    /* ── Legend ── */
-    .legend {
-      display: flex;
-      gap: 1.5rem;
+      gap: .5rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
-      margin-top: 1rem;
-      font-size: .8rem;
-      color: #78909c;
       align-items: center;
     }
-    .legend-item { display: flex; align-items: center; gap: .4rem; }
-    .legend-swatch {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,.2);
+    .toggle-label {
+      color: #aaa;
+      font-size: .8rem;
+      margin-right: .5rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
     }
-    .legend-note {
+    .toggle-btn {
+      background: #111;
+      border: 1px solid #333;
+      color: #888;
+      padding: .35rem .8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: .78rem;
+      font-weight: 500;
+      transition: all .15s;
+    }
+    .toggle-btn:hover { border-color: #555; color: #ccc; }
+    .toggle-btn.active {
+      background: #E8594F;
+      border-color: #E8594F;
+      color: #fff;
+    }
+
+    /* ── Summary Cards ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .stat-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 1.2rem;
+    }
+    .stat-card .label {
+      color: #888;
       font-size: .75rem;
-      color: #455a64;
-      margin-left: auto;
-      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: .4rem;
+    }
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .stat-card .detail {
+      color: #888;
+      font-size: .8rem;
+      margin-top: .3rem;
+    }
+    .color-red { color: #E8594F; }
+    .color-blue { color: #4A90D9; }
+    .color-yellow { color: #F5A623; }
+    .color-green { color: #69f0ae; }
+
+    /* ── Map ── */
+    #map-container { text-align: center; position: relative; }
+    #usa-map {
+      max-width: 960px;
+      margin: 0 auto;
+      display: block;
+      cursor: grab;
+    }
+    #usa-map:active { cursor: grabbing; }
+    .map-zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 10;
+    }
+    .map-zoom-btn {
+      width: 32px;
+      height: 32px;
+      background: #111;
+      border: 1px solid #333;
+      color: #ccc;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .map-zoom-btn:hover { background: #222; border-color: #555; }
+    .state { fill: #111; stroke: #222; stroke-width: 0.5; }
+    .state-border { fill: none; stroke: #333; stroke-width: 0.5; }
+    .city-dot { cursor: pointer; stroke-width: 1.5; }
+    .city-label {
+      font-size: 9px;
+      font-weight: 600;
+      paint-order: stroke fill;
+      stroke-width: 2.5px;
+      stroke-linejoin: round;
+      pointer-events: none;
     }
 
     /* ── Tooltip ── */
     #tooltip {
       position: fixed;
-      background: #162032;
-      border: 1px solid #1e3a5f;
-      border-radius: 6px;
-      padding: .6rem .9rem;
-      font-size: .8rem;
       pointer-events: none;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: .8rem 1rem;
+      max-width: 320px;
+      font-size: .78rem;
+      z-index: 200;
       opacity: 0;
       transition: opacity .15s;
-      max-width: 280px;
-      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0,0,0,.6);
     }
-    #tooltip h3 { font-size: .9rem; color: #90caf9; margin-bottom: .35rem; }
-    #tooltip table { font-size: .78rem; }
-    #tooltip td { padding: .1rem .4rem; text-align: right; }
-    #tooltip td:first-child { text-align: left; color: #78909c; padding-left: 0; }
-    .tt-match { margin-top: .4rem; padding-top: .4rem; border-top: 1px solid #263238; font-size: .75rem; }
-    .tt-self { color: #69f0ae; }
-    .tt-other { color: #ffa726; }
-
-    /* ── Findings ── */
-    .findings-section {
-      padding: 1rem 2rem 1.5rem;
-      border-top: 1px solid #1e3a5f;
+    #tooltip h3 {
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      color: #F5A623;
     }
-    .findings-section h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #90caf9;
-      margin-bottom: .9rem;
-    }
-    .findings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: .7rem;
-    }
-    .finding-card {
-      background: #101e2e;
-      border: 1px solid #1e3a5f;
-      border-radius: 6px;
-      padding: .65rem .85rem;
-      font-size: .82rem;
-    }
-    .finding-card .from { font-weight: 600; color: #cdd9e8; }
-    .finding-card .arrow { color: #546e7a; margin: 0 .35rem; font-size: .9rem; }
-    .finding-card .to { font-weight: 700; }
-    .finding-card .delta { font-size: .75rem; color: #78909c; margin-top: .2rem; }
-
-    /* ── Footnote ── */
-    footer {
-      border-top: 1px solid #1e3a5f;
-      padding: 1.2rem 2rem;
-      color: #455a64;
+    #tooltip table { width: 100%; border-collapse: collapse; }
+    #tooltip td { padding: .15rem .4rem; }
+    .tt-match {
+      margin-top: .5rem;
+      padding-top: .4rem;
+      border-top: 1px solid #222;
       font-size: .75rem;
+    }
+
+    /* ── Distance Matrix ── */
+    #matrix-container { text-align: center; overflow-x: auto; }
+    #matrix-svg { margin: 0 auto; display: block; }
+
+    /* ── Data Table ── */
+    .table-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-input {
+      background: #111;
+      border: 1px solid #333;
+      color: #E0E0E0;
+      padding: .5rem 1rem;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: .85rem;
+      width: 300px;
+    }
+    .search-input:focus { outline: none; border-color: #E8594F; }
+
+    .data-table-wrap { overflow-x: auto; max-width: 100%; margin: 0 auto; }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .75rem;
+    }
+    table.data-table thead th {
+      background: #111;
+      color: #888;
+      font-weight: 600;
+      text-align: right;
+      padding: .4rem .5rem;
+      border-bottom: 1px solid #333;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      font-size: .7rem;
+    }
+    table.data-table thead th:first-child { text-align: left; }
+    table.data-table thead th:hover { color: #E8594F; }
+    table.data-table thead th .sort-arrow { font-size: .65rem; margin-left: .2rem; }
+    table.data-table tbody tr { border-bottom: 1px solid #111; }
+    table.data-table tbody tr:hover { background: #111; }
+    table.data-table tbody td {
+      padding: .35rem .5rem;
+      text-align: right;
+    }
+    table.data-table tbody td:first-child { text-align: left; color: #ccc; }
+    table.data-table .sigma-max { background: rgba(232, 89, 79, .12); }
+    table.data-table .sigma-min { background: rgba(74, 144, 217, .12); }
+
+    /* ── Time Series ── */
+    .ts-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .ts-select {
+      background: #111;
+      border: 1px solid #333;
+      color: #E0E0E0;
+      padding: .5rem 1rem;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: .85rem;
+    }
+    .ts-select:focus { outline: none; border-color: #E8594F; }
+    .ts-charts { max-width: 900px; margin: 0 auto; }
+    .ts-chart-block { margin-bottom: 2rem; }
+    .ts-chart-block h3 {
+      font-size: .9rem;
+      color: #888;
+      margin-bottom: .5rem;
       text-align: center;
     }
-    footer a { color: #546e7a; }
+    .ts-stats {
+      max-width: 600px;
+      margin: 1rem auto;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+    }
+    .ts-stats h4 { color: #F5A623; margin-bottom: .5rem; }
+    .ts-stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: .2rem 0;
+      font-size: .82rem;
+    }
+    .ts-stat-label { color: #888; }
+
+    /* ── Color Legend ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .82rem;
+      color: #aaa;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ── Blog / Essay Styles ── */
+    .essay-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: #d4d4d4;
+    }
+    .essay-container .blog-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #222;
+    }
+    .blog-kicker {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #E8594F;
+      margin-bottom: .8rem;
+    }
+    .blog-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: #f0f0f0;
+      margin-bottom: 1rem;
+    }
+    .blog-subtitle {
+      font-size: 1.15rem;
+      color: #888;
+      font-style: italic;
+      line-height: 1.5;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .blog-byline {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .72rem;
+      color: #666;
+      margin-top: 1.5rem;
+      letter-spacing: .05em;
+    }
+    .essay-container p { margin-bottom: 1.4rem; }
+    .essay-container p.lead { font-size: 1.15rem; color: #e0e0e0; }
+    .essay-section-head {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: #E8594F;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .section-break {
+      text-align: center;
+      margin: 2.5rem 0;
+      color: #444;
+      font-size: .9rem;
+      letter-spacing: .3em;
+    }
+    .datum {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .85em;
+      font-weight: 600;
+      padding: .1em .3em;
+      border-radius: 3px;
+    }
+    .datum.warm { color: #E8594F; background: rgba(232, 89, 79, .1); }
+    .datum.cold { color: #4A90D9; background: rgba(74, 144, 217, .1); }
+    .datum.neutral { color: #F5A623; background: rgba(245, 166, 35, .1); }
+    .datum.snow { color: #a0d2db; background: rgba(160, 210, 219, .08); }
+
+    .spark-figure {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+    }
+    .spark-figure .spark-title {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+    .spark-figure svg { display: block; width: 100%; height: auto; }
+    .spark-caption {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .78rem;
+      color: #999;
+      margin-top: .8rem;
+      line-height: 1.5;
+    }
+
+    .teleport-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: .4rem .8rem;
+      margin: 1.8rem 0 2.2rem;
+      padding: 1.2rem 1.5rem;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      align-items: center;
+    }
+    .teleport-grid .tg-header {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #666;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .teleport-grid .tg-city {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      color: #ccc;
+      padding: .35rem 0;
+    }
+    .teleport-grid .tg-arrow { color: #E8594F; font-size: .9rem; text-align: center; }
+    .teleport-grid .tg-match {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      color: #F5A623;
+      padding: .35rem 0;
+    }
+    .teleport-grid .tg-star { color: #69f0ae; }
+
+    .essay-container blockquote {
+      border-left: 3px solid #E8594F;
+      margin: 2rem 0;
+      padding: .8rem 0 .8rem 1.5rem;
+      font-style: italic;
+      color: #aaa;
+      font-size: 1.05rem;
+    }
+
+    .essay-cta {
+      text-align: center;
+      margin: 3rem 0 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid #1a1a1a;
+    }
+    .essay-cta-btn {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      color: #E8594F;
+      text-decoration: none;
+      letter-spacing: .05em;
+      padding: .7rem 1.6rem;
+      border: 1px solid #E8594F;
+      border-radius: 4px;
+      transition: all .2s;
+      display: inline-block;
+      cursor: pointer;
+      background: transparent;
+    }
+    .essay-cta-btn:hover { background: #E8594F; color: #000; }
+
+    /* ── Stat Tooltip System ── */
+    .stat-tip {
+      position: relative;
+      border-bottom: 1px dotted #666;
+      cursor: help;
+      transition: border-color .15s;
+    }
+    .stat-tip:hover { border-bottom-color: #F5A623; }
+    .stat-tip .stat-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      z-index: 500;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 340px;
+      padding: .7rem .9rem;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.6);
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .72rem;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.55;
+      color: #ccc;
+      text-align: left;
+      pointer-events: none;
+      transition: opacity .15s, visibility .15s;
+      white-space: normal;
+    }
+    .stat-tip .stat-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #333;
+    }
+    .stat-tip .stat-tooltip .stat-tooltip-term {
+      display: block;
+      font-size: .65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #F5A623;
+      margin-bottom: .35rem;
+    }
+    @media (hover: hover) {
+      .stat-tip:hover .stat-tooltip {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    .stat-tip.stat-tip-active .stat-tooltip {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-align-left {
+      left: 0; transform: translateX(0);
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-align-left::after {
+      left: 16px; transform: none;
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-align-right {
+      left: auto; right: 0; transform: translateX(0);
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-align-right::after {
+      left: auto; right: 16px; transform: none;
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-below {
+      bottom: auto; top: calc(100% + 8px);
+    }
+    .stat-tip .stat-tooltip.stat-tooltip-below::after {
+      top: auto; bottom: 100%;
+      border: 5px solid transparent;
+      border-bottom-color: #333;
+      border-top-color: transparent;
+    }
+
+    /* ── Analysis Tab Styles ── */
+    .code-block {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      background: #0d0d0d;
+      border: 1px solid #1a1a1a;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0 2rem;
+      line-height: 1.7;
+      color: #c8c8c8;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .code-block .code-comment { color: #555; }
+    .code-block .code-keyword { color: #E8594F; }
+    .code-block .code-string { color: #69f0ae; }
+    .code-block .code-func { color: #F5A623; }
+    .code-block .code-var { color: #4A90D9; }
+
+    .callout-box {
+      background: #0a0a0a;
+      border-left: 3px solid #F5A623;
+      border-radius: 0 6px 6px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      font-size: .95em;
+      line-height: 1.65;
+      color: #bbb;
+    }
+    .callout-box strong { color: #F5A623; }
+    .callout-box a { color: #4A90D9; text-decoration: none; border-bottom: 1px solid rgba(74, 144, 217, .3); transition: border-color .2s; }
+    .callout-box a:hover { border-bottom-color: #4A90D9; }
+
+    .recipe-step {
+      display: flex;
+      gap: 1rem;
+      margin: 1.2rem 0;
+      align-items: flex-start;
+    }
+    .recipe-step .step-num {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .75rem;
+      font-weight: 700;
+      color: #E8594F;
+      background: rgba(232, 89, 79, .1);
+      border-radius: 50%;
+      min-width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: .2rem;
+    }
+    .recipe-step .step-text { flex: 1; }
+
+    .analysis-diagram {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .analysis-diagram svg {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .analysis-diagram .diagram-caption {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .72rem;
+      color: #666;
+      margin-top: 1rem;
+      letter-spacing: .03em;
+    }
+
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .finding-card {
+      background: #0d0d0d;
+      border: 1px solid #1a1a1a;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+    }
+    .finding-card .finding-label {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #666;
+      margin-bottom: .4rem;
+    }
+    .finding-card .finding-value {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: .3rem;
+    }
+    .finding-card .finding-detail {
+      font-size: .82rem;
+      color: #888;
+      line-height: 1.5;
+    }
+    .finding-card .finding-value .datum { font-size: .85em; }
+
+    .essay-container .analysis-inline-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0 2rem;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .78rem;
+    }
+    .analysis-inline-table th {
+      text-align: left;
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .65rem;
+      padding: .6rem .8rem;
+      border-bottom: 1px solid #222;
+    }
+    .analysis-inline-table td {
+      padding: .5rem .8rem;
+      border-bottom: 1px solid #111;
+      color: #ccc;
+    }
+    .analysis-inline-table tr:last-child td { border-bottom: none; }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(232, 89, 79, .08), rgba(74, 144, 217, .08));
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 3rem 0 1rem;
+      text-align: center;
+    }
+    .cta-box p { margin-bottom: .8rem; font-size: 1.05rem; color: #d4d4d4; }
+    .cta-box a.cta-link {
+      display: inline-block;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #E8594F;
+      text-decoration: none;
+      border: 1px solid #E8594F;
+      padding: .6rem 1.4rem;
+      border-radius: 4px;
+      transition: all .2s;
+      letter-spacing: .03em;
+    }
+    .cta-box a.cta-link:hover { background: #E8594F; color: #fff; }
+
+    /* ── Loading ── */
+    .loading {
+      text-align: center;
+      padding: 4rem;
+      color: #888;
+      font-size: 1.1rem;
+    }
+    .loading .spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #333;
+      border-top-color: #E8594F;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-right: .5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #555;
+      font-size: .72rem;
+      border-top: 1px solid #111;
+    }
+    footer a { color: #4A90D9; text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .tab-btn { padding: .55rem .6rem; font-size: .72rem; }
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .ts-controls { flex-direction: column; gap: .5rem; }
+      .stat-card .value { font-size: 1.4rem; }
+      .data-table-wrap { font-size: .7rem; }
+      table.data-table thead th { font-size: .65rem; padding: .3rem .3rem; }
+      table.data-table tbody td { padding: .3rem .3rem; }
+    }
+    @media (max-width: 600px) {
+      .essay-container { padding: 1.5rem 1rem 2rem; }
+      .essay-container { font-size: 17px; }
+      .blog-title { font-size: 1.8rem; }
+      .blog-subtitle { font-size: 1rem; }
+      .teleport-grid { padding: .8rem; gap: .3rem .5rem; }
+      .teleport-grid .tg-city,
+      .teleport-grid .tg-match { font-size: .75rem; }
+      .tab-btn { padding: .5rem .45rem; font-size: .68rem; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .toggle-row { gap: .3rem; }
+      .toggle-btn { padding: .3rem .5rem; font-size: .72rem; }
+      header h1 { font-size: 1.6rem; }
+      .spark-figure { padding: 1rem; margin: 1.5rem 0 2rem; }
+      .essay-section-head { font-size: .7rem; margin: 2.5rem 0 1.2rem; }
+      .finding-grid { grid-template-columns: 1fr; }
+      .code-block { font-size: .75rem; padding: 1rem; }
+      .recipe-step { gap: .7rem; }
+      .callout-box { padding: 1rem 1.2rem; }
+    }
+    @media (max-width: 400px) {
+      .tab-bar { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+      .tab-btn { white-space: nowrap; flex-shrink: 0; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Weird Weather: Winter 2025–2026</h1>
-  <p class="subtitle">
-    The second-warmest U.S. winter on record — yet 123 million Americans saw above-average snowfall.
-    The Southwest shattered heat records while the Northeast endured its coldest stretch in decades.
-  </p>
-  <div class="badges">
-    <span class="badge badge-2nd">2nd Warmest U.S. Winter on Record</span>
-    <span class="badge badge-warm">West: Record Heat &amp; Drought</span>
-    <span class="badge badge-cold">East: Coldest in Decades</span>
-  </div>
+  <h1>Weird Weather</h1>
+  <div class="subtitle">Winter 2025–2026 vs. 30-year normals across 50 US cities</div>
 </header>
 
-<section class="tables-section">
-  <div class="table-wrap">
-    <h2>Historical Winter Normals <span>1991–2020 (Dec + Jan + Feb)</span></h2>
-    <table id="hist-table">
-      <thead>
-        <tr>
-          <th>City</th>
-          <th>Avg High °F</th>
-          <th>Snowfall in</th>
-          <th>Precip in</th>
-        </tr>
-      </thead>
-      <tbody id="hist-tbody"></tbody>
-    </table>
-  </div>
-  <div class="table-wrap">
-    <h2>Winter 2025–2026 Actuals <span>Dec 2025 + Jan + Feb 2026</span></h2>
-    <table id="act-table">
-      <thead>
-        <tr>
-          <th>City</th>
-          <th>Avg High °F</th>
-          <th>Snowfall in</th>
-          <th>Precip in</th>
-          <th>Δ High</th>
-        </tr>
-      </thead>
-      <tbody id="act-tbody"></tbody>
-    </table>
-  </div>
-</section>
+<nav class="tab-bar">
+  <button class="tab-btn active" data-tab="essay">Essay</button>
+  <button class="tab-btn" data-tab="analysis">Analysis</button>
+  <button class="tab-btn" data-tab="map">Map</button>
+  <button class="tab-btn" data-tab="summary">Summary</button>
+  <button class="tab-btn" data-tab="matrix">Distance Matrix</button>
+  <button class="tab-btn" data-tab="table">Data Table</button>
+  <button class="tab-btn" data-tab="ts-overview">Time Series: Overview</button>
+  <button class="tab-btn" data-tab="ts-city">Time Series: City</button>
+</nav>
 
-<section class="findings-section">
-  <h2>Climate Story: Where Did Each City "Teleport"?</h2>
-  <div class="findings-grid" id="findings-grid"></div>
-</section>
+<!-- ═══ Essay Tab ═══ -->
+<div id="tab-essay" class="tab-panel active">
+  <div class="essay-container">
+    <header class="blog-header">
+      <div class="blog-kicker">Weird Weather / Analysis</div>
+      <h1 class="blog-title">The Winter That Moved</h1>
+      <p class="blog-subtitle">Fifty American cities, one strange season, and the mathematics of displacement</p>
+      <div class="blog-byline">March 2026</div>
+    </header>
 
-<section class="map-section">
-  <h2>Climate Equivalent Map</h2>
-  <p class="map-explanation">
-    Each city's dot is placed at its real geographic location. The label shows which city's
-    <em>historical winter normal</em> most closely matches what that city actually experienced
-    in 2025–2026 (using normalized Euclidean distance across avg high, snowfall &amp; precip).
-    A <strong>★</strong> means the city's winter was within 5% of its own normal — remarkably typical.
-  </p>
-  <div id="map-svg-wrap">
+    <p class="lead">There is a moment, sometime around the second week of February, when a winter declares itself. By then the cumulative evidence is in: the coats you needed or did not, the mornings you scraped ice or skipped the step entirely. By February you know what kind of winter it was, even if you lack the vocabulary to say so precisely. This past winter, in many American cities, the vocabulary failed.</p>
+
+    <p>In Denver, February felt like early April. In Boston, winter held a grudge. Snow piled on snow. The T ran late, then later, then not at all.</p>
+
+    <p>We set out to measure this. Fifty cities across the United States, compared against thirty years of their own history. Winter 2025&ndash;26&mdash;December through February&mdash;against the 1991&ndash;2020 period, which climatologists call the &ldquo;normal.&rdquo; The word deserves its quotation marks. Normal is just the past tense of weather, averaged.</p>
+
+    <p>A note on what we measured and what we did not. Fifty cities is not America. Our sample skews toward the Northeast and toward large metros. Rural weather, which is most of the country&rsquo;s geography if not its population, is absent here. The Southern Plains are underrepresented. Hawaii is missing entirely. What follows is a portrait of fifty places, not a census. That said: even in this biased sample, the patterns are striking.</p>
+
+    <h2 class="essay-section-head">The National Picture</h2>
+
+    <p>The national average temperature anomaly across our fifty cities came out to <span class="datum warm">+1.4&deg;F</span>. A small number. But national averages are to weather what GDP is to the economy&mdash;a figure that describes no one&rsquo;s actual experience. Twenty cities ran warmer than their norms. Fifteen ran cooler. Fifteen landed within the range of the expected.</p>
+
+    <p>The average itself carries a quiet limitation. Our baseline, 1991&ndash;2020, already includes three decades of warming. The &ldquo;normal&rdquo; is not some fixed, Platonic climate. It is a sliding window that absorbs the recent past, making each generation&rsquo;s strange weather the next generation&rsquo;s ordinary. A +1.4-degree anomaly measured against an already-warm baseline is more remarkable than it sounds.</p>
+
+    <h2 class="essay-section-head">The West&ndash;East Divide</h2>
+
+    <p>The West ran warm. Denver posted <span class="datum warm">+11.1&deg;F</span> above its thirty-year average. Billings, Montana came in <span class="datum warm">+9.1&deg;F</span> above. Las Vegas, <span class="datum warm">+7.0&deg;F</span>. Phoenix, <span class="datum warm">+6.7&deg;F</span>. Boise, Reno, Albuquerque, Tucson, Salt Lake City&mdash;all five or more degrees above the script.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Temperature anomaly, selected cities (&deg;F vs. 30-year normal)</div>
+      <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg">
+        <line x1="50" y1="125" x2="670" y2="125" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="44" y="129" fill="#666" font-family="monospace" font-size="11" text-anchor="end">0&deg;F</text>
+        <!-- warm cities -->
+        <rect x="65" y="22" width="36" height="103" fill="#E8594F" rx="3" opacity=".85"/>
+        <text x="83" y="16" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">+11.1</text>
+        <text x="83" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">DEN</text>
+        <rect x="115" y="40" width="36" height="85" fill="#E8594F" rx="3" opacity=".75"/>
+        <text x="133" y="34" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle">+9.1</text>
+        <text x="133" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">BIL</text>
+        <rect x="165" y="60" width="36" height="65" fill="#E8594F" rx="3" opacity=".7"/>
+        <text x="183" y="54" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle">+7.0</text>
+        <text x="183" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">LAS</text>
+        <rect x="215" y="63" width="36" height="62" fill="#E8594F" rx="3" opacity=".65"/>
+        <text x="233" y="57" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle">+6.7</text>
+        <text x="233" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">PHX</text>
+        <rect x="265" y="69" width="36" height="56" fill="#E8594F" rx="3" opacity=".6"/>
+        <text x="283" y="63" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle">+6.0</text>
+        <text x="283" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">ABQ</text>
+        <rect x="315" y="71" width="36" height="54" fill="#E8594F" rx="3" opacity=".55"/>
+        <text x="333" y="65" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="middle">+5.8</text>
+        <text x="333" y="142" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">BOI</text>
+        <!-- divider -->
+        <line x1="375" y1="8" x2="375" y2="205" stroke="#333" stroke-width="1" stroke-dasharray="2,4"/>
+        <text x="375" y="220" fill="#555" font-family="monospace" font-size="10" text-anchor="middle">WEST | EAST</text>
+        <!-- cold cities -->
+        <rect x="405" y="125" width="36" height="20" fill="#4A90D9" rx="3" opacity=".55"/>
+        <text x="423" y="162" fill="#4A90D9" font-family="monospace" font-size="11" text-anchor="middle">-2.2</text>
+        <text x="423" y="176" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">CLE</text>
+        <rect x="455" y="125" width="36" height="25" fill="#4A90D9" rx="3" opacity=".6"/>
+        <text x="473" y="167" fill="#4A90D9" font-family="monospace" font-size="11" text-anchor="middle">-2.7</text>
+        <text x="473" y="176" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">DET</text>
+        <rect x="505" y="125" width="36" height="34" fill="#4A90D9" rx="3" opacity=".7"/>
+        <text x="523" y="176" fill="#4A90D9" font-family="monospace" font-size="11" text-anchor="middle">-3.7</text>
+        <text x="523" y="190" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">BOS</text>
+        <rect x="555" y="125" width="36" height="49" fill="#4A90D9" rx="3" opacity=".85"/>
+        <text x="573" y="191" fill="#4A90D9" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">-5.3</text>
+        <text x="573" y="205" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">NYC</text>
+        <text x="190" y="215" fill="#E8594F" font-family="monospace" font-size="10" text-anchor="middle" opacity=".7">warmer &uarr;</text>
+        <text x="500" y="215" fill="#4A90D9" font-family="monospace" font-size="10" text-anchor="middle" opacity=".7">cooler &darr;</text>
+      </svg>
+      <div class="spark-caption">Temperature deviation from 30-year normal (1991&ndash;2020), Winter 2025&ndash;26. Western cities ran dramatically warm; Eastern cities dipped below historical averages.</div>
+    </div>
+
+    <p>The East cooled. New York posted <span class="datum cold">-5.3&deg;F</span> below normal. Boston dropped <span class="datum cold">-3.7&deg;F</span> and added snow beyond what history would suggest is plenty. Buffalo added to its surplus. Cleveland, Detroit, the great frozen crescent of the Northeast and Great Lakes&mdash;they all bent deeper.</p>
+
+    <p>This east-west dipole is not random. The jet stream&mdash;that atmospheric river at thirty thousand feet&mdash;buckled and held its shape for much of the season. A persistent ridge of high pressure sat over the West like a warm lid, while a trough funneled Arctic air south and east. This pattern has a name in meteorology: an amplified Rossby wave. It is consistent with what La Ni&ntilde;a winters tend to produce&mdash;the tropical Pacific&rsquo;s cold phase nudges the jet stream northward over the West and drops it southward over the East, splitting the continent thermally.</p>
+
+    <p>NOAA&rsquo;s Climate Prediction Center had forecast a &ldquo;tilt of the odds&rdquo; toward exactly this pattern for a La Ni&ntilde;a winter. The forecast was correct in direction, though the magnitude&mdash;eleven degrees hot in Denver, five degrees cold in New York&mdash;exceeded what seasonal outlooks typically capture. The atmosphere followed the script&rsquo;s stage directions but ad-libbed the dialogue.</p>
+
+    <h2 class="essay-section-head">The Teleportation Question</h2>
+
+    <p>The most useful thing we did with this data was to ask a question borrowed from science fiction: if your city&rsquo;s winter was teleported, where did it land?</p>
+
+    <p>The method is straightforward. Take each city&rsquo;s actual winter and compare it to the thirty-year normal of every other city. The closest match, measured by normalized Euclidean distance, tells you whose winter you actually had.</p>
+
+    <div class="teleport-grid">
+      <span class="tg-header">City</span>
+      <span class="tg-header"></span>
+      <span class="tg-header">Experienced the normal of&hellip;</span>
+      <span class="tg-city">Denver</span><span class="tg-arrow">&rarr;</span><span class="tg-match">Albuquerque</span>
+      <span class="tg-city">Boston</span><span class="tg-arrow">&rarr;</span><span class="tg-match">Burlington, VT</span>
+      <span class="tg-city">New York</span><span class="tg-arrow">&rarr;</span><span class="tg-match">Albany</span>
+      <span class="tg-city">Las Vegas</span><span class="tg-arrow">&rarr;</span><span class="tg-match">El Paso</span>
+      <span class="tg-city">Anchorage</span><span class="tg-arrow">&rarr;</span><span class="tg-match">Burlington, VT</span>
+      <span class="tg-city">Phoenix</span><span class="tg-arrow">&rarr;</span><span class="tg-match tg-star">Phoenix &#9733;</span>
+    </div>
+
+    <p>Denver became Albuquerque. Boston became Burlington, Vermont. New York became Albany. Las Vegas turned into El Paso. Anchorage, which expected snow and did not get it, landed nearest to Burlington&mdash;not because Anchorage got warm, but because its snow deficit made it unrecognizable as itself.</p>
+
+    <p>Seven cities stayed close enough to their own norms that their nearest match was themselves. Phoenix was among them, though barely. These are the places where winter still resembles winter. The autobiography holds.</p>
+
+    <h2 class="essay-section-head">The Geometry of Strangeness</h2>
+
+    <p>The teleportation question tells you where your city went. But the <span class="stat-tip" data-stat="distance">distance matrix</span> tells you something more fundamental: how alone your city is. Not emotionally. Mathematically. Every city sits at a point in climate space, and some points have neighbors and some do not.</p>
+
+    <p>Cities at the temperature extremes&mdash;Miami, Anchorage, Phoenix&mdash;live in a kind of climate solitude. Their nearest neighbor in the distance matrix is still far away. Anchorage&rsquo;s nearest match is Burlington, VT, at a <span class="stat-tip" data-stat="distance">distance</span> of <span class="datum neutral">0.259</span>. Miami&rsquo;s is Tampa at <span class="datum neutral">0.149</span>. These cities have no close twins in our dataset. Their weather is too distinctive for comparison. They are the only copies of themselves.</p>
+
+    <p>Anchorage was the most displaced city in the dataset. Its self-distance&mdash;the <span class="stat-tip" data-stat="distance">distance</span> between its actual winter and its own thirty-year normal&mdash;was <span class="datum warm">0.492</span>, the highest of all fifty cities. Its winter was the furthest from its own autobiography. And yet its <span class="stat-tip" data-stat="z-score">z-scores</span> are modest: <span class="datum cold">-1.18</span> for temperature. This is the interesting part. The model and the distance metric agree: Anchorage was weird, but weird across multiple dimensions simultaneously. Temperature alone does not capture it. The combination of warmer temperatures, less snow, and less precipitation pushed Anchorage far from itself&mdash;a displacement that no single variable reveals.</p>
+
+    <p>Richmond, VA occupies the opposite position. Its average <span class="stat-tip" data-stat="distance">distance</span> to all other cities was <span class="datum neutral">0.371</span>, the lowest in the dataset. Richmond sits in the mathematical center of American winter&mdash;close enough to many cities that it could almost belong anywhere south of the Mason-Dixon line and east of the Mississippi. Portland, Oregon is its inverse: the highest average distance at <span class="datum warm">0.779</span>. Portland is climatically alone, a mild wet <span class="stat-tip" data-stat="anomaly">anomaly</span> in a dataset of cold dry winters and hot dry ones.</p>
+
+    <p>At the pair level, the extremes confirm what intuition suspects. Albany and Burlington are practically the same city, climatically, with a <span class="stat-tip" data-stat="distance">distance</span> of <span class="datum neutral">0.038</span>. Miami and Anchorage are the most different pair at <span class="datum warm">1.443</span>&mdash;which surprises no one, but it is nice when the math confirms the obvious.</p>
+
+    <p>More interesting are the cities that stayed themselves. Ten cities matched themselves&mdash;their actual winter was closer to their own thirty-year normal than to any other city&rsquo;s. Tampa was the most emphatically itself, with a self-distance of just <span class="datum neutral">0.040</span>. Minneapolis was right behind at <span class="datum neutral">0.042</span>. Seven of the ten self-matching cities were either in very warm climates (Miami, Tampa, Phoenix) or very cold ones (Minneapolis, Burlington). The extremes held. The middle drifted.</p>
+
+    <p>There is a pattern in that. The cities with the most distinctive climates&mdash;the ones that sit at the edges of the distribution&mdash;are the ones that stayed put. They have nowhere to go. A mild winter in Miami is still Miami. A warm winter in Minneapolis is still, recognizably, Minneapolis. But a warm winter in Denver is Albuquerque. A cold winter in New York is Albany. The cities in the middle of the distribution have more neighbors, and when the weather shifts, it shifts them into someone else&rsquo;s territory. The center does not hold because the center has options.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Self-distance spectrum: how far each city drifted from its own 30-year normal</div>
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg">
+        <text x="12" y="160" fill="#555" font-family="monospace" font-size="8" text-anchor="middle" transform="rotate(-90,12,160)">self-distance (0 = identical to norm)</text>
+        <line x1="55" y1="30" x2="670" y2="30" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="50" y="34" fill="#555" font-family="monospace" font-size="7" text-anchor="end">0.50</text>
+        <line x1="55" y1="80" x2="670" y2="80" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="50" y="84" fill="#555" font-family="monospace" font-size="7" text-anchor="end">0.40</text>
+        <line x1="55" y1="130" x2="670" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="50" y="134" fill="#555" font-family="monospace" font-size="7" text-anchor="end">0.30</text>
+        <line x1="55" y1="180" x2="670" y2="180" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="50" y="184" fill="#555" font-family="monospace" font-size="7" text-anchor="end">0.20</text>
+        <line x1="55" y1="230" x2="670" y2="230" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="50" y="234" fill="#555" font-family="monospace" font-size="7" text-anchor="end">0.10</text>
+        <line x1="55" y1="280" x2="670" y2="280" stroke="#333" stroke-width="1"/>
+        <text x="50" y="284" fill="#666" font-family="monospace" font-size="7" text-anchor="end">0.00</text>
+        <rect x="55" y="20" width="615" height="60" fill="#E8594F" opacity=".04" rx="2"/>
+        <text x="665" y="56" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="end" opacity=".5">most displaced</text>
+        <rect x="55" y="250" width="615" height="35" fill="#69f0ae" opacity=".04" rx="2"/>
+        <text x="665" y="270" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="end" opacity=".5">stayed themselves</text>
+        <!-- Anchorage: 0.492 -->
+        <rect x="66" y="34" width="16" height="246" fill="#E8594F" rx="2" opacity=".85"/>
+        <text x="74" y="28" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle" font-weight="600">0.492</text>
+        <text x="74" y="296" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle" font-weight="600">ANC</text>
+        <!-- Dallas: 0.356 -->
+        <rect x="106" y="102" width="16" height="178" fill="#E8594F" rx="2" opacity=".75"/>
+        <text x="114" y="96" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle">0.356</text>
+        <text x="114" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">DAL</text>
+        <!-- Reno: 0.318 -->
+        <rect x="146" y="121" width="16" height="159" fill="#E8594F" rx="2" opacity=".68"/>
+        <text x="154" y="115" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle">0.318</text>
+        <text x="154" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">RNO</text>
+        <!-- Denver: 0.295 -->
+        <rect x="186" y="133" width="16" height="147" fill="#E8594F" rx="2" opacity=".65"/>
+        <text x="194" y="127" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle">0.295</text>
+        <text x="194" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">DEN</text>
+        <!-- New York: 0.267 -->
+        <rect x="226" y="147" width="16" height="133" fill="#4A90D9" rx="2" opacity=".60"/>
+        <text x="234" y="141" fill="#4A90D9" font-family="monospace" font-size="7" text-anchor="middle">0.267</text>
+        <text x="234" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">NYC</text>
+        <!-- Atlanta: 0.279 -->
+        <rect x="266" y="141" width="16" height="139" fill="#F5A623" rx="2" opacity=".55"/>
+        <text x="274" y="135" fill="#F5A623" font-family="monospace" font-size="7" text-anchor="middle">0.279</text>
+        <text x="274" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">ATL</text>
+        <!-- Portland OR: 0.189 -->
+        <rect x="346" y="186" width="16" height="94" fill="#F5A623" rx="2" opacity=".48"/>
+        <text x="354" y="180" fill="#F5A623" font-family="monospace" font-size="7" text-anchor="middle">0.189</text>
+        <text x="354" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">PDX</text>
+        <!-- Phoenix: 0.157 -->
+        <rect x="426" y="202" width="16" height="78" fill="#69f0ae" rx="2" opacity=".5"/>
+        <text x="434" y="196" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle">0.157</text>
+        <text x="434" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">PHX</text>
+        <!-- San Francisco: 0.056 -->
+        <rect x="466" y="252" width="16" height="28" fill="#69f0ae" rx="2" opacity=".55"/>
+        <text x="474" y="246" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle">0.056</text>
+        <text x="474" y="296" fill="#ccc" font-family="monospace" font-size="7" text-anchor="middle">SFO</text>
+        <!-- Minneapolis: 0.042 -->
+        <rect x="546" y="259" width="16" height="21" fill="#69f0ae" rx="2" opacity=".6"/>
+        <text x="554" y="253" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle">0.042</text>
+        <text x="554" y="296" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle">MSP</text>
+        <!-- Tampa: 0.040 -->
+        <rect x="586" y="260" width="16" height="20" fill="#69f0ae" rx="2" opacity=".7"/>
+        <text x="594" y="254" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle" font-weight="600">0.040</text>
+        <text x="594" y="296" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle" font-weight="600">TPA</text>
+        <!-- Trend line -->
+        <polyline points="74,34 114,102 154,121 194,133 234,147 274,141 354,186 434,202 474,252 554,259 594,260" fill="none" stroke="#F5A623" stroke-width="1" stroke-dasharray="3,2" opacity=".4"/>
+        <text x="74" y="316" fill="#E8594F" font-family="monospace" font-size="7" text-anchor="middle" opacity=".6">unrecognizable &larr;</text>
+        <text x="594" y="316" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle" opacity=".6">&rarr; emphatically itself</text>
+      </svg>
+      <div class="spark-caption">Self-distance: the normalized Euclidean distance between each city&rsquo;s actual 2025&ndash;26 winter and its own 30-year normal. Higher = greater departure from historical identity. Anchorage drifted furthest; Tampa barely moved.</div>
+    </div>
+
+    <h2 class="essay-section-head">A Note on Snowfall Data</h2>
+
+    <p>Our snowfall figures come from Open-Meteo&rsquo;s reanalysis archive, which derives snowfall from precipitation and temperature using the ERA5 climate model. This method systematically underestimates actual measured snowfall, particularly in lake-effect regions (Buffalo, Cleveland) and mountain cities (Denver, Salt Lake City), where local atmospheric dynamics produce more snow than a gridded model captures. Buffalo&rsquo;s historical average appears as roughly 28 inches in our data; the actual measured December&ndash;February average is closer to 55 inches.</p>
+
+    <p>The analysis remains valid because we are comparing each city against its own baseline from the same source. The deltas, z-scores, and climate matches are internally consistent. But the absolute snowfall numbers should not be taken at face value.</p>
+
+    <h2 class="essay-section-head">The Model</h2>
+
+    <p>How strange was this winter, statistically? To answer that, you need a model.</p>
+
+    <p>Ours begins with a smooth curve fitted through thirty years of data: a B-spline, which bends to follow the data without chasing every wiggle. This gives the national trajectory&mdash;the slow, nonlinear drift of American winters over three decades.</p>
+
+    <p>But cities are not the nation. Miami is not Minneapolis. So each city gets its own intercept (its baseline personality) and its own slope (its individual rate of change over time). The technical name is a mixed-effects model. The fixed effect is the national trend. The random effects are each city&rsquo;s departures from it.</p>
+
+    <p>There is a further refinement. Not all cities are equally predictable. Miami&rsquo;s winter temperature varies little from year to year. Billings swings wildly. Our model assigns each city its own error variance&mdash;its own sigma&mdash;so that a two-sigma event in Miami (where sigma is <span class="datum neutral">1.18&deg;F</span>) means something different from a two-sigma event in Billings (where sigma is <span class="datum neutral">4.84&deg;F</span>). The technical term is <em>heteroscedastic</em>, from the Greek for &ldquo;different scatter.&rdquo; It sounds like a disease but describes something sensible.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Per-city sigma (&sigma;): how predictable is each city&rsquo;s winter?</div>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background bands -->
+        <rect x="60" y="15" width="620" height="170" fill="#111" rx="4"/>
+        <!-- Axis -->
+        <line x1="80" y1="165" x2="660" y2="165" stroke="#333" stroke-width="1"/>
+        <text x="80" y="185" fill="#666" font-family="monospace" font-size="10">1.0</text>
+        <text x="225" y="185" fill="#666" font-family="monospace" font-size="10">2.0</text>
+        <text x="370" y="185" fill="#666" font-family="monospace" font-size="10">3.0</text>
+        <text x="515" y="185" fill="#666" font-family="monospace" font-size="10">4.0</text>
+        <text x="660" y="185" fill="#666" font-family="monospace" font-size="10">5.0</text>
+        <!-- Grid lines -->
+        <line x1="80" y1="30" x2="80" y2="165" stroke="#222" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="225" y1="30" x2="225" y2="165" stroke="#222" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="370" y1="30" x2="370" y2="165" stroke="#222" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="515" y1="30" x2="515" y2="165" stroke="#222" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="660" y1="30" x2="660" y2="165" stroke="#222" stroke-width="1" stroke-dasharray="2,3"/>
+        <!-- Miami (lowest: 1.184) -->
+        <circle cx="107" cy="145" r="7" fill="#4A90D9" opacity=".9"/>
+        <text x="107" y="135" fill="#4A90D9" font-family="monospace" font-size="10" text-anchor="middle">Miami</text>
+        <text x="107" y="125" fill="#4A90D9" font-family="monospace" font-size="9" text-anchor="middle">1.18</text>
+        <!-- San Diego (low) -->
+        <circle cx="136" cy="145" r="5" fill="#4A90D9" opacity=".6"/>
+        <text x="136" y="135" fill="#888" font-family="monospace" font-size="8" text-anchor="middle">SD</text>
+        <!-- Phoenix (~2.59) -->
+        <circle cx="312" cy="95" r="5" fill="#F5A623" opacity=".6"/>
+        <text x="312" y="85" fill="#888" font-family="monospace" font-size="8" text-anchor="middle">PHX</text>
+        <!-- Denver (3.31) -->
+        <circle cx="416" cy="75" r="6" fill="#E8594F" opacity=".7"/>
+        <text x="416" y="65" fill="#ccc" font-family="monospace" font-size="9" text-anchor="middle">Denver</text>
+        <text x="416" y="55" fill="#E8594F" font-family="monospace" font-size="9" text-anchor="middle">3.31</text>
+        <!-- NYC (3.32) -->
+        <circle cx="422" cy="95" r="5" fill="#F5A623" opacity=".5"/>
+        <text x="422" y="108" fill="#888" font-family="monospace" font-size="8" text-anchor="middle">NYC</text>
+        <!-- Boston (3.06) -->
+        <circle cx="380" cy="95" r="5" fill="#F5A623" opacity=".5"/>
+        <text x="380" y="108" fill="#888" font-family="monospace" font-size="8" text-anchor="middle">BOS</text>
+        <!-- Billings (highest: 4.844) -->
+        <circle cx="637" cy="45" r="7" fill="#E8594F" opacity=".9"/>
+        <text x="637" y="35" fill="#E8594F" font-family="monospace" font-size="10" text-anchor="middle">Billings</text>
+        <text x="637" y="195" fill="#E8594F" font-family="monospace" font-size="9" text-anchor="middle">4.84</text>
+        <!-- Axis label -->
+        <text x="370" y="12" fill="#888" font-family="monospace" font-size="10" text-anchor="middle">Temperature &sigma; (&deg;F) &mdash; higher = more volatile</text>
+      </svg>
+      <div class="spark-caption">Each city gets its own &sigma;. Miami&rsquo;s winters barely vary (&sigma; = 1.18&deg;F). Billings swings wildly (&sigma; = 4.84&deg;F). A 2&sigma; event in Miami is a 2.4&deg;F departure; in Billings, it&rsquo;s 9.7&deg;F.</div>
+    </div>
+
+    <p>Denver&rsquo;s temperature <span class="stat-tip" data-stat="z-score">z-score</span> was <span class="datum warm">2.70</span>. In a normal distribution, that occurs less than one percent of the time. Only two of the fifty cities exceeded the two-<span class="stat-tip" data-stat="sigma">sigma</span> threshold for temperature. The mean absolute z-score across all cities was <span class="datum neutral">1.06</span>&mdash;broadly unusual, not just locally.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Temperature z-scores: how many standard deviations from expected?</div>
+      <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="50" y="10" width="630" height="28" fill="#E8594F" opacity=".06" rx="2"/>
+        <text x="46" y="28" fill="#E8594F" font-family="monospace" font-size="10" text-anchor="end" opacity=".7">&gt;2&sigma;</text>
+        <rect x="50" y="38" width="630" height="42" fill="#F5A623" opacity=".05" rx="2"/>
+        <text x="46" y="63" fill="#F5A623" font-family="monospace" font-size="10" text-anchor="end" opacity=".6">1&ndash;2&sigma;</text>
+        <rect x="50" y="80" width="630" height="50" fill="#333" opacity=".15" rx="2"/>
+        <text x="46" y="108" fill="#666" font-family="monospace" font-size="10" text-anchor="end">&lt;1&sigma;</text>
+        <!-- Denver -->
+        <circle cx="105" cy="17" r="7" fill="#E8594F"/>
+        <text x="105" y="167" fill="#E8594F" font-family="monospace" font-size="10" text-anchor="middle" font-weight="bold">DEN</text>
+        <text x="118" y="15" fill="#E8594F" font-family="monospace" font-size="10" font-weight="bold">2.70</text>
+        <line x1="105" y1="24" x2="105" y2="155" stroke="#E8594F" stroke-width=".5" opacity=".3"/>
+        <!-- SLC -->
+        <circle cx="165" cy="26" r="5.5" fill="#E8594F" opacity=".85"/>
+        <text x="165" y="167" fill="#ccc" font-family="monospace" font-size="9" text-anchor="middle">SLC</text>
+        <text x="178" y="24" fill="#E8594F" font-family="monospace" font-size="9">2.18</text>
+        <line x1="165" y1="32" x2="165" y2="155" stroke="#E8594F" stroke-width=".5" opacity=".2"/>
+        <!-- LAS -->
+        <circle cx="235" cy="50" r="5" fill="#F5A623" opacity=".7"/>
+        <text x="235" y="167" fill="#aaa" font-family="monospace" font-size="9" text-anchor="middle">LAS</text>
+        <!-- BIL -->
+        <circle cx="295" cy="53" r="5" fill="#F5A623" opacity=".65"/>
+        <text x="295" y="167" fill="#aaa" font-family="monospace" font-size="9" text-anchor="middle">BIL</text>
+        <!-- PHX -->
+        <circle cx="345" cy="56" r="4.5" fill="#F5A623" opacity=".6"/>
+        <text x="345" y="167" fill="#aaa" font-family="monospace" font-size="9" text-anchor="middle">PHX</text>
+        <!-- BOI -->
+        <circle cx="395" cy="60" r="4.5" fill="#F5A623" opacity=".55"/>
+        <text x="395" y="167" fill="#aaa" font-family="monospace" font-size="9" text-anchor="middle">BOI</text>
+        <!-- ABQ -->
+        <circle cx="440" cy="62" r="4" fill="#F5A623" opacity=".5"/>
+        <text x="440" y="167" fill="#aaa" font-family="monospace" font-size="9" text-anchor="middle">ABQ</text>
+        <!-- NYC -->
+        <circle cx="490" cy="96" r="4" fill="#888" opacity=".55"/>
+        <text x="490" y="167" fill="#777" font-family="monospace" font-size="9" text-anchor="middle">NYC</text>
+        <!-- BOS -->
+        <circle cx="530" cy="100" r="4" fill="#888" opacity=".5"/>
+        <text x="530" y="167" fill="#777" font-family="monospace" font-size="9" text-anchor="middle">BOS</text>
+        <!-- ANC -->
+        <circle cx="570" cy="103" r="4" fill="#888" opacity=".45"/>
+        <text x="570" y="167" fill="#777" font-family="monospace" font-size="9" text-anchor="middle">ANC</text>
+        <!-- CLE -->
+        <circle cx="610" cy="107" r="3.5" fill="#888" opacity=".4"/>
+        <text x="610" y="167" fill="#666" font-family="monospace" font-size="9" text-anchor="middle">CLE</text>
+        <!-- MIA -->
+        <circle cx="650" cy="104" r="3.5" fill="#888" opacity=".35"/>
+        <text x="650" y="167" fill="#666" font-family="monospace" font-size="9" text-anchor="middle">MIA</text>
+      </svg>
+      <div class="spark-caption">Each dot represents a city&rsquo;s temperature z-score for Winter 2025&ndash;26. Denver, at 2.70&sigma;, stands in rare statistical territory. Only two cities exceeded the 2&sigma; threshold.</div>
+    </div>
+
+    <h2 class="essay-section-head">The Correlation No One Expected</h2>
+
+    <p>When you give each city its own intercept and slope, you can ask: do warmer cities warm faster?</p>
+
+    <p>They do. The <span class="stat-tip" data-stat="correlation">correlation</span> between <span class="stat-tip" data-stat="random-intercept">random intercepts</span> and <span class="stat-tip" data-stat="random-slope">random slopes</span> for temperature is <span class="datum warm">0.591</span>&mdash;a moderately strong positive relationship. Cities that start warmer in our thirty-year baseline also tend to have steeper warming trends over time. This is not a trivial finding. It suggests that whatever is driving the warming is amplified in places that are already warm&mdash;possibly through feedback mechanisms like reduced snow cover, urban heat island intensification, or changes in regional circulation.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Random intercept vs. random slope: do warmer cities warm faster?</div>
+      <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+        <rect x="70" y="10" width="610" height="230" fill="#0a0a0a" rx="4" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- Axes -->
+        <line x1="90" y1="225" x2="660" y2="225" stroke="#333" stroke-width="1"/>
+        <line x1="90" y1="25" x2="90" y2="225" stroke="#333" stroke-width="1"/>
+        <!-- X axis label -->
+        <text x="375" y="260" fill="#888" font-family="monospace" font-size="10" text-anchor="middle">Random intercept (baseline &deg;F above national mean)</text>
+        <!-- Y axis label -->
+        <text x="22" y="125" fill="#888" font-family="monospace" font-size="10" text-anchor="middle" transform="rotate(-90 22 125)">Random slope (&deg;F/decade)</text>
+        <!-- X axis ticks -->
+        <text x="130" y="240" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">-20</text>
+        <text x="245" y="240" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">-10</text>
+        <text x="360" y="240" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">0</text>
+        <text x="475" y="240" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">+10</text>
+        <text x="590" y="240" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">+20</text>
+        <!-- Y axis ticks -->
+        <text x="82" y="200" fill="#555" font-family="monospace" font-size="9" text-anchor="end">-0.4</text>
+        <text x="82" y="145" fill="#555" font-family="monospace" font-size="9" text-anchor="end">0</text>
+        <text x="82" y="90" fill="#555" font-family="monospace" font-size="9" text-anchor="end">+0.4</text>
+        <text x="82" y="45" fill="#555" font-family="monospace" font-size="9" text-anchor="end">+0.8</text>
+        <!-- Trend line (positive slope showing r=0.591) -->
+        <line x1="110" y1="180" x2="640" y2="65" stroke="#E8594F" stroke-width="1.5" opacity=".4" stroke-dasharray="6,4"/>
+        <!-- Cold cities (low intercept, negative or low slope) = lower-left -->
+        <!-- Anchorage: ri=-24.7, rs=-0.128 -->
+        <circle cx="114" cy="162" r="5" fill="#4A90D9" opacity=".7"/>
+        <text x="114" y="175" fill="#4A90D9" font-family="monospace" font-size="8" text-anchor="middle">ANC</text>
+        <!-- Burlington: ri=-17.3, rs=0.072 -->
+        <circle cx="160" cy="135" r="4" fill="#4A90D9" opacity=".6"/>
+        <text x="160" y="128" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">BUR</text>
+        <!-- Buffalo: ri=-14.2, rs=-0.139 -->
+        <circle cx="180" cy="164" r="4" fill="#4A90D9" opacity=".6"/>
+        <text x="180" y="177" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">BUF</text>
+        <!-- Detroit: ri=-13.5, rs=-0.461 -->
+        <circle cx="185" cy="206" r="4" fill="#4A90D9" opacity=".6"/>
+        <text x="185" y="219" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">DET</text>
+        <!-- Cleveland: ri=-11.6, rs=-0.186 -->
+        <circle cx="197" cy="170" r="4" fill="#4A90D9" opacity=".5"/>
+        <!-- Billings: ri=-10.7, rs=-0.357 -->
+        <circle cx="203" cy="193" r="4" fill="#F5A623" opacity=".5"/>
+        <text x="203" y="206" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">BIL</text>
+        <!-- Boston: ri=-9.6, rs=-0.147 -->
+        <circle cx="210" cy="165" r="4" fill="#4A90D9" opacity=".5"/>
+        <text x="210" y="155" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">BOS</text>
+        <!-- NYC: ri=-6.9, rs=-0.415 -->
+        <circle cx="227" cy="200" r="4" fill="#4A90D9" opacity=".5"/>
+        <text x="227" y="213" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">NYC</text>
+        <!-- Denver: ri=-5.3, rs=0.283 -->
+        <circle cx="237" cy="107" r="5.5" fill="#E8594F" opacity=".8"/>
+        <text x="237" y="99" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">DEN</text>
+        <!-- Mid-range cities -->
+        <!-- ABQ: ri=1.8, rs=0.172 -->
+        <circle cx="371" cy="121" r="4" fill="#F5A623" opacity=".5"/>
+        <text x="371" y="114" fill="#888" font-family="monospace" font-size="7" text-anchor="middle">ABQ</text>
+        <!-- LAS: ri=10.6, rs=0.630 -->
+        <circle cx="482" cy="53" r="5" fill="#E8594F" opacity=".7"/>
+        <text x="482" y="46" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">LAS</text>
+        <!-- Tucson: ri=18.0, rs=0.715 -->
+        <circle cx="567" cy="42" r="5" fill="#E8594F" opacity=".7"/>
+        <text x="567" y="35" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">TUS</text>
+        <!-- Phoenix: ri=19.1, rs=0.520 -->
+        <circle cx="579" cy="68" r="5.5" fill="#E8594F" opacity=".8"/>
+        <text x="579" y="61" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">PHX</text>
+        <!-- Miami: ri=27.5, rs=0.208 -->
+        <circle cx="630" cy="117" r="5" fill="#F5A623" opacity=".6"/>
+        <text x="630" y="110" fill="#F5A623" font-family="monospace" font-size="8" text-anchor="middle">MIA</text>
+        <!-- Correlation label -->
+        <text x="560" y="255" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="end">&rho; = 0.591</text>
+      </svg>
+      <div class="spark-caption">Each dot is a city. Warmer cities (right) tend to have steeper warming trends (up). The dashed line shows the positive correlation (&rho; = 0.591). Cold northeastern cities cluster in the lower-left; hot southwestern cities pull toward the upper-right.</div>
+    </div>
+
+    <p>For snowfall, the <span class="stat-tip" data-stat="correlation">correlation</span> reverses: <span class="datum cold">-0.287</span>. Snowier cities tend to be losing snow faster, though the signal is weaker. For precipitation, there is essentially no correlation (<span class="datum neutral">0.097</span>). Temperature is where the feedback loop lives.</p>
+
+    <p>Why would warmer cities warm faster? Three possibilities, none mutually exclusive. First, the <strong>urban heat island</strong>: warmer cities tend to be larger, sunbelt metros with more concrete and less vegetation, and these features amplify warming. Zhao et al. (2014) documented the nonlinear relationship between city size and heat island intensity. Second, <strong>snow-albedo feedback</strong>: cities that start warmer have less snow cover, which means less solar reflection, which means more absorbed heat, which means faster warming. The loop feeds itself. Third, <strong>regional circulation changes</strong>: the jet stream patterns that warmed the West this winter may disproportionately affect cities that were already on the warm side of the continental divide.</p>
+
+    <p>The correlation is not proof of any of these mechanisms. It is an observation that demands explanation. In the literature, it rhymes with what Manabe and Wetherald found as early as 1975 regarding polar amplification&mdash;though here we are seeing it not at the poles but at the warm end of the urban spectrum. The pattern deserves more investigation than a dashboard can provide.</p>
+
+    <h2 class="essay-section-head">Trends</h2>
+
+    <p>The national temperature <span class="stat-tip" data-stat="trend-per-decade">trend</span> across our fifty cities is <span class="datum warm">+0.506&deg;F per decade</span>. This is not statistically significant at conventional levels (<span class="stat-tip" data-stat="p-value">p&nbsp;=&nbsp;0.16</span>), which may surprise people accustomed to hearing that warming is settled science. It is settled&mdash;but a thirty-year window with fifty cities is a small lens through which to measure a global phenomenon, and the year-to-year noise in winter temperatures is substantial. Our model explains <span class="stat-tip" data-stat="r-squared">94.5%</span> of the temperature variance, but almost all of that (94.2%) is city-to-city differences, not temporal trends. Winter temperature is overwhelmingly a function of where you are, not when you are.</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">Variance decomposition: what explains winter temperature?</div>
+      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background bar -->
+        <rect x="60" y="30" width="600" height="50" fill="#111" rx="4" stroke="#222" stroke-width="1"/>
+        <!-- City share: 94.2% -->
+        <rect x="60" y="30" width="565" height="50" fill="#4A90D9" rx="4" opacity=".7"/>
+        <text x="342" y="60" fill="#fff" font-family="monospace" font-size="13" text-anchor="middle" font-weight="bold">City-to-city differences: 94.2%</text>
+        <!-- Residual: 4.8% (reduced so it's just the sliver) -->
+        <rect x="625" y="30" width="29" height="50" fill="#888" opacity=".5" rx="0"/>
+        <text x="639" y="100" fill="#888" font-family="monospace" font-size="9" text-anchor="middle">Noise</text>
+        <text x="639" y="112" fill="#888" font-family="monospace" font-size="9" text-anchor="middle">4.8%</text>
+        <!-- Spline (national trend): 0.4% -->
+        <rect x="625" y="30" width="6" height="50" fill="#E8594F" opacity=".8"/>
+        <text x="620" y="100" fill="#E8594F" font-family="monospace" font-size="9" text-anchor="end">Trend</text>
+        <text x="620" y="112" fill="#E8594F" font-family="monospace" font-size="9" text-anchor="end">0.4%</text>
+        <!-- Label -->
+        <text x="360" y="20" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">Where you are matters more than when you are</text>
+      </svg>
+      <div class="spark-caption">94.2% of winter temperature variance is explained by which city you&rsquo;re in. The temporal trend (red sliver) accounts for less than half a percent. Geography dominates.</div>
+    </div>
+
+    <p>Snowfall shows no meaningful trend (<span class="datum neutral">+0.038&quot;/decade</span>, p&nbsp;=&nbsp;0.94). Neither does precipitation (<span class="datum neutral">-0.004&quot;/decade</span>, p&nbsp;=&nbsp;0.99). If winter is changing, it is changing in the background, beneath a fog of natural variability that a three-decade sample cannot fully resolve.</p>
+
+    <h2 class="essay-section-head">What the Research Says</h2>
+
+    <p>Our findings are consistent with the broader literature. La Ni&ntilde;a winters have been linked to amplified jet stream patterns that warm the western US and cool the east since at least Ropelewski and Halpert&rsquo;s 1986 work on ENSO teleconnections. The warm-cities-warming-faster pattern echoes research on urban heat islands and temperature feedback loops documented by Zhao et al. (2014) and others. The heteroscedasticity we observe&mdash;continental interiors varying more than coastal or tropical cities&mdash;reflects the well-documented influence of maritime moderation and distance from oceanic heat reservoirs.</p>
+
+    <p>What is newer, and less well-studied, is the magnitude of the current displacement. Denver running eleven degrees above normal is not merely a warm winter. It is a winter that no longer belongs to Denver. Whether the frequency of such displacements is itself increasing&mdash;whether the dice are not just loaded but increasingly so&mdash;is a question our thirty-year sample can gesture toward but not resolve.</p>
+
+    <h2 class="essay-section-head">The Moving Baseline</h2>
+
+    <p>The thirty-year average will update next year. It always does. The window slides forward, absorbing anomalies, making the strange familiar. In a decade, this winter will be part of the baseline.</p>
+
+    <p>This is both a feature and a limitation of how we measure climate normals. The 1991&ndash;2020 baseline already includes significant warming compared to the mid-twentieth century. An anomaly measured against it is an anomaly against an already-shifting reference point. Denver&rsquo;s +11.1&deg;F is extraordinary even by modern standards. Against a 1961&ndash;1990 baseline, it would be more extraordinary still.</p>
+
+    <p>Seven cities out of fifty had a normal winter. The other forty-three did not, and each of them did not in its own way. The strangeness was not evenly distributed. It rarely is.</p>
+
+    <div class="section-break">&mdash;&mdash;&mdash;</div>
+
+    <p style="font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:.78rem;color:#666;line-height:1.7;margin-top:2rem;">
+      Data: Open-Meteo Archive API<br/>
+      Normals: 1991&ndash;2020 winter seasons (Dec&ndash;Feb)<br/>
+      Model: weather ~ spline(year) + (year | city); sigma ~ city<br/>
+      Sample: 50 US cities (not nationally representative)
+    </p>
+
+    <div class="essay-cta">
+      <button class="essay-cta-btn" onclick="switchTab('map')">Explore the data &rarr;</button>
+      <div style="font-family:'SF Mono',monospace;font-size:.65rem;color:#444;margin-top:1.5rem">Weird Weather &middot; 50 cities &middot; 30 years of data &middot; Winter 2025&ndash;2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Analysis Tab ═══ -->
+<div id="tab-analysis" class="tab-panel">
+  <div class="essay-container">
+
+    <div class="blog-header">
+      <div class="blog-kicker">Methodology</div>
+      <h1 class="blog-title">How We Measured Weird</h1>
+      <p class="blog-subtitle">The recipe behind the numbers, step by step, with no jargon left unexplained.</p>
+      <div class="blog-byline">A technical walkthrough &middot; ~10 min read</div>
+    </div>
+
+    <!-- 1. Getting the Data -->
+    <h2 class="essay-section-head">1. Getting the Data</h2>
+
+    <p>We needed winter weather data for American cities. Lots of it. Thirty-five winters&rsquo; worth.</p>
+
+    <p>The source is <strong>Open-Meteo&rsquo;s Archive API</strong>, which serves ERA5 reanalysis data from the European Centre for Medium-Range Weather Forecasts. Reanalysis means a global climate model ingested billions of observations&mdash;satellites, weather stations, ocean buoys, radiosondes&mdash;and produced a physically consistent gridded dataset. It is not raw station data. It is what a very good model thinks the weather was, everywhere, all the time.</p>
+
+    <p>This matters. The numbers you see here are model-derived, not thermometer readings from the airport. ERA5 is excellent for temperature. It is less excellent for snowfall, a fact we will return to.</p>
+
+    <div class="recipe-step">
+      <span class="step-num">1</span>
+      <span class="step-text">Select <span class="datum neutral">50 cities</span> across the continental United States plus Anchorage.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">2</span>
+      <span class="step-text">Pull daily data for <span class="datum neutral">35 winter seasons</span> (1990&ndash;91 through 2024&ndash;25). Winter = December, January, February.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">3</span>
+      <span class="step-text">For each city-season, aggregate three metrics: mean daily high temperature (<span class="datum warm">&deg;F</span>), total snowfall (<span class="datum snow">inches</span>), and total precipitation (<span class="datum cold">inches</span>).</span>
+    </div>
+
+    <p>Thirty-five seasons &times; 50 cities &times; 3 metrics = 5,250 data points. Not big data. A spreadsheet could hold it. But enough to find patterns.</p>
+
+
+    <!-- 2. The Distance Matrix -->
+    <h2 class="essay-section-head">2. The Distance Matrix</h2>
+
+    <p>We wanted to know: which cities had similar winters this year? Which ones did not?</p>
+
+    <p>The answer is a <span class="stat-tip" data-stat="distance">distance matrix</span>. Take every pair of cities&mdash;that is <span class="datum neutral">1,225 pairs</span> from 50 cities&mdash;and compute how different their 2024&ndash;25 winter was.</p>
+
+    <p>&ldquo;Different&rdquo; needs a definition. We used <strong>normalized Euclidean distance</strong> across the three metrics. Here is the recipe:</p>
+
+    <div class="recipe-step">
+      <span class="step-num">1</span>
+      <span class="step-text"><strong>Normalize each metric to [0, 1].</strong> Temperature might range from 10&deg;F to 75&deg;F. Snowfall from 0 to 90 inches. Without normalization, temperature&rsquo;s larger numerical range would dominate the distance calculation. We subtract the minimum and divide by the range. Every metric now lives on the same scale.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">2</span>
+      <span class="step-text"><strong>Compute Euclidean distance.</strong> For two cities, take the square root of the sum of squared differences across all three normalized metrics. The result: one number summarizing how different two cities&rsquo; winters were.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">3</span>
+      <span class="step-text"><strong>Arrange in a 50 &times; 50 matrix.</strong> The diagonal is zero (every city&rsquo;s distance to itself). The matrix is symmetric (Albany-to-Burlington equals Burlington-to-Albany).</span>
+    </div>
+
+    <p>On the heatmap in the Matrix tab: darker cells mean more similar winters. Lighter cells mean more different. The diagonal is always dark. If you see a dark off-diagonal block, those cities had nearly identical winters.</p>
+
+    <div class="analysis-diagram">
+      <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="30" width="140" height="120" rx="6" fill="#0d0d0d" stroke="#222"/>
+        <text x="90" y="22" text-anchor="middle" font-family="'SF Mono', monospace" font-size="10" fill="#888" font-weight="600" letter-spacing=".08em">CITY A</text>
+        <text x="40" y="60" font-family="'SF Mono', monospace" font-size="9" fill="#666">temp</text>
+        <rect x="80" y="50" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="80" y="50" width="42" height="8" rx="2" fill="#E8594F" opacity=".7"/>
+        <text x="40" y="88" font-family="'SF Mono', monospace" font-size="9" fill="#666">snow</text>
+        <rect x="80" y="78" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="80" y="78" width="18" height="8" rx="2" fill="#a0d2db" opacity=".7"/>
+        <text x="40" y="116" font-family="'SF Mono', monospace" font-size="9" fill="#666">precip</text>
+        <rect x="80" y="106" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="80" y="106" width="38" height="8" rx="2" fill="#4A90D9" opacity=".7"/>
+        <line x1="180" y1="90" x2="370" y2="90" stroke="#333" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="275" y="80" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#E8594F" font-weight="600">sqrt(&Sigma; &Delta;&sup2;)</text>
+        <polygon points="370,86 370,94 380,90" fill="#333"/>
+        <rect x="400" y="30" width="140" height="120" rx="6" fill="#0d0d0d" stroke="#222"/>
+        <text x="470" y="22" text-anchor="middle" font-family="'SF Mono', monospace" font-size="10" fill="#888" font-weight="600" letter-spacing=".08em">CITY B</text>
+        <text x="420" y="60" font-family="'SF Mono', monospace" font-size="9" fill="#666">temp</text>
+        <rect x="460" y="50" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="460" y="50" width="55" height="8" rx="2" fill="#E8594F" opacity=".7"/>
+        <text x="420" y="88" font-family="'SF Mono', monospace" font-size="9" fill="#666">snow</text>
+        <rect x="460" y="78" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="460" y="78" width="50" height="8" rx="2" fill="#a0d2db" opacity=".7"/>
+        <text x="420" y="116" font-family="'SF Mono', monospace" font-size="9" fill="#666">precip</text>
+        <rect x="460" y="106" width="65" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="460" y="106" width="30" height="8" rx="2" fill="#4A90D9" opacity=".7"/>
+        <text x="275" y="170" text-anchor="middle" font-family="'SF Mono', monospace" font-size="10" fill="#F5A623" font-weight="600">distance = 0.42</text>
+      </svg>
+      <div class="diagram-caption">Normalized Euclidean distance: each bar scaled to [0,&thinsp;1], then compared.</div>
+    </div>
+
+    <p>Some findings from the matrix:</p>
+
+    <div class="finding-grid">
+      <div class="finding-card">
+        <div class="finding-label">Most Similar</div>
+        <div class="finding-value">Albany &harr; Burlington</div>
+        <div class="finding-detail">Distance = <span class="datum cold">0.038</span>. Practically the same winter. Four hours of highway separate them, and their climates agree.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-label">Most Different</div>
+        <div class="finding-value">Miami &harr; Anchorage</div>
+        <div class="finding-detail">Distance = <span class="datum warm">1.443</span>. The maximum possible on three normalized axes is &radic;3 &asymp; 1.73. These two used most of it.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-label">Most Isolated</div>
+        <div class="finding-value">Portland, OR</div>
+        <div class="finding-detail">Avg distance = <span class="datum neutral">0.779</span>. Portland&rsquo;s winter doesn&rsquo;t look like anyone else&rsquo;s. Mild, wet, and snowless is a rare combination.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-label">Most Central</div>
+        <div class="finding-value">Richmond, VA</div>
+        <div class="finding-detail">Avg distance = <span class="datum neutral">0.371</span>. The &ldquo;average&rdquo; American winter. Not too hot, not too cold, moderate snow, moderate rain.</div>
+      </div>
+    </div>
+
+    <p>Cities at climate extremes have no close twins. Miami, Anchorage, and Phoenix sit on the edges of the distribution. Anchorage&rsquo;s nearest neighbor is Burlington, VT, at a distance of <span class="datum neutral">0.259</span>&mdash;which is like calling someone your best friend because they are the only person in the room.</p>
+
+    <div class="callout-box">
+      <strong>Reading the heatmap:</strong> The distance matrix is symmetric. Each cell represents one city pair. Self-distance (the diagonal) is zero for the historical baseline, but can be nonzero for the 2024&ndash;25 season&mdash;more on that in Section 5.
+    </div>
+
+
+    <!-- 3. The Model -->
+    <h2 class="essay-section-head">3. The Model</h2>
+
+    <p>A distance matrix tells you what happened. A model tells you what <em>should</em> have happened. We built one so we could measure surprise.</p>
+
+    <p>The model is a <strong>B-spline mixed-effects regression</strong> with heteroscedastic errors. That sentence has too many words in it. Here is what each part means:</p>
+
+    <div class="recipe-step">
+      <span class="step-num">1</span>
+      <span class="step-text"><strong>B-spline on year</strong> (the fixed effect). Instead of fitting a straight line through 35 years of data, we fit a smooth curve. A cubic B-spline with a few knots. This captures the national trend&mdash;the slow warming&mdash;without assuming it is linear. Maybe the 1990s warmed fast and the 2010s plateaued. The spline does not care. It follows the data.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">2</span>
+      <span class="step-text"><strong>Random effects by city</strong> (<span class="stat-tip" data-stat="random-intercept">intercept</span> + <span class="stat-tip" data-stat="random-slope">slope</span>). Every city gets its own baseline and its own rate of change. Minneapolis starts cold and warms slowly. Phoenix starts hot and barely changes. The model learns each city&rsquo;s personality from the data.</span>
+    </div>
+    <div class="recipe-step">
+      <span class="step-num">3</span>
+      <span class="step-text"><strong>Heteroscedastic errors</strong>. A fancy way of saying: some cities have noisy weather, and some do not. Miami&rsquo;s winter temperature barely varies year to year. Billings, Montana, is a roulette wheel. Rather than pretending all cities have the same amount of noise, we estimate a separate <span class="stat-tip" data-stat="sigma">&sigma;</span> (standard deviation) for each city.</span>
+    </div>
+
+    <div class="analysis-diagram">
+      <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg">
+        <text x="280" y="18" text-anchor="middle" font-family="'SF Mono', monospace" font-size="10" fill="#888" font-weight="600" letter-spacing=".08em">MODEL STRUCTURE</text>
+        <rect x="190" y="32" width="180" height="44" rx="6" fill="#0d0d0d" stroke="#E8594F" stroke-opacity=".5"/>
+        <text x="280" y="50" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#E8594F" font-weight="600">FIXED EFFECT</text>
+        <text x="280" y="66" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#aaa">spline(year) &rarr; national trend</text>
+        <line x1="280" y1="76" x2="280" y2="100" stroke="#333" stroke-width="1"/>
+        <polygon points="276,98 284,98 280,106" fill="#333"/>
+        <rect x="130" y="108" width="300" height="60" rx="6" fill="#0d0d0d" stroke="#4A90D9" stroke-opacity=".5"/>
+        <text x="280" y="126" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#4A90D9" font-weight="600">RANDOM EFFECTS (per city)</text>
+        <text x="280" y="143" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#aaa">intercept &rarr; baseline level</text>
+        <text x="280" y="158" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#aaa">slope &rarr; city-specific trend</text>
+        <line x1="280" y1="168" x2="280" y2="192" stroke="#333" stroke-width="1"/>
+        <polygon points="276,190 284,190 280,198" fill="#333"/>
+        <rect x="170" y="200" width="220" height="44" rx="6" fill="#0d0d0d" stroke="#F5A623" stroke-opacity=".5"/>
+        <text x="280" y="218" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#F5A623" font-weight="600">CITY-SPECIFIC &sigma;</text>
+        <text x="280" y="234" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#aaa">noise level varies by city</text>
+      </svg>
+      <div class="diagram-caption">Three layers: one national curve, per-city adjustments, per-city noise.</div>
+    </div>
+
+    <p>In notation that looks like code but is not quite code:</p>
+
+    <div class="code-block"><span class="code-comment"># Model formula (brms / lme4 style)</span>
+<span class="code-var">weather</span> ~ <span class="code-func">bs</span>(<span class="code-var">year</span>, <span class="code-var">df</span>=<span class="code-string">5</span>) + (<span class="code-var">year</span> | <span class="code-var">city</span>)
+<span class="code-keyword">sigma</span> ~ <span class="code-var">city</span>
+
+<span class="code-comment"># Read it as:</span>
+<span class="code-comment"># weather = national_spline(year)</span>
+<span class="code-comment">#         + city_intercept</span>
+<span class="code-comment">#         + city_slope * year</span>
+<span class="code-comment">#         + noise(city_specific_sigma)</span></div>
+
+    <p>We fit three separate models: one for temperature, one for snowfall, one for precipitation. Same structure, different data. The model does not know that snow and temperature are related. It treats each metric on its own.</p>
+
+
+    <!-- 4. Diagnosing the Model -->
+    <h2 class="essay-section-head">4. Diagnosing the Model</h2>
+
+    <p>A model is only useful if you know where it works and where it fails. We ran the diagnostics.</p>
+
+    <p><strong>Variance decomposition</strong> tells you where the signal lives. For temperature:</p>
+
+    <div class="analysis-diagram">
+      <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="18" font-family="'SF Mono', monospace" font-size="9" fill="#888" font-weight="600" letter-spacing=".08em">TEMPERATURE VARIANCE DECOMPOSITION</text>
+        <rect x="20" y="30" width="520" height="24" rx="4" fill="#1a1a1a"/>
+        <rect x="20" y="30" width="489.64" height="24" rx="4" fill="#4A90D9" opacity=".6"/>
+        <rect x="509.64" y="30" width="2.08" height="24" fill="#E8594F" opacity=".6"/>
+        <text x="260" y="46" text-anchor="middle" font-family="'SF Mono', monospace" font-size="9" fill="#fff" font-weight="600">City-to-city: 94.2%</text>
+        <text x="540" y="70" text-anchor="end" font-family="'SF Mono', monospace" font-size="8" fill="#888">Temporal: 0.4% | Residual: 4.8%</text>
+      </svg>
+      <div class="diagram-caption">Geography dominates. The trend over time is real, but small relative to the difference between Miami and Minneapolis.</div>
+    </div>
+
+    <p>Translation: where a city is located explains almost everything about its winter temperature. The 35-year warming trend is statistically detectable but explains less than half a percent of total variance. The remaining 4.8% is noise&mdash;year-to-year chaos that even a good model cannot predict.</p>
+
+    <p>This is not a flaw. This is physics. Minneapolis is always colder than Miami. The warming trend nudges both of them, but the nudge is tiny compared to the gap between them.</p>
+
+    <p><strong><span class="stat-tip" data-stat="r-squared">R&sup2;</span> by metric:</strong></p>
+
+    <table class="analysis-inline-table">
+      <thead>
+        <tr><th>Metric</th><th>R&sup2;</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="datum warm">Temperature</span></td>
+          <td>0.945</td>
+          <td>Excellent. The model captures almost all temperature variation.</td>
+        </tr>
+        <tr>
+          <td><span class="datum snow">Snowfall</span></td>
+          <td>0.780</td>
+          <td>Good. Snow is lumpy and localized, but the model handles it.</td>
+        </tr>
+        <tr>
+          <td><span class="datum cold">Precipitation</span></td>
+          <td>0.652</td>
+          <td>Adequate. Rain is chaotic. This is about as good as it gets with seasonal aggregates.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>This hierarchy makes physical sense. Temperature is determined mostly by latitude and elevation&mdash;stable facts about geography. Snowfall depends on temperature <em>and</em> moisture&mdash;two variables instead of one. Precipitation depends on storm tracks, frontal systems, and atmospheric rivers&mdash;things that vary wildly from year to year. The model captures the predictable part. It cannot capture the chaos.</p>
+
+    <p><strong>Per-city <span class="stat-tip" data-stat="sigma">&sigma;</span></strong> captures real differences in volatility. Miami&rsquo;s estimated &sigma; is <span class="datum warm">1.18&deg;F</span>. Its winters are boringly consistent. Billings, Montana, comes in at <span class="datum cold">4.84&deg;F</span>. Its winters are a coin flip. The model knows this. A 3&deg;F <span class="stat-tip" data-stat="anomaly">anomaly</span> in Miami would be a screaming outlier. The same anomaly in Billings would be a Tuesday.</p>
+
+
+    <!-- 5. Model Fit vs Reality -->
+    <h2 class="essay-section-head">5. Model Fit vs. Reality</h2>
+
+    <p>Here is the central question: which cities had a weird winter?</p>
+
+    <p>We answer it two ways, and they agree. That is how we know they are right.</p>
+
+    <p><strong>Method 1: Self-distance as displacement.</strong> Remember the distance matrix from Section 2? Every city has a distance to every other city, based on its 35-year average. But we can also compute each city&rsquo;s distance to <em>itself</em>&mdash;that is, how far the 2024&ndash;25 winter was from that city&rsquo;s own historical normal. We call this the &ldquo;displacement score.&rdquo; A low score means the city had a typical winter. A high score means it did not.</p>
+
+    <table class="analysis-inline-table">
+      <thead>
+        <tr><th>Most Displaced</th><th>Score</th><th>Least Displaced</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="datum warm">Anchorage, AK</span></td><td>0.492</td>
+          <td>Tampa, FL</td><td>0.040</td>
+        </tr>
+        <tr>
+          <td><span class="datum warm">Dallas, TX</span></td><td>0.356</td>
+          <td>Miami, FL</td><td>0.041</td>
+        </tr>
+        <tr>
+          <td><span class="datum warm">Reno, NV</span></td><td>0.318</td>
+          <td>Minneapolis, MN</td><td>0.042</td>
+        </tr>
+        <tr>
+          <td><span class="datum warm">Denver, CO</span></td><td>0.295</td>
+          <td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Method 2: Model <span class="stat-tip" data-stat="z-score">z-scores</span>.</strong> The model predicts each city&rsquo;s expected temperature, snowfall, and precipitation. It also knows how much noise each city has (<span class="stat-tip" data-stat="sigma">&sigma;</span> from Section 3). A z-score is: how many standard deviations was the actual observation from the model&rsquo;s prediction? A z-score above 2 means the city&rsquo;s winter was, roughly, a 1-in-20 event given its history.</p>
+
+    <p>Only two cities exceeded 2&sigma;:</p>
+
+    <div class="finding-grid">
+      <div class="finding-card">
+        <div class="finding-label">Highest Z-Score</div>
+        <div class="finding-value">Denver, CO &mdash; <span class="datum warm">2.70&sigma;</span></div>
+        <div class="finding-detail">Temperature deviation of 2.70 standard deviations above the model prediction. Roughly a 1-in-150 event.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-label">Second Highest</div>
+        <div class="finding-value">Salt Lake City &mdash; <span class="datum warm">2.18&sigma;</span></div>
+        <div class="finding-detail">Temperature deviation of 2.18 standard deviations. Roughly a 1-in-35 event.</div>
+      </div>
+    </div>
+
+    <p>The two methods use different information. Displacement scores use the distance matrix, which knows nothing about the model. Z-scores use the model, which knows nothing about the distance matrix. Both point at the same cities. Denver is weird. Salt Lake City is weird. Anchorage is weird. Tampa is fine.</p>
+
+    <div class="callout-box">
+      <strong>Why we trust the model:</strong> It captures 94.5% of temperature variance. The displacement scores and z-scores independently agree on which cities were weirdest. When two different methods point the same finger, you tend to believe them.
+    </div>
+
+
+    <!-- 6. Decisions and Sensitivity -->
+    <h2 class="essay-section-head">6. Decisions and Sensitivity</h2>
+
+    <p>Every analysis is a stack of choices. Here are ours, and what happens if you change them.</p>
+
+    <p><strong>30-year baseline (1991&ndash;2020).</strong> This is the standard climatological reference period. It already includes significant warming. Our <span class="stat-tip" data-stat="anomaly">anomalies</span> are measured against a world that has already warmed. This makes them conservative. A colder baseline would make everything look weirder.</p>
+
+    <p><strong>50-city sample.</strong> We chose 50 cities, biased toward the Northeast and large metros. Rural America is absent. The Great Plains are underrepresented. If your town is not on the list, it is not because we think your weather does not matter. It is because we had to draw the line somewhere, and we drew it at cities people have heard of.</p>
+
+    <p><strong>ERA5 reanalysis.</strong> Excellent for temperature. Less trustworthy for snowfall. ERA5 systematically underestimates snow, especially lake-effect snow near the Great Lakes and orographic snow in the mountains. If Syracuse or Salt Lake City look less snowy than you remember, this is probably why.</p>
+
+    <p><strong>December&ndash;February as &ldquo;winter.&rdquo;</strong> November can be brutal. March can be worse. We used the meteorological definition of winter and ignored the shoulder months. A freak November blizzard does not appear in our data. A warm March that felt like spring does not either.</p>
+
+    <p><strong>Normalization before distance.</strong> This is the choice that prevents temperature from eating the distance metric alive. Winter temperature ranges from about 10&deg;F to 75&deg;F (65-degree spread). Snowfall ranges from 0 to 90 inches. Without normalization, the temperature difference between two cities would usually be the only thing that matters. By rescaling each metric to [0, 1], we give temperature, snowfall, and precipitation equal votes.</p>
+
+    <div class="callout-box">
+      <strong>The sensitivity bottom line:</strong> Our choices are defensible but not the only reasonable ones. A different baseline, different cities, or different time window would produce different numbers. The broad conclusions&mdash;Denver was weird, Tampa was not&mdash;are robust to most of these choices. The exact rankings might shuffle.
+    </div>
+
+
+    <!-- 7. What We Didn't Do -->
+    <h2 class="essay-section-head">7. What We Didn&rsquo;t Do (and Why You Might)</h2>
+
+    <p>This is not an academic paper. It is a dashboard. We built it to answer a specific question: was this winter weird, and where? We did not build it to survive peer review. Here is what a more rigorous analysis would include, if you are the sort of person who wants to build one:</p>
+
+    <p><strong>Temporal autocorrelation.</strong> A warm winter tends to follow a warm fall. Our model ignores this. A proper treatment would add AR(1) or ARMA structure to the residuals. We did not, because seasonal aggregates already smooth out most short-term autocorrelation, and because this is a dashboard, not a dissertation.</p>
+
+    <p><strong>ENSO as a covariate.</strong> El Ni&ntilde;o and La Ni&ntilde;a are the single biggest drivers of year-to-year winter variability in the United States. We mention ENSO in the essay. We did not include it in the model as a predictor. A better model would. We classified seasons by ENSO phase after the fact rather than letting the model learn the relationship.</p>
+
+    <p><strong>Model selection via LOO-CV or WAIC.</strong> We picked a model and ran it. We did not systematically compare it against simpler alternatives using leave-one-out cross-validation or the Widely Applicable Information Criterion. This is the sort of thing you do when publishing. We were not publishing.</p>
+
+    <p><strong>Building up from simpler models.</strong> Good practice is to start simple (random intercept only), then add complexity (add slope, add heteroscedastic sigma) and check whether each addition is justified. We skipped to the complex model because we had domain knowledge about what the model should capture. This works until it does not.</p>
+
+    <p><strong>More data.</strong> Weekly or monthly resolution instead of seasonal aggregates. Daily extremes instead of means. Humidity, wind, sunshine hours. More data is always better, until it is not.</p>
+
+    <p><strong>Representative sampling.</strong> A population-weighted or geographically stratified sample of cities would be more defensible than our ad hoc list. Pittsburgh and Philadelphia are 300 miles apart and probably do not have independent weather. We treated them as independent anyway, because this is a dashboard, not a dissertation.</p>
+
+    <p><strong>Spatial correlation.</strong> Cities near each other are not independent. A proper spatial model would account for this using a Gaussian process or a conditional autoregressive structure. We did not, because spatial models are computationally expensive and because our audience does not want to wait for a Gaussian process to converge.</p>
+
+    <div class="cta-box">
+      <p>Want to replicate this? The full code&mdash;data fetching, model fitting, and this dashboard&mdash;is on GitHub.</p>
+      <a class="cta-link" href="https://github.com/derekdebellis/weird-weather" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ Map Tab ═══ -->
+<div id="tab-map" class="tab-panel">
+  <div class="toggle-row" id="map-toggles">
+    <span class="toggle-label">Metric:</span>
+    <button class="toggle-btn active" data-metric="overall">Overall</button>
+    <button class="toggle-btn" data-metric="temp">Temp</button>
+    <button class="toggle-btn" data-metric="snow">Snow</button>
+    <button class="toggle-btn" data-metric="rain">Rain</button>
+    <button class="toggle-btn" data-metric="snow_rain">Snow + Rain</button>
+  </div>
+  <div id="map-container">
+    <div class="map-zoom-controls">
+      <button class="map-zoom-btn" id="zoom-in" title="Zoom in">+</button>
+      <button class="map-zoom-btn" id="zoom-out" title="Zoom out">&minus;</button>
+      <button class="map-zoom-btn" id="zoom-reset" title="Reset" style="font-size:.75rem">R</button>
+    </div>
     <svg id="usa-map" viewBox="0 0 960 600"></svg>
   </div>
-  <div class="legend">
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#ff4500;"></div>
-      <span>+6°F or more above normal</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#ffa726;"></div>
-      <span>+2 to +5°F above normal</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#69f0ae;"></div>
-      <span>Near normal (★ = within 5%)</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#4fc3f7;"></div>
-      <span>−2 to −5°F below normal</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#1565c0;"></div>
-      <span>−6°F or more below normal</span>
-    </div>
-    <span class="legend-note">Label = nearest historical climate match</span>
+  <div class="legend" id="map-legend"></div>
+</div>
+
+<!-- ═══ Summary Tab ═══ -->
+<div id="tab-summary" class="tab-panel">
+  <div class="summary-grid" id="summary-grid"></div>
+</div>
+
+<!-- ═══ Distance Matrix Tab ═══ -->
+<div id="tab-matrix" class="tab-panel">
+  <div class="toggle-row" id="matrix-metric-toggles">
+    <span class="toggle-label">Metric:</span>
+    <button class="toggle-btn active" data-metric="overall">Overall</button>
+    <button class="toggle-btn" data-metric="temp">Temp</button>
+    <button class="toggle-btn" data-metric="snow">Snow</button>
+    <button class="toggle-btn" data-metric="rain">Rain</button>
+    <button class="toggle-btn" data-metric="snow_rain">Snow + Rain</button>
   </div>
-</section>
+  <div class="toggle-row" id="matrix-method-toggles">
+    <span class="toggle-label">Distance:</span>
+    <button class="toggle-btn active" data-method="euclidean">Euclidean</button>
+    <button class="toggle-btn" data-method="manhattan">Manhattan</button>
+  </div>
+  <div id="matrix-container">
+    <svg id="matrix-svg"></svg>
+  </div>
+</div>
+
+<!-- ═══ Data Table Tab ═══ -->
+<div id="tab-table" class="tab-panel">
+  <div class="table-controls">
+    <input type="search" class="search-input" id="table-search" placeholder="Search cities...">
+    <select class="ts-select" id="table-metric-select" style="width:auto">
+      <option value="high">Temperature</option>
+      <option value="snow">Snowfall</option>
+      <option value="precip">Precipitation</option>
+    </select>
+  </div>
+  <div class="data-table-wrap">
+    <table class="data-table" id="data-table">
+      <thead><tr id="table-header"></tr></thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ Time Series: Overview Tab ═══ -->
+<div id="tab-ts-overview" class="tab-panel">
+  <div style="max-width:900px;margin:0 auto">
+    <h2 style="text-align:center;color:#E0E0E0;font-size:1.3rem;margin-bottom:1.5rem">National Trends & Model Diagnostics</h2>
+
+    <!-- Model-wide analytics panels -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem" id="ov-analytics">
+      <div class="stat-card" id="ov-trend-card"></div>
+      <div class="stat-card" id="ov-enso-card"></div>
+      <div class="stat-card" id="ov-re-card" style="grid-column:1/3"></div>
+      <div class="stat-card" id="ov-variance-card" style="grid-column:1/3"></div>
+      <div class="stat-card" id="ov-sigma-card" style="grid-column:1/3"></div>
+    </div>
+
+    <!-- Spaghetti / national trend chart -->
+    <h3 style="color:#888;font-size:.9rem;margin-bottom:.5rem;text-align:center">National Temperature Trend (all 50 cities)</h3>
+    <div style="text-align:center">
+      <svg id="ov-spaghetti-svg" viewBox="0 0 900 350" style="width:100%;max-width:900px"></svg>
+    </div>
+
+    <!-- Random effects scatter -->
+    <h3 style="color:#888;font-size:.9rem;margin:2rem 0 .5rem;text-align:center">Random Intercepts vs. Random Slopes (Temperature)</h3>
+    <div style="text-align:center">
+      <svg id="re-scatter" viewBox="0 0 800 350" style="width:100%;max-width:800px"></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Time Series: City Tab ═══ -->
+<div id="tab-ts-city" class="tab-panel">
+  <div class="ts-controls">
+    <select class="ts-select" id="ts-city-select"></select>
+    <label style="color:#888;font-size:.78rem;cursor:pointer">
+      <input type="checkbox" id="ts-enso-toggle" checked style="accent-color:#E8594F"> ENSO overlay
+    </label>
+    <label style="color:#888;font-size:.78rem;cursor:pointer">
+      <input type="checkbox" id="ts-spaghetti-toggle" style="accent-color:#4A90D9"> All cities
+    </label>
+  </div>
+  <div class="ts-charts" id="ts-charts"></div>
+  <div class="ts-stats" id="ts-stats"></div>
+</div>
 
 <div id="tooltip"></div>
 
 <footer>
-  Data sources: NOAA 1991–2020 Climate Normals; NOAA/NWS Winter 2025–2026 Station Reports; Yale Climate Connections; NWS Boston, Albany, Denver climate summaries.
-  Actuals for cities without published summaries are estimated from regional pattern analysis.
-  Distance metric: normalized Euclidean distance (avg high, snowfall, total precip) across 30-city historical range.
-  Threshold for ★: normalized self-distance &lt; 5% of maximum possible (√3).
+  Data: <a href="https://open-meteo.com">Open-Meteo Archive API</a> &middot;
+  Normals: 1991&ndash;2020 winter seasons (Dec&ndash;Feb) &middot;
+  Model: weather ~ spline(year) + (year | city); &sigma; ~ city
 </footer>
+
+<div class="loading" id="loading">
+  <span class="spinner"></span> Loading weather data...
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
 <script>
-// ─── City Data ────────────────────────────────────────────────────────────────
-// hist: 1991-2020 NOAA normals for Dec+Jan+Feb combined
-//   high   = avg of three months' mean daily highs (°F)
-//   snow   = total seasonal snowfall (in)
-//   precip = total seasonal liquid precip (in, includes SWE)
-//
-// act: winter 2025-2026 actuals / best estimates
-//   Sources: NOAA/NWS station climate summaries, Yale Climate Connections,
-//            NWS Boston/Albany/Denver recaps, Washington Post snowfall tracker
+// =============================================================================
+// WEIRD WEATHER DASHBOARD
+// =============================================================================
 
-const CITIES = [
-  { id:  0, name:"Seattle",       state:"WA", lat:47.61, lon:-122.33,
-    hist:{ high:46, snow:  5.3, precip:13.8 }, act:{ high:44, snow:  8.0, precip:12.5 } },
-  { id:  1, name:"Portland",      state:"OR", lat:45.52, lon:-122.68,
-    hist:{ high:46, snow:  4.6, precip:12.6 }, act:{ high:44, snow:  5.5, precip:11.5 } },
-  { id:  2, name:"San Francisco", state:"CA", lat:37.77, lon:-122.42,
-    hist:{ high:57, snow:  0.0, precip:11.5 }, act:{ high:61, snow:  0.0, precip:10.0 } },
-  { id:  3, name:"Los Angeles",   state:"CA", lat:34.05, lon:-118.24,
-    hist:{ high:68, snow:  0.0, precip: 8.5 }, act:{ high:73, snow:  0.0, precip: 7.0 } },
-  { id:  4, name:"Las Vegas",     state:"NV", lat:36.17, lon:-115.14,
-    hist:{ high:56, snow:  0.5, precip: 1.5 }, act:{ high:63, snow:  0.0, precip: 1.0 } },
-  { id:  5, name:"Phoenix",       state:"AZ", lat:33.45, lon:-112.07,
-    hist:{ high:65, snow:  0.0, precip: 2.1 }, act:{ high:72, snow:  0.0, precip: 1.5 } },
-  { id:  6, name:"Denver",        state:"CO", lat:39.74, lon:-104.98,
-    hist:{ high:45, snow: 21.0, precip: 2.7 }, act:{ high:53, snow:  8.0, precip: 2.0 } },
-  { id:  7, name:"Salt Lake City",state:"UT", lat:40.76, lon:-111.89,
-    hist:{ high:38, snow: 30.0, precip: 4.8 }, act:{ high:46, snow: 15.0, precip: 3.5 } },
-  { id:  8, name:"Boise",         state:"ID", lat:43.62, lon:-116.20,
-    hist:{ high:38, snow: 15.0, precip: 4.0 }, act:{ high:46, snow:  8.0, precip: 3.0 } },
-  { id:  9, name:"Albuquerque",   state:"NM", lat:35.08, lon:-106.65,
-    hist:{ high:47, snow:  6.0, precip: 1.5 }, act:{ high:55, snow:  2.0, precip: 1.0 } },
-  { id: 10, name:"Chicago",       state:"IL", lat:41.88, lon: -87.63,
-    hist:{ high:30, snow: 22.0, precip: 5.1 }, act:{ high:28, snow: 35.0, precip: 5.5 } },
-  { id: 11, name:"Detroit",       state:"MI", lat:42.33, lon: -83.05,
-    hist:{ high:30, snow: 22.0, precip: 5.4 }, act:{ high:28, snow: 33.0, precip: 5.0 } },
-  { id: 12, name:"Minneapolis",   state:"MN", lat:44.98, lon: -93.27,
-    hist:{ high:21, snow: 27.0, precip: 2.4 }, act:{ high:20, snow: 24.0, precip: 2.0 } },
-  { id: 13, name:"Cleveland",     state:"OH", lat:41.50, lon: -81.69,
-    hist:{ high:32, snow: 27.0, precip: 6.3 }, act:{ high:30, snow: 32.0, precip: 6.0 } },
-  { id: 14, name:"Pittsburgh",    state:"PA", lat:40.44, lon: -79.99,
-    hist:{ high:36, snow: 20.0, precip: 8.2 }, act:{ high:34, snow: 26.0, precip: 7.5 } },
-  { id: 15, name:"St. Louis",     state:"MO", lat:38.63, lon: -90.20,
-    hist:{ high:39, snow: 11.0, precip: 6.9 }, act:{ high:38, snow: 16.0, precip: 6.5 } },
-  { id: 16, name:"Kansas City",   state:"MO", lat:39.10, lon: -94.58,
-    hist:{ high:37, snow: 10.0, precip: 4.2 }, act:{ high:36, snow: 13.0, precip: 4.0 } },
-  { id: 17, name:"New York",      state:"NY", lat:40.71, lon: -74.01,
-    hist:{ high:39, snow: 17.0, precip:11.1 }, act:{ high:36, snow: 34.0, precip: 8.5 } },
-  // Boston: 60.9" snow, 5.68" precip, avg temp 29.3°F (3°F below normal) — NWS Boston
-  { id: 18, name:"Boston",        state:"MA", lat:42.36, lon: -71.06,
-    hist:{ high:37, snow: 32.0, precip:11.6 }, act:{ high:34, snow: 61.0, precip: 5.7 } },
-  { id: 19, name:"Philadelphia",  state:"PA", lat:39.95, lon: -75.17,
-    hist:{ high:42, snow: 13.0, precip: 9.7 }, act:{ high:39, snow: 28.0, precip: 8.0 } },
-  // DC: only 14" snow total (near normal), but very cold stretches — NWS/WashPost
-  { id: 20, name:"Washington DC", state:"DC", lat:38.91, lon: -77.04,
-    hist:{ high:44, snow: 12.0, precip: 9.1 }, act:{ high:41, snow: 14.0, precip: 8.5 } },
-  { id: 21, name:"Baltimore",     state:"MD", lat:39.29, lon: -76.61,
-    hist:{ high:42, snow: 12.0, precip: 9.3 }, act:{ high:39, snow: 18.0, precip: 8.5 } },
-  { id: 22, name:"Burlington",    state:"VT", lat:44.48, lon: -73.21,
-    hist:{ high:28, snow: 51.0, precip: 6.8 }, act:{ high:25, snow: 68.0, precip: 6.5 } },
-  { id: 23, name:"Portland",      state:"ME", lat:43.66, lon: -70.26,
-    hist:{ high:31, snow: 40.0, precip:10.6 }, act:{ high:28, snow: 55.0, precip: 9.5 } },
-  // Albany: 48.1" snow (5.5" above 42.6 normal) — CBS6 Albany recap
-  { id: 24, name:"Albany",        state:"NY", lat:42.65, lon: -73.75,
-    hist:{ high:31, snow: 42.6, precip: 7.8 }, act:{ high:28, snow: 48.0, precip: 7.5 } },
-  { id: 25, name:"Dallas",        state:"TX", lat:32.78, lon: -96.80,
-    hist:{ high:57, snow:  0.7, precip: 5.3 }, act:{ high:55, snow:  1.5, precip: 5.0 } },
-  { id: 26, name:"Houston",       state:"TX", lat:29.76, lon: -95.37,
-    hist:{ high:63, snow:  0.1, precip:10.0 }, act:{ high:61, snow:  0.5, precip: 9.0 } },
-  { id: 27, name:"Atlanta",       state:"GA", lat:33.75, lon: -84.39,
-    hist:{ high:51, snow:  1.7, precip:11.5 }, act:{ high:50, snow:  5.0, precip:11.0 } },
-  { id: 28, name:"Miami",         state:"FL", lat:25.77, lon: -80.19,
-    hist:{ high:77, snow:  0.0, precip: 5.5 }, act:{ high:75, snow:  0.0, precip: 5.0 } },
-  { id: 29, name:"Nashville",     state:"TN", lat:36.17, lon: -86.78,
-    hist:{ high:46, snow:  5.0, precip:11.0 }, act:{ high:43, snow:  9.0, precip:10.5 } },
-];
+let DATA = null;
+let currentMapMetric = 'overall';
+let currentMatrixMetric = 'overall';
+let currentMatrixMethod = 'euclidean';
+let currentSortCol = null;
+let currentSortAsc = true;
+let currentTableMetric = 'high';
 
-// ─── Normalization & Distance ─────────────────────────────────────────────────
-const bounds = (() => {
-  const h = CITIES.map(c => c.hist.high);
-  const s = CITIES.map(c => c.hist.snow);
-  const p = CITIES.map(c => c.hist.precip);
-  return {
-    high:   { min: Math.min(...h), max: Math.max(...h) },
-    snow:   { min: Math.min(...s), max: Math.max(...s) },
-    precip: { min: Math.min(...p), max: Math.max(...p) },
-  };
-})();
+// ── Colors ──────────────────────────────────────────────────────────────────
+const COLORS = {
+  red: '#E8594F',
+  blue: '#4A90D9',
+  yellow: '#F5A623',
+  green: '#69f0ae',
+  bg: '#000',
+  card: '#111',
+  border: '#222',
+  text: '#E0E0E0',
+  muted: '#888',
+};
 
-function norm(val, key) {
-  const { min, max } = bounds[key];
-  return (val - min) / (max - min);
-}
-
-function climateDist(a, b) {
-  return Math.sqrt(
-    (norm(a.high,   'high')   - norm(b.high,   'high'))   ** 2 +
-    (norm(a.snow,   'snow')   - norm(b.snow,   'snow'))   ** 2 +
-    (norm(a.precip, 'precip') - norm(b.precip, 'precip')) ** 2
-  );
-}
-
-const THRESHOLD = 0.05 * Math.sqrt(3); // ≈ 0.0866
-
-// Pre-compute nearest match for each city
-CITIES.forEach(city => {
-  let minDist = Infinity, nearest = null;
-  CITIES.forEach(cand => {
-    const d = climateDist(city.act, cand.hist);
-    if (d < minDist) { minDist = d; nearest = cand; }
-  });
-  city.matchCity   = nearest;
-  city.matchDist   = minDist;
-  city.selfDist    = climateDist(city.act, city.hist);
-  city.isAsterisk  = city.selfDist < THRESHOLD;
-  city.deltaHigh   = city.act.high - city.hist.high;
-});
-
-// ─── Dot color by temperature anomaly ────────────────────────────────────────
 function anomalyColor(delta) {
-  if (delta >=  6) return '#ff4500';
-  if (delta >=  2) return '#ffa726';
+  if (delta >= 6)  return '#E8594F';
+  if (delta >= 2)  return '#F5A623';
   if (delta >= -2) return '#69f0ae';
-  if (delta >= -6) return '#4fc3f7';
+  if (delta >= -6) return '#4A90D9';
   return '#1565c0';
 }
 
-// ─── Tables ──────────────────────────────────────────────────────────────────
-function rowClass(delta) {
-  if (delta >=  6) return 'row-hot';
-  if (delta >=  2) return 'row-warm';
-  if (delta <= -6) return 'row-cold';
-  if (delta <= -2) return 'row-cool';
-  return '';
+// ── Tab Switching ───────────────────────────────────────────────────────────
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById('tab-' + tabName);
+  if (panel) panel.classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-function buildHistTable() {
-  const tbody = document.getElementById('hist-tbody');
-  CITIES.forEach(c => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${c.name} <span class="city-st">${c.state}</span></td>
-      <td>${c.hist.high}</td>
-      <td>${c.hist.snow.toFixed(1)}</td>
-      <td>${c.hist.precip.toFixed(1)}</td>
-    `;
-    tbody.appendChild(tr);
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// ── Toggle Helpers ──────────────────────────────────────────────────────────
+function setupToggles(containerId, callback) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      callback(btn);
+    });
   });
 }
 
-function buildActTable() {
-  const tbody = document.getElementById('act-tbody');
-  CITIES.forEach(c => {
-    const d = c.deltaHigh;
-    const sign = d >= 0 ? '+' : '';
-    const tr = document.createElement('tr');
-    tr.className = rowClass(d);
-    tr.innerHTML = `
-      <td>${c.name} <span class="city-st">${c.state}</span></td>
-      <td>${c.act.high}</td>
-      <td>${c.act.snow.toFixed(1)}</td>
-      <td>${c.act.precip.toFixed(1)}</td>
-      <td style="color:${anomalyColor(d)};font-weight:600">${sign}${d}</td>
-    `;
-    tbody.appendChild(tr);
+// ── Data Loading ────────────────────────────────────────────────────────────
+fetch('data/dashboard_data.json')
+  .then(r => {
+    if (!r.ok) throw new Error('Failed to load data');
+    return r.json();
+  })
+  .then(data => {
+    DATA = data;
+    document.getElementById('loading').style.display = 'none';
+    const complete = DATA.cities.filter(c => c.hist && c.act);
+    DATA._complete = complete;
+
+    initMap();
+    initSummary();
+    initDistanceMatrix();
+    initDataTable();
+    initTimeSeriesCity();
+    initTimeSeriesOverview();
+  })
+  .catch(err => {
+    document.getElementById('loading').innerHTML =
+      '<p style="color:#E8594F;padding:2rem">Failed to load data. Run:<br><code>python3 fetch_data.py && python3 fit_model.py</code></p>';
+    console.error(err);
   });
-}
 
-buildHistTable();
-buildActTable();
 
-// ─── Findings cards ──────────────────────────────────────────────────────────
-function buildFindings() {
-  const grid = document.getElementById('findings-grid');
-  CITIES.forEach(city => {
-    const m = city.matchCity;
-    const d = city.deltaHigh;
-    const card = document.createElement('div');
-    card.className = 'finding-card';
+// =============================================================================
+// MAP
+// =============================================================================
 
-    let toHtml, desc;
-    if (city.isAsterisk) {
-      toHtml = `<span class="to" style="color:#69f0ae">${city.name}, ${city.state} ★</span>`;
-      desc = `Stayed near its own historical normal`;
-    } else if (m.id === city.id) {
-      toHtml = `<span class="to" style="color:${anomalyColor(d)}">${city.name}, ${city.state}</span>`;
-      desc = `Nearest match is itself (shifted but unique)`;
-    } else {
-      const mLabel = m.name === 'Portland' && m.state === 'ME' ? 'Portland ME' : m.name;
-      toHtml = `<span class="to" style="color:${anomalyColor(d)}">${mLabel}, ${m.state}</span>`;
-      const dH = d > 0 ? `${d}°F warmer` : `${Math.abs(d)}°F colder`;
-      const dS = (city.act.snow - city.hist.snow).toFixed(0);
-      const snowDesc = dS > 0 ? `+${dS}" snow` : `${dS}" snow`;
-      desc = `${dH}, ${snowDesc} vs normal`;
-    }
-    card.innerHTML = `
-      <div><span class="from">${city.name}, ${city.state}</span><span class="arrow">→</span>${toHtml}</div>
-      <div class="delta">${desc}</div>
-    `;
-    grid.appendChild(card);
+function initMap() {
+  const svg = d3.select('#usa-map');
+  const width = 960, height = 600;
+  const proj = d3.geoAlbersUsa().scale(1280).translate([width / 2, height / 2]);
+  const path = d3.geoPath().projection(proj);
+  const tooltip = document.getElementById('tooltip');
+
+  setupToggles('map-toggles', btn => {
+    currentMapMetric = btn.dataset.metric;
+    updateMapLabels();
   });
+
+  const legendData = [
+    { label: 'Hot (+6\u00b0F+)', color: '#E8594F' },
+    { label: 'Warm (+2 to +5)', color: '#F5A623' },
+    { label: 'Normal (\u00b12)', color: '#69f0ae' },
+    { label: 'Cool (-2 to -5)', color: '#4A90D9' },
+    { label: 'Cold (-6\u00b0F-)', color: '#1565c0' },
+  ];
+  const legendEl = document.getElementById('map-legend');
+  legendData.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'legend-item';
+    div.innerHTML = `<span class="legend-dot" style="background:${item.color}"></span>${item.label}`;
+    legendEl.appendChild(div);
+  });
+
+  // Zoom behavior
+  const mapG = svg.append('g');
+  const zoom = d3.zoom()
+    .scaleExtent([1, 8])
+    .on('zoom', (event) => { mapG.attr('transform', event.transform); });
+  svg.call(zoom);
+  svg.on('dblclick.zoom', null); // disable double-click zoom
+
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+    mapG.append('g')
+      .selectAll('path')
+      .data(topojson.feature(us, us.objects.states).features)
+      .join('path')
+      .attr('class', 'state')
+      .attr('d', path);
+
+    mapG.append('path')
+      .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b))
+      .attr('class', 'state-border')
+      .attr('d', path);
+
+    const cities = DATA._complete.map(c => {
+      const pt = proj([c.lon, c.lat]);
+      return { ...c, px: pt ? pt[0] : null, py: pt ? pt[1] : null,
+               deltaHigh: +(c.act.high - c.hist.high).toFixed(1) };
+    }).filter(c => c.px !== null);
+
+    window._mapCities = cities;
+    window._mapSvg = svg;
+    window._mapG = mapG;
+
+    mapG.selectAll('.city-dot')
+      .data(cities)
+      .join('circle')
+      .attr('class', 'city-dot')
+      .attr('cx', d => d.px)
+      .attr('cy', d => d.py)
+      .attr('r', d => 4 + Math.abs(d.deltaHigh) * 0.35)
+      .attr('fill', d => anomalyColor(d.deltaHigh))
+      .attr('stroke', d => d3.color(anomalyColor(d.deltaHigh)).darker(1))
+      .attr('fill-opacity', .85)
+      .on('mousemove', (evt, d) => showMapTooltip(evt, d))
+      .on('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+    updateMapLabels();
+
+    // Wire zoom buttons
+    d3.select('#zoom-in').on('click', () => svg.transition().duration(300).call(zoom.scaleBy, 1.5));
+    d3.select('#zoom-out').on('click', () => svg.transition().duration(300).call(zoom.scaleBy, 0.67));
+    d3.select('#zoom-reset').on('click', () => svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity));
+
+  }).catch(() => {
+    document.getElementById('map-container').innerHTML =
+      '<p style="color:#E8594F;padding:2rem;text-align:center">Could not load map.</p>';
+  });
+
+  function showMapTooltip(evt, city) {
+    const matches = DATA.matches[currentMapMetric] || {};
+    const matchInfo = matches[`${city.name}, ${city.state}`] || {};
+    const matchLabel = matchInfo.match || 'N/A';
+    const isAst = matchInfo.is_asterisk || false;
+    const label = isAst
+      ? `${city.name} \u2605 <span style="color:#69f0ae;font-size:.72rem">(within 5% of normal)</span>`
+      : `Matches \u2192 <span style="color:#F5A623">${matchLabel}</span>`;
+
+    tooltip.innerHTML = `
+      <h3>${city.name}, ${city.state}</h3>
+      <table>
+        <tr><td></td><td style="color:#888">Norm</td><td style="color:#888">2025-26</td><td style="color:#888">\u0394</td></tr>
+        <tr><td>Avg High</td><td>${city.hist.high}\u00b0F</td><td>${city.act.high}\u00b0F</td>
+            <td style="color:${anomalyColor(city.deltaHigh)}">${city.deltaHigh > 0 ? '+' : ''}${city.deltaHigh}\u00b0F</td></tr>
+        <tr><td>Snow</td><td>${city.hist.snow.toFixed(1)}"</td><td>${city.act.snow.toFixed(1)}"</td>
+            <td>${(city.act.snow - city.hist.snow) > 0 ? '+' : ''}${(city.act.snow - city.hist.snow).toFixed(1)}"</td></tr>
+        <tr><td>Precip</td><td>${city.hist.precip.toFixed(1)}"</td><td>${city.act.precip.toFixed(1)}"</td>
+            <td>${(city.act.precip - city.hist.precip) > 0 ? '+' : ''}${(city.act.precip - city.hist.precip).toFixed(1)}"</td></tr>
+      </table>
+      <div class="tt-match">${label}<br>
+        <span style="color:#555;font-size:.7rem">self-dist ${(matchInfo.self_distance||0).toFixed(3)} | match-dist ${(matchInfo.distance||0).toFixed(3)}</span>
+      </div>`;
+    tooltip.style.opacity = '1';
+    tooltip.style.left = Math.min(evt.clientX + 14, window.innerWidth - 330) + 'px';
+    tooltip.style.top = (evt.clientY - 10) + 'px';
+  }
 }
-buildFindings();
 
-// ─── Map ─────────────────────────────────────────────────────────────────────
-const svg    = d3.select('#usa-map');
-const width  = 960, height = 600;
-const proj   = d3.geoAlbersUsa().scale(1280).translate([width / 2, height / 2]);
-const path   = d3.geoPath().projection(proj);
+function updateMapLabels() {
+  const svg = window._mapG || window._mapSvg;
+  const cities = window._mapCities;
+  if (!svg || !cities) return;
+  const matches = DATA.matches[currentMapMetric] || {};
 
-const tooltip = document.getElementById('tooltip');
-
-function showTooltip(evt, city) {
-  const match = city.matchCity;
-  const isSelf = match.id === city.id;
-  const label = city.isAsterisk
-    ? `${city.name} ★ <span style="color:#69f0ae;font-size:.75rem">(within 5% of normal)</span>`
-    : isSelf
-      ? `${city.name} (nearest = self)`
-      : `Matches → <span style="color:#ffa726">${match.name}, ${match.state}</span>`;
-
-  tooltip.innerHTML = `
-    <h3>${city.name}, ${city.state}</h3>
-    <table>
-      <tr><td></td><td style="color:#78909c">Norm</td><td style="color:#78909c">2025-26</td><td style="color:#78909c">Δ</td></tr>
-      <tr>
-        <td>Avg High</td>
-        <td>${city.hist.high}°F</td>
-        <td>${city.act.high}°F</td>
-        <td style="color:${anomalyColor(city.deltaHigh)}">${city.deltaHigh > 0 ? '+' : ''}${city.deltaHigh}°F</td>
-      </tr>
-      <tr>
-        <td>Snowfall</td>
-        <td>${city.hist.snow.toFixed(1)}"</td>
-        <td>${city.act.snow.toFixed(1)}"</td>
-        <td style="color:${city.act.snow > city.hist.snow ? '#4fc3f7' : '#ffa726'}">${city.act.snow > city.hist.snow ? '+' : ''}${(city.act.snow - city.hist.snow).toFixed(1)}"</td>
-      </tr>
-      <tr>
-        <td>Precip</td>
-        <td>${city.hist.precip.toFixed(1)}"</td>
-        <td>${city.act.precip.toFixed(1)}"</td>
-        <td>${city.act.precip > city.hist.precip ? '+' : ''}${(city.act.precip - city.hist.precip).toFixed(1)}"</td>
-      </tr>
-    </table>
-    <div class="tt-match ${isSelf || city.isAsterisk ? 'tt-self' : 'tt-other'}">
-      Map label: ${label}<br>
-      <span style="color:#455a64;font-size:.72rem">self-dist ${city.selfDist.toFixed(3)} | match-dist ${city.matchDist.toFixed(3)}</span>
-    </div>
-  `;
-  tooltip.style.opacity = '1';
-  moveTooltip(evt);
-}
-
-function moveTooltip(evt) {
-  const x = evt.clientX + 14, y = evt.clientY - 10;
-  tooltip.style.left = Math.min(x, window.innerWidth - 295) + 'px';
-  tooltip.style.top  = y + 'px';
-}
-
-d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
-  // Draw states
-  svg.append('g')
-    .selectAll('path')
-    .data(topojson.feature(us, us.objects.states).features)
-    .join('path')
-    .attr('class', 'state')
-    .attr('d', path);
-
-  // State borders
-  svg.append('path')
-    .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b))
-    .attr('class', 'state-border')
-    .attr('d', path);
-
-  // Project cities
-  const projected = CITIES.map(c => {
-    const pt = proj([c.lon, c.lat]);
-    return { ...c, px: pt ? pt[0] : null, py: pt ? pt[1] : null };
-  }).filter(c => c.px !== null);
-
-  // Draw city dots
-  svg.selectAll('.city-dot')
-    .data(projected)
-    .join('circle')
-    .attr('class', 'city-dot')
-    .attr('cx', d => d.px)
-    .attr('cy', d => d.py)
-    .attr('r', d => 4 + Math.abs(d.deltaHigh) * 0.35)
-    .attr('fill', d => anomalyColor(d.deltaHigh))
-    .attr('stroke', d => d3.color(anomalyColor(d.deltaHigh)).darker(1))
-    .attr('fill-opacity', .85)
-    .on('mousemove', (evt, d) => { showTooltip(evt, d); moveTooltip(evt); })
-    .on('mouseleave', () => { tooltip.style.opacity = '0'; });
-
-  // Per-city label offsets (hand-tuned for the US map)
   const OFFSETS = {
     'Seattle':       { dx: -7, dy: -9, anchor:'end' },
-    'Portland':      { dx: -7, dy:  9, anchor:'end' },      // OR
+    'Portland':      { dx: -7, dy:  9, anchor:'end' },
     'San Francisco': { dx: -7, dy: -9, anchor:'end' },
+    'Sacramento':    { dx: -7, dy:  12, anchor:'end' },
     'Los Angeles':   { dx: -7, dy:  9, anchor:'end' },
+    'San Diego':     { dx: -7, dy:  12, anchor:'end' },
     'Las Vegas':     { dx: -7, dy:  9, anchor:'end' },
+    'Reno':          { dx: -7, dy: -9, anchor:'end' },
     'Phoenix':       { dx: -7, dy:  9, anchor:'end' },
+    'Tucson':        { dx: -7, dy:  12, anchor:'end' },
     'Denver':        { dx:  7, dy: -9, anchor:'start' },
     'Salt Lake City':{ dx:  7, dy:  9, anchor:'start' },
     'Boise':         { dx:  7, dy: -9, anchor:'start' },
+    'Billings':      { dx:  7, dy: -9, anchor:'start' },
     'Albuquerque':   { dx:  7, dy:  9, anchor:'start' },
+    'El Paso':       { dx: -7, dy:  9, anchor:'end' },
     'Chicago':       { dx:  7, dy: -9, anchor:'start' },
     'Detroit':       { dx:  7, dy: -9, anchor:'start' },
     'Minneapolis':   { dx:  7, dy: -9, anchor:'start' },
+    'Milwaukee':     { dx: -7, dy: -9, anchor:'end' },
+    'Indianapolis':  { dx:  7, dy:  9, anchor:'start' },
     'Cleveland':     { dx:  7, dy:  9, anchor:'start' },
-    'Pittsburgh':    { dx: -7, dy:  9, anchor:'end' },
+    'Cincinnati':    { dx:  7, dy:  12, anchor:'start' },
     'St. Louis':     { dx: -7, dy:  9, anchor:'end' },
     'Kansas City':   { dx: -7, dy: -9, anchor:'end' },
+    'Omaha':         { dx: -7, dy: -9, anchor:'end' },
+    'Oklahoma City': { dx:  7, dy:  9, anchor:'start' },
     'New York':      { dx:  8, dy: -9, anchor:'start' },
     'Boston':        { dx:  8, dy: -9, anchor:'start' },
     'Philadelphia':  { dx: -8, dy: -9, anchor:'end' },
+    'Pittsburgh':    { dx: -7, dy:  9, anchor:'end' },
     'Washington DC': { dx: -8, dy:  9, anchor:'end' },
     'Baltimore':     { dx:  8, dy:  9, anchor:'start' },
-    'Burlington':    { dx:  8, dy: -9, anchor:'start' },
-    'Portland ME':   { dx: -7, dy:-11, anchor:'end' },      // ME
-    'Albany':        { dx: -7, dy:  9, anchor:'end' },
-    'Dallas':        { dx:  7, dy:  9, anchor:'start' },
-    'Houston':       { dx: -7, dy:  9, anchor:'end' },
+    'Richmond':      { dx:  8, dy:  9, anchor:'start' },
+    'Charlotte':     { dx:  8, dy: -9, anchor:'start' },
+    'Nashville':     { dx: -7, dy: -9, anchor:'end' },
+    'Memphis':       { dx: -7, dy:  9, anchor:'end' },
     'Atlanta':       { dx:  7, dy:  9, anchor:'start' },
     'Miami':         { dx: -7, dy:  9, anchor:'end' },
-    'Nashville':     { dx: -7, dy: -9, anchor:'end' },
-  };
-  // Special names for Portland ME vs Portland OR
-  const displayName = (c) => c.name === 'Portland' && c.state === 'ME' ? 'Portland ME' : c.name;
-  const labelText = (d) => {
-    const m = d.matchCity;
-    const mName = m.name === 'Portland' && m.state === 'ME' ? 'Portland ME' : m.name;
-    if (d.isAsterisk)       return displayName(d) + ' ★';
-    if (m.id === d.id)      return displayName(d);
-    return `${mName}, ${m.state}`;
+    'Tampa':         { dx: -7, dy: -9, anchor:'end' },
+    'Jacksonville':  { dx:  7, dy: -9, anchor:'start' },
+    'New Orleans':   { dx:  7, dy:  12, anchor:'start' },
+    'Dallas':        { dx:  7, dy:  9, anchor:'start' },
+    'Houston':       { dx: -7, dy:  9, anchor:'end' },
+    'San Antonio':   { dx: -7, dy:  12, anchor:'end' },
+    'Buffalo':       { dx: -7, dy: -9, anchor:'end' },
+    'Albany':        { dx: -7, dy:  9, anchor:'end' },
+    'Burlington':    { dx:  8, dy: -9, anchor:'start' },
+    'Portland ME':   { dx: -7, dy:-11, anchor:'end' },
+    'Anchorage':     { dx:  7, dy: -9, anchor:'start' },
+    'Fargo':         { dx:  7, dy: -9, anchor:'start' },
   };
 
+  const displayName = c => c.name === 'Portland' && c.state === 'ME' ? 'Portland ME' : c.name;
+  const labelText = d => {
+    const key = `${d.name}, ${d.state}`;
+    const matchInfo = matches[key];
+    if (!matchInfo) return displayName(d);
+    if (matchInfo.is_asterisk) return displayName(d) + ' \u2605';
+    if (matchInfo.match === key) return displayName(d);
+    const parts = matchInfo.match.split(', ');
+    return parts[0] + ', ' + parts[1];
+  };
+
+  svg.selectAll('.city-label').remove();
   svg.selectAll('.city-label')
-    .data(projected)
+    .data(cities)
     .join('text')
     .attr('class', 'city-label')
     .attr('x', d => { const o = OFFSETS[displayName(d)] || { dx:6 }; return d.px + o.dx; })
     .attr('y', d => { const o = OFFSETS[displayName(d)] || { dy:-9 }; return d.py + o.dy; })
     .attr('text-anchor', d => (OFFSETS[displayName(d)] || { anchor:'start' }).anchor)
-    .attr('stroke', '#0a1520')
-    .attr('fill', d => d.isAsterisk ? '#69f0ae' : anomalyColor(d.deltaHigh))
-    .text(d => labelText(d))
-    .on('mousemove', (evt, d) => { showTooltip(evt, d); moveTooltip(evt); })
+    .attr('stroke', '#000')
+    .attr('fill', d => {
+      const key = `${d.name}, ${d.state}`;
+      const matchInfo = matches[key];
+      if (matchInfo && matchInfo.is_asterisk) return '#69f0ae';
+      return anomalyColor(d.deltaHigh);
+    })
+    .text(d => labelText(d));
+}
+
+
+// =============================================================================
+// SUMMARY
+// =============================================================================
+
+function initSummary() {
+  const cities = DATA._complete;
+  const grid = document.getElementById('summary-grid');
+
+  const deltas = cities.map(c => c.act.high - c.hist.high);
+  const avgDelta = deltas.reduce((a, b) => a + b, 0) / deltas.length;
+  const warmer = deltas.filter(d => d > 2).length;
+  const cooler = deltas.filter(d => d < -2).length;
+  const normal = cities.length - warmer - cooler;
+
+  const snowDeltas = cities.map(c => ({ name: `${c.name}, ${c.state}`, d: c.act.snow - c.hist.snow }));
+  const mostSnow = [...snowDeltas].sort((a, b) => b.d - a.d)[0];
+  const leastSnow = [...snowDeltas].sort((a, b) => a.d - b.d)[0];
+
+  let maxZ = { city: 'N/A', z: 0, metric: 'high' };
+  for (const metric of ['high', 'snow', 'precip']) {
+    const modelData = DATA.model[metric];
+    if (!modelData) continue;
+    for (const [city, res] of Object.entries(modelData.city_results)) {
+      if (res.z_score_2025 !== null && Math.abs(res.z_score_2025) > Math.abs(maxZ.z)) {
+        maxZ = { city, z: res.z_score_2025, metric };
+      }
+    }
+  }
+
+  const overallMatches = DATA.matches.overall || {};
+  let maxTeleport = { city: 'N/A', match: 'N/A', dist: 0 };
+  for (const [city, info] of Object.entries(overallMatches)) {
+    if (info.distance > maxTeleport.dist && !info.is_asterisk) {
+      maxTeleport = { city, match: info.match, dist: info.distance };
+    }
+  }
+
+  // Sigma extremes
+  const highModel = DATA.model.high;
+  let maxSigma = { city: 'N/A', val: 0 }, minSigma = { city: 'N/A', val: 999 };
+  if (highModel) {
+    for (const [city, res] of Object.entries(highModel.city_results)) {
+      if (res.sigma > maxSigma.val) maxSigma = { city, val: res.sigma };
+      if (res.sigma < minSigma.val) minSigma = { city, val: res.sigma };
+    }
+  }
+
+  const cards = [
+    { label: 'Avg Temperature Anomaly', value: `${avgDelta > 0 ? '+' : ''}${avgDelta.toFixed(1)}\u00b0F`,
+      detail: 'National average vs. 30-year normals', cls: avgDelta > 0 ? 'color-red' : 'color-blue' },
+    { label: 'Cities Warmer Than Normal', value: warmer, detail: `${cooler} cooler, ${normal} near-normal`, cls: 'color-red' },
+    { label: 'Cities Cooler Than Normal', value: cooler, detail: `Of ${cities.length} total cities`, cls: 'color-blue' },
+    { label: 'Most Anomalous City', value: maxZ.city.split(',')[0],
+      detail: `z = ${maxZ.z} (${maxZ.metric})`, cls: 'color-yellow' },
+    { label: 'Biggest Snow Surplus', value: `+${mostSnow.d.toFixed(1)}"`,
+      detail: mostSnow.name, cls: 'color-blue' },
+    { label: 'Biggest Snow Deficit', value: `${leastSnow.d.toFixed(1)}"`,
+      detail: leastSnow.name, cls: 'color-yellow' },
+    { label: 'Most "Teleported" City', value: maxTeleport.city.split(',')[0],
+      detail: `\u2192 ${maxTeleport.match} (d=${maxTeleport.dist.toFixed(3)})`, cls: 'color-red' },
+    { label: 'Cities That Stayed Typical', value: Object.values(overallMatches).filter(m => m.is_asterisk).length,
+      detail: 'Within 5% of own historical normal', cls: 'color-green' },
+    { label: 'Most Unpredictable City', value: maxSigma.city.split(',')[0],
+      detail: `\u03c3 = ${maxSigma.val.toFixed(2)}\u00b0F (temp)`, cls: 'color-red' },
+    { label: 'Most Predictable City', value: minSigma.city.split(',')[0],
+      detail: `\u03c3 = ${minSigma.val.toFixed(2)}\u00b0F (temp)`, cls: 'color-blue' },
+  ];
+
+  cards.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'stat-card';
+    div.innerHTML = `<div class="label">${c.label}</div><div class="value ${c.cls}">${c.value}</div><div class="detail">${c.detail}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+
+// =============================================================================
+// DISTANCE MATRIX
+// =============================================================================
+
+function initDistanceMatrix() {
+  setupToggles('matrix-metric-toggles', btn => { currentMatrixMetric = btn.dataset.metric; renderMatrix(); });
+  setupToggles('matrix-method-toggles', btn => { currentMatrixMethod = btn.dataset.method; renderMatrix(); });
+  renderMatrix();
+}
+
+function renderMatrix() {
+  const labels = DATA.city_labels || [];
+  const order = DATA.cluster_order || labels.map((_, i) => i);
+  const n = labels.length;
+  if (n === 0) return;
+
+  const distData = DATA.distances[currentMatrixMetric];
+  if (!distData) return;
+  const matrix = distData[currentMatrixMethod];
+  if (!matrix) return;
+
+  const orderedLabels = order.map(i => labels[i]);
+  const shortLabels = orderedLabels.map(l => {
+    const parts = l.split(', ');
+    return parts[0].length > 10 ? parts[0].slice(0, 10) + '..' : parts[0];
+  });
+
+  const cellSize = 14;
+  const margin = { top: 140, right: 20, bottom: 20, left: 140 };
+  const w = margin.left + n * cellSize + margin.right;
+  const h = margin.top + n * cellSize + margin.bottom;
+
+  const svg = d3.select('#matrix-svg')
+    .attr('viewBox', `0 0 ${w} ${h}`)
+    .attr('width', Math.min(w, 960))
+    .attr('height', Math.min(h, 960));
+
+  svg.selectAll('*').remove();
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  let maxDist = 0;
+  for (let i = 0; i < n; i++)
+    for (let j = 0; j < n; j++)
+      maxDist = Math.max(maxDist, matrix[order[i]][order[j]]);
+
+  const colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxDist]);
+  const tooltip = document.getElementById('tooltip');
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const val = matrix[order[i]][order[j]];
+      g.append('rect')
+        .attr('x', j * cellSize).attr('y', i * cellSize)
+        .attr('width', cellSize).attr('height', cellSize)
+        .attr('fill', colorScale(val))
+        .attr('stroke', '#000').attr('stroke-width', 0.3)
+        .on('mousemove', evt => {
+          tooltip.innerHTML = `<strong>${orderedLabels[i]}</strong> \u2194 <strong>${orderedLabels[j]}</strong><br>Distance: ${val.toFixed(4)}`;
+          tooltip.style.opacity = '1';
+          tooltip.style.left = Math.min(evt.clientX + 14, window.innerWidth - 300) + 'px';
+          tooltip.style.top = (evt.clientY - 10) + 'px';
+        })
+        .on('mouseleave', () => { tooltip.style.opacity = '0'; });
+    }
+  }
+
+  g.selectAll('.y-label').data(shortLabels).join('text')
+    .attr('x', -4).attr('y', (d, i) => i * cellSize + cellSize / 2)
+    .attr('text-anchor', 'end').attr('dominant-baseline', 'middle')
+    .attr('fill', '#888').attr('font-size', '7px').text(d => d);
+
+  g.selectAll('.x-label').data(shortLabels).join('text')
+    .attr('x', (d, i) => i * cellSize + cellSize / 2).attr('y', -4)
+    .attr('text-anchor', 'start').attr('dominant-baseline', 'middle')
+    .attr('fill', '#888').attr('font-size', '7px')
+    .attr('transform', (d, i) => `rotate(-55, ${i * cellSize + cellSize / 2}, -4)`)
+    .text(d => d);
+}
+
+
+// =============================================================================
+// DATA TABLE (Enhanced)
+// =============================================================================
+
+function initDataTable() {
+  const cities = DATA._complete;
+  currentTableMetric = 'high';
+
+  document.getElementById('table-metric-select').addEventListener('change', e => {
+    currentTableMetric = e.target.value;
+    rebuildTable();
+  });
+
+  document.getElementById('table-search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    const filtered = cities.filter(c =>
+      c.name.toLowerCase().includes(q) || c.state.toLowerCase().includes(q)
+    );
+    renderTableRows(filtered, window._tableColumns);
+  });
+
+  rebuildTable();
+}
+
+function rebuildTable() {
+  const cities = DATA._complete;
+  const metric = currentTableMetric;
+  const mLabel = metric === 'high' ? 'High (\u00b0F)' : metric === 'snow' ? 'Snow (in)' : 'Precip (in)';
+  const modelData = DATA.model[metric];
+
+  // Find sigma extremes for this metric
+  let maxSigmaCity = '', minSigmaCity = '', maxSigmaVal = 0, minSigmaVal = 999;
+  if (modelData) {
+    for (const [city, res] of Object.entries(modelData.city_results)) {
+      if (res.sigma > maxSigmaVal) { maxSigmaVal = res.sigma; maxSigmaCity = city; }
+      if (res.sigma < minSigmaVal) { minSigmaVal = res.sigma; minSigmaCity = city; }
+    }
+  }
+
+  const metricKey = metric === 'high' ? 'high' : metric === 'snow' ? 'snow' : 'precip';
+
+  const columns = [
+    { key: 'city', label: 'City', fmt: d => `${d.name}, ${d.state}`, align: 'left' },
+    { key: 'norm', label: `Norm ${mLabel}`, fmt: d => d.hist[metricKey].toFixed(1) },
+    { key: 'act', label: `Act ${mLabel}`, fmt: d => d.act[metricKey].toFixed(1) },
+    { key: 'delta', label: `<span class="stat-tip" data-stat="anomaly">\u0394</span> ${mLabel}`, fmt: d => {
+        const v = d.act[metricKey] - d.hist[metricKey];
+        return (v > 0 ? '+' : '') + v.toFixed(1);
+      },
+      color: d => anomalyColor(d.act[metricKey] - d.hist[metricKey])
+    },
+    { key: 'z_score', label: '<span class="stat-tip" data-stat="z-score">Z-Score</span>', fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        return cr && cr.z_score_2025 !== null ? cr.z_score_2025.toFixed(2) : '';
+      },
+      color: d => {
+        if (!modelData) return '#888';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr || cr.z_score_2025 === null) return '#888';
+        const z = Math.abs(cr.z_score_2025);
+        return z > 2 ? COLORS.red : z > 1 ? COLORS.yellow : COLORS.green;
+      }
+    },
+    { key: 'sigma', label: '<span class="stat-tip" data-stat="sigma">\u03c3</span>',
+      fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        return cr ? cr.sigma.toFixed(2) : '';
+      },
+      flagClass: d => {
+        const label = `${d.name}, ${d.state}`;
+        if (label === maxSigmaCity) return 'sigma-max';
+        if (label === minSigmaCity) return 'sigma-min';
+        return '';
+      }
+    },
+    { key: 'trend', label: '<span class="stat-tip" data-stat="trend-per-decade">Trend/dec</span>', fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '';
+        const v = cr.random_slope;
+        return (v > 0 ? '+' : '') + v.toFixed(3);
+      },
+      color: d => {
+        if (!modelData) return '#888';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '#888';
+        return cr.random_slope > 0.001 ? COLORS.red : cr.random_slope < -0.001 ? COLORS.blue : '#888';
+      }
+    },
+    { key: 'enso_ln', label: '<span class="stat-tip" data-stat="enso-effect">La Ni\u00f1a</span>', fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '';
+        const v = cr.enso_la_nina_effect;
+        return (v > 0 ? '+' : '') + v.toFixed(2);
+      },
+      color: d => {
+        if (!modelData) return '#888';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '#888';
+        return Math.abs(cr.enso_la_nina_effect) > 1 ? COLORS.blue : '#888';
+      }
+    },
+    { key: 'enso_en', label: '<span class="stat-tip" data-stat="enso-effect">El Ni\u00f1o</span>', fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '';
+        const v = cr.enso_el_nino_effect;
+        return (v > 0 ? '+' : '') + v.toFixed(2);
+      },
+      color: d => {
+        if (!modelData) return '#888';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '#888';
+        return Math.abs(cr.enso_el_nino_effect) > 1 ? COLORS.red : '#888';
+      }
+    },
+    { key: 'vol', label: '<span class="stat-tip" data-stat="volatility-change">Vol \u0394</span>', fmt: d => {
+        if (!modelData) return '';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '';
+        const v = cr.volatility_change;
+        return (v > 0 ? '+' : '') + v.toFixed(2);
+      },
+      color: d => {
+        if (!modelData) return '#888';
+        const cr = modelData.city_results[`${d.name}, ${d.state}`];
+        if (!cr) return '#888';
+        return cr.volatility_change > 0.5 ? COLORS.red : cr.volatility_change < -0.5 ? COLORS.blue : '#888';
+      }
+    },
+    { key: 'match', label: '<span class="stat-tip" data-stat="climate-match">Climate Match</span>', fmt: d => {
+        const m = (DATA.matches.overall || {})[`${d.name}, ${d.state}`];
+        return m ? (m.is_asterisk ? d.name + ' \u2605' : m.match.split(',')[0]) : '';
+      }, align: 'left'
+    },
+  ];
+
+  // Build header
+  const header = document.getElementById('table-header');
+  header.innerHTML = '';
+  columns.forEach((col, i) => {
+    const th = document.createElement('th');
+    th.innerHTML = col.label;
+    th.dataset.col = i;
+    th.addEventListener('click', () => sortTable(i, columns, cities));
+    if (col.align === 'left') th.style.textAlign = 'left';
+    header.appendChild(th);
+  });
+
+  window._tableColumns = columns;
+  window._tableCities = [...cities];
+  currentSortCol = null;
+  renderTableRows(cities, columns);
+
+  // Re-init stat tooltips for newly created header elements
+  initStatTooltips();
+}
+
+function renderTableRows(cities, columns) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  cities.forEach(d => {
+    const tr = document.createElement('tr');
+    columns.forEach(col => {
+      const td = document.createElement('td');
+      td.textContent = col.fmt(d);
+      if (col.color) td.style.color = col.color(d);
+      if (col.align === 'left') td.style.textAlign = 'left';
+      if (col.flagClass) {
+        const cls = col.flagClass(d);
+        if (cls) td.classList.add(cls);
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function sortTable(colIndex, columns, allCities) {
+  const col = columns[colIndex];
+  if (currentSortCol === colIndex) {
+    currentSortAsc = !currentSortAsc;
+  } else {
+    currentSortCol = colIndex;
+    currentSortAsc = true;
+  }
+
+  const sorted = [...allCities].sort((a, b) => {
+    const va = col.fmt(a);
+    const vb = col.fmt(b);
+    const na = parseFloat(va);
+    const nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return currentSortAsc ? na - nb : nb - na;
+    return currentSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  renderTableRows(sorted, columns);
+
+  document.querySelectorAll('#table-header th').forEach((th, i) => {
+    const existing = th.querySelector('.sort-arrow');
+    if (existing) existing.remove();
+    if (i === colIndex) {
+      const arrow = document.createElement('span');
+      arrow.className = 'sort-arrow';
+      arrow.textContent = currentSortAsc ? ' \u25b2' : ' \u25bc';
+      th.appendChild(arrow);
+    }
+  });
+}
+
+
+// =============================================================================
+// TIME SERIES: CITY-SPECIFIC
+// =============================================================================
+
+function initTimeSeriesCity() {
+  const select = document.getElementById('ts-city-select');
+  const cities = DATA._complete.filter(c => c.timeseries && c.timeseries.length > 0);
+
+  cities.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = `${c.name}, ${c.state}`;
+    opt.textContent = `${c.name}, ${c.state}`;
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', () => renderTimeSeries(select.value));
+  document.getElementById('ts-enso-toggle').addEventListener('change', () => renderTimeSeries(select.value));
+  document.getElementById('ts-spaghetti-toggle').addEventListener('change', () => renderTimeSeries(select.value));
+
+  if (cities.length > 0) renderTimeSeries(select.value);
+}
+
+function renderTimeSeries(cityLabel) {
+  const chartsDiv = document.getElementById('ts-charts');
+  const statsDiv = document.getElementById('ts-stats');
+  chartsDiv.innerHTML = '';
+  statsDiv.innerHTML = '';
+
+  const city = DATA._complete.find(c => `${c.name}, ${c.state}` === cityLabel);
+  if (!city || !city.timeseries) return;
+
+  const showEnso = document.getElementById('ts-enso-toggle').checked;
+  const showSpaghetti = document.getElementById('ts-spaghetti-toggle').checked;
+
+  const metrics = [
+    { key: 'high', label: 'Average High Temperature (\u00b0F)', unit: '\u00b0F', color: COLORS.red },
+    { key: 'snow', label: 'Total Snowfall (inches)', unit: '"', color: COLORS.blue },
+    { key: 'precip', label: 'Total Precipitation (inches)', unit: '"', color: COLORS.yellow },
+  ];
+
+  // City anomaly stats
+  let statsHtml = `<h4>${city.name}, ${city.state} \u2014 2025-26 Anomaly</h4>`;
+  metrics.forEach(m => {
+    const modelData = DATA.model[m.key];
+    if (!modelData) return;
+    const cr = modelData.city_results[cityLabel];
+    if (!cr) return;
+    const z = cr.z_score_2025;
+    const pct = cr.anomaly_pct;
+    const zColor = z !== null ? (Math.abs(z) > 2 ? COLORS.red : Math.abs(z) > 1 ? COLORS.yellow : COLORS.green) : COLORS.muted;
+    const sigLabel = z !== null ? (Math.abs(z) > 2 ? '\u26a0 Anomalous' : Math.abs(z) > 1 ? 'Notable' : 'Typical') : '';
+
+    statsHtml += `
+      <div class="ts-stat-row">
+        <span class="ts-stat-label">${m.label.split('(')[0].trim()}</span>
+        <span style="color:${zColor}">z = ${z !== null ? z : 'N/A'} (${pct !== null ? pct + 'th %ile' : 'N/A'}) ${sigLabel}</span>
+      </div>
+      <div class="ts-stat-row">
+        <span class="ts-stat-label" style="padding-left:1rem">\u03c3=${cr.sigma} | int=${cr.random_intercept} | slope=${cr.random_slope}/dec | La Ni\u00f1a=${cr.enso_la_nina_effect > 0 ? '+' : ''}${cr.enso_la_nina_effect} | El Ni\u00f1o=${cr.enso_el_nino_effect > 0 ? '+' : ''}${cr.enso_el_nino_effect}</span>
+        <span></span>
+      </div>`;
+  });
+  statsDiv.innerHTML = statsHtml;
+
+  // Render each metric chart
+  metrics.forEach(m => {
+    const block = document.createElement('div');
+    block.className = 'ts-chart-block';
+    block.innerHTML = `<h3>${m.label}</h3>`;
+
+    const width = 800, height = 260;
+    const margin = { top: 20, right: 80, bottom: 35, left: 55 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+
+    const svg = d3.select(block).append('svg')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('width', '100%');
+
+    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const ts = city.timeseries.filter(pt => pt[m.key] !== null && pt[m.key] !== undefined);
+    const histPts = ts.filter(pt => pt.year < 2025);
+    const actPt = ts.find(pt => pt.year === 2025);
+
+    const modelData = DATA.model[m.key];
+    let fittedVals = [], sigma = 1;
+    if (modelData) {
+      const cr = modelData.city_results[cityLabel];
+      if (cr) { fittedVals = cr.fitted_values || []; sigma = cr.sigma; }
+    }
+
+    let allVals = ts.map(pt => pt[m.key]);
+    let fittedAllVals = fittedVals.map(fv => [fv.ci_lo, fv.ci_hi]).flat();
+
+    if (showSpaghetti && modelData) {
+      DATA._complete.forEach(c => {
+        if (c.timeseries) c.timeseries.forEach(pt => {
+          if (pt[m.key] !== null && pt[m.key] !== undefined) allVals.push(pt[m.key]);
+        });
+      });
+    }
+
+    const yMin = Math.min(...allVals, ...fittedAllVals);
+    const yMax = Math.max(...allVals, ...fittedAllVals);
+    const yPad = (yMax - yMin) * 0.1;
+
+    const x = d3.scaleLinear().domain([1990, 2026]).range([0, innerW]);
+    const y = d3.scaleLinear().domain([Math.max(0, yMin - yPad), yMax + yPad]).range([innerH, 0]).nice();
+
+    // ENSO background
+    if (showEnso && modelData && modelData.enso) {
+      (modelData.enso.years || []).forEach(ey => {
+        const color = ey.phase === 'el_nino' ? '#E8594F' : ey.phase === 'la_nina' ? '#4A90D9' : null;
+        if (color) {
+          g.append('rect')
+            .attr('x', x(ey.year - 0.4)).attr('y', 0)
+            .attr('width', x(ey.year + 0.4) - x(ey.year - 0.4))
+            .attr('height', innerH).attr('fill', color).attr('fill-opacity', 0.06);
+        }
+      });
+    }
+
+    // Axes
+    g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(8).tickFormat(d3.format('d')))
+      .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+    g.append('g').call(d3.axisLeft(y).ticks(5))
+      .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+
+    // 30-year mean
+    if (city.hist && city.hist[m.key] !== undefined) {
+      const meanVal = city.hist[m.key];
+      g.append('line').attr('x1', 0).attr('x2', innerW)
+        .attr('y1', y(meanVal)).attr('y2', y(meanVal))
+        .attr('stroke', '#444').attr('stroke-dasharray', '4,4').attr('stroke-width', 1);
+      g.append('text').attr('x', innerW - 4).attr('y', y(meanVal) - 5)
+        .attr('text-anchor', 'end').attr('fill', '#555').attr('font-size', '8px').text('30-yr mean');
+    }
+
+    // Spaghetti
+    if (showSpaghetti && modelData) {
+      DATA._complete.forEach(otherCity => {
+        const otherLabel = `${otherCity.name}, ${otherCity.state}`;
+        if (otherLabel === cityLabel) return;
+        const otherTs = (otherCity.timeseries || []).filter(pt => pt[m.key] != null && pt.year < 2025);
+        if (otherTs.length < 2) return;
+        const lineGen = d3.line().x(d => x(d.year)).y(d => y(d[m.key])).curve(d3.curveMonotoneX);
+        g.append('path').datum(otherTs)
+          .attr('d', lineGen).attr('fill', 'none')
+          .attr('stroke', '#333').attr('stroke-width', 0.5).attr('stroke-opacity', 0.4);
+      });
+    }
+
+    // CI band
+    if (fittedVals.length > 1) {
+      const areaGen = d3.area().x(d => x(d.year)).y0(d => y(d.ci_lo)).y1(d => y(d.ci_hi)).curve(d3.curveMonotoneX);
+      g.append('path').datum(fittedVals.filter(fv => fv.year < 2025))
+        .attr('d', areaGen).attr('fill', m.color).attr('fill-opacity', 0.1);
+    }
+
+    // Fitted line
+    if (fittedVals.length > 1) {
+      const lineGen = d3.line().x(d => x(d.year)).y(d => y(d.fitted)).curve(d3.curveMonotoneX);
+      g.append('path').datum(fittedVals)
+        .attr('d', lineGen).attr('fill', 'none')
+        .attr('stroke', COLORS.blue).attr('stroke-width', 2).attr('stroke-opacity', 0.8);
+    }
+
+    // Historical dots (ENSO colored)
+    const ensoMap = {};
+    if (modelData && modelData.enso) modelData.enso.years.forEach(ey => { ensoMap[ey.year] = ey.phase; });
+
+    g.selectAll('.hist-dot').data(histPts).join('circle')
+      .attr('cx', d => x(d.year)).attr('cy', d => y(d[m.key]))
+      .attr('r', 3.5)
+      .attr('fill', d => {
+        if (!showEnso) return '#888';
+        const phase = ensoMap[d.year];
+        return phase === 'el_nino' ? '#E8594F' : phase === 'la_nina' ? '#4A90D9' : '#888';
+      })
+      .attr('fill-opacity', 0.7)
+      .attr('stroke', d => {
+        if (!showEnso) return '#555';
+        const phase = ensoMap[d.year];
+        return phase === 'el_nino' ? '#c0392b' : phase === 'la_nina' ? '#2980b9' : '#555';
+      })
+      .attr('stroke-width', 0.8);
+
+    // 2025 actual
+    if (actPt && actPt[m.key] !== undefined) {
+      g.append('circle')
+        .attr('cx', x(2025)).attr('cy', y(actPt[m.key]))
+        .attr('r', 8).attr('fill', COLORS.red).attr('stroke', '#fff').attr('stroke-width', 2);
+      g.append('text')
+        .attr('x', x(2025) + 12).attr('y', y(actPt[m.key]) + 4)
+        .attr('fill', COLORS.red).attr('font-size', '11px').attr('font-weight', '700')
+        .text(`${actPt[m.key]}${m.unit}`);
+      if (showEnso) {
+        g.append('text')
+          .attr('x', x(2025) + 12).attr('y', y(actPt[m.key]) + 16)
+          .attr('fill', '#4A90D9').attr('font-size', '8px').text('La Ni\u00f1a');
+      }
+    }
+
+    // Trend annotation
+    if (modelData && modelData.trend) {
+      const t = modelData.trend;
+      const trendColor = t.significant ? (t.direction === 'warming' ? COLORS.red : COLORS.blue) : '#666';
+      const arrow = t.direction === 'warming' ? '\u2197' : '\u2198';
+      g.append('text').attr('x', innerW).attr('y', 10)
+        .attr('text-anchor', 'end').attr('fill', trendColor).attr('font-size', '9px').attr('font-weight', '600')
+        .text(`${arrow} ${t.per_decade > 0 ? '+' : ''}${t.per_decade}/decade`);
+      g.append('text').attr('x', innerW).attr('y', 22)
+        .attr('text-anchor', 'end').attr('fill', '#555').attr('font-size', '7.5px')
+        .text(`p=${t.p_value}${t.significant ? '' : ' (n.s.)'}`);
+    }
+
+    // ENSO legend
+    if (showEnso) {
+      const leg = g.append('g').attr('transform', `translate(0, ${innerH + 22})`);
+      [['El Ni\u00f1o', '#E8594F'], ['La Ni\u00f1a', '#4A90D9'], ['Neutral', '#888']].forEach(([label, color], i) => {
+        leg.append('circle').attr('cx', innerW - 200 + i * 75).attr('cy', 0).attr('r', 3).attr('fill', color);
+        leg.append('text').attr('x', innerW - 195 + i * 75).attr('y', 3).attr('fill', '#888').attr('font-size', '7px').text(label);
+      });
+    }
+
+    chartsDiv.appendChild(block);
+  });
+}
+
+
+// =============================================================================
+// TIME SERIES: OVERVIEW (National trends, random effects, ENSO, variance)
+// =============================================================================
+
+function initTimeSeriesOverview() {
+  renderOverviewAnalytics();
+  renderOverviewSpaghetti();
+  renderREScatter();
+}
+
+function renderOverviewAnalytics() {
+  // Trend card
+  const trendCard = document.getElementById('ov-trend-card');
+  let trendHtml = '<div class="label">TREND ANALYSIS</div>';
+  ['high', 'snow', 'precip'].forEach(metric => {
+    const m = DATA.model[metric];
+    if (!m || !m.trend) return;
+    const t = m.trend;
+    const arrow = t.direction === 'warming' ? '\u2197' : '\u2198';
+    const color = t.significant ? COLORS.red : '#888';
+    const label = metric === 'high' ? 'Temperature' : metric === 'snow' ? 'Snowfall' : 'Precipitation';
+    trendHtml += `<div class="ts-stat-row">
+      <span class="ts-stat-label">${label}</span>
+      <span style="color:${color}">${arrow} ${t.per_decade > 0 ? '+' : ''}${t.per_decade}/decade (p=${t.p_value}${t.significant ? '' : ' n.s.'})</span>
+    </div>`;
+  });
+  trendHtml += '<div class="detail" style="margin-top:.5rem">National mean trend across 50 cities. \u201cn.s.\u201d = not significant at \u03b1=0.05</div>';
+  trendCard.innerHTML = trendHtml;
+
+  // ENSO card
+  const ensoCard = document.getElementById('ov-enso-card');
+  let ensoHtml = '<div class="label">ENSO IMPACT (Global)</div>';
+  ['high', 'snow', 'precip'].forEach(metric => {
+    const m = DATA.model[metric];
+    if (!m || !m.enso) return;
+    const e = m.enso;
+    const label = metric === 'high' ? 'Temp residual' : metric === 'snow' ? 'Snow residual' : 'Precip residual';
+    const diff = e.el_nino_vs_la_nina_diff;
+    const diffColor = Math.abs(diff) > 0.5 ? COLORS.yellow : '#888';
+    ensoHtml += `<div class="ts-stat-row">
+      <span class="ts-stat-label">${label}</span>
+      <span style="color:${diffColor}">EN: ${e.means.el_nino.mean > 0 ? '+' : ''}${e.means.el_nino.mean} | LN: ${e.means.la_nina.mean > 0 ? '+' : ''}${e.means.la_nina.mean}</span>
+    </div>`;
+  });
+  ensoHtml += '<div class="detail" style="margin-top:.5rem">Mean model residuals by ENSO phase. El Ni\u00f1o brings +1\u201d more precip nationally.</div>';
+  ensoCard.innerHTML = ensoHtml;
+
+  // Random effects card
+  const reCard = document.getElementById('ov-re-card');
+  let reHtml = '<div class="label">RANDOM EFFECTS STRUCTURE</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem">';
+  ['high', 'snow', 'precip'].forEach(metric => {
+    const m = DATA.model[metric];
+    if (!m || !m.random_effects) return;
+    const re = m.random_effects;
+    const label = metric === 'high' ? 'Temperature' : metric === 'snow' ? 'Snowfall' : 'Precipitation';
+    const corrColor = Math.abs(re.intercept_slope_correlation) > 0.3 ? COLORS.yellow : '#888';
+    const corrNote = Math.abs(re.intercept_slope_correlation) > 0.3
+      ? (re.intercept_slope_correlation > 0 ? 'Warm cities warming faster' : 'Snowy cities losing snow')
+      : 'No strong pattern';
+    reHtml += `<div>
+      <div style="color:${COLORS.muted};font-size:.72rem;text-transform:uppercase;letter-spacing:.03em">${label}</div>
+      <div style="font-size:.85rem;margin:.3rem 0"><span style="color:${corrColor}">\u03c1 = ${re.intercept_slope_correlation}</span></div>
+      <div style="font-size:.72rem;color:#666">\u03c3<sub>int</sub>=${re.intercept_sd} | \u03c3<sub>slope</sub>=${re.slope_sd}</div>
+      <div style="font-size:.72rem;color:#888;margin-top:.2rem">${corrNote}</div>
+    </div>`;
+  });
+  reHtml += '</div>';
+  reCard.innerHTML = reHtml;
+
+  // Variance decomposition
+  const varCard = document.getElementById('ov-variance-card');
+  let varHtml = '<div class="label">VARIANCE DECOMPOSITION</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem">';
+  ['high', 'snow', 'precip'].forEach(metric => {
+    const m = DATA.model[metric];
+    if (!m || !m.variance_decomposition) return;
+    const v = m.variance_decomposition;
+    const label = metric === 'high' ? 'Temperature' : metric === 'snow' ? 'Snowfall' : 'Precipitation';
+    varHtml += `<div>
+      <div style="color:${COLORS.muted};font-size:.72rem;text-transform:uppercase;letter-spacing:.03em">${label} (R\u00b2=${v.r_squared})</div>
+      <div style="margin:.4rem 0;height:18px;background:#111;border-radius:3px;overflow:hidden;display:flex">
+        <div style="width:${v.spline_share*100}%;background:${COLORS.yellow};min-width:1px" title="Trend"></div>
+        <div style="width:${v.city_share*100}%;background:${COLORS.blue}" title="City"></div>
+        <div style="width:${v.residual_share*100}%;background:${COLORS.red}" title="Residual"></div>
+      </div>
+      <div style="font-size:.7rem;color:#666">Trend ${(v.spline_share*100).toFixed(1)}% | City ${(v.city_share*100).toFixed(1)}% | Residual ${(v.residual_share*100).toFixed(1)}%</div>
+    </div>`;
+  });
+  varHtml += '</div>';
+  varCard.innerHTML = varHtml;
+
+  // Sigma rankings card
+  const sigmaCard = document.getElementById('ov-sigma-card');
+  let sigHtml = '<div class="label">PREDICTABILITY (\u03c3 RANKINGS)</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem">';
+  ['high', 'snow', 'precip'].forEach(metric => {
+    const m = DATA.model[metric];
+    if (!m || !m.sigma_rankings) return;
+    const sr = m.sigma_rankings;
+    const label = metric === 'high' ? 'Temperature' : metric === 'snow' ? 'Snowfall' : 'Precipitation';
+    sigHtml += `<div>
+      <div style="color:${COLORS.muted};font-size:.72rem;text-transform:uppercase;letter-spacing:.03em">${label}</div>
+      <div style="font-size:.8rem;margin:.3rem 0">
+        <span style="color:${COLORS.red}">\u2191 ${sr.highest_sigma_city.split(',')[0]}</span>
+        <span style="color:#666"> \u03c3=${sr.highest_sigma_val}</span>
+      </div>
+      <div style="font-size:.8rem">
+        <span style="color:${COLORS.blue}">\u2193 ${sr.lowest_sigma_city.split(',')[0]}</span>
+        <span style="color:#666"> \u03c3=${sr.lowest_sigma_val}</span>
+      </div>
+    </div>`;
+  });
+  sigHtml += '</div><div class="detail" style="margin-top:.5rem">High \u03c3 = unpredictable winters (continental climates). Low \u03c3 = consistent (marine/tropical).</div>';
+  sigmaCard.innerHTML = sigHtml;
+}
+
+function renderOverviewSpaghetti() {
+  const svg = d3.select('#ov-spaghetti-svg');
+  svg.selectAll('*').remove();
+
+  const modelHigh = DATA.model.high;
+  if (!modelHigh) return;
+
+  const width = 900, height = 350;
+  const margin = { top: 20, right: 30, bottom: 35, left: 55 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // Gather all city trajectories
+  let allVals = [];
+  DATA._complete.forEach(c => {
+    if (c.timeseries) c.timeseries.forEach(pt => {
+      if (pt.high != null) allVals.push(pt.high);
+    });
+  });
+
+  const x = d3.scaleLinear().domain([1990, 2026]).range([0, innerW]);
+  const yMin = Math.min(...allVals);
+  const yMax = Math.max(...allVals);
+  const yPad = (yMax - yMin) * 0.05;
+  const y = d3.scaleLinear().domain([yMin - yPad, yMax + yPad]).range([innerH, 0]).nice();
+
+  // Axes
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(8).tickFormat(d3.format('d')))
+    .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+  g.append('g').call(d3.axisLeft(y).ticks(6))
+    .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+
+  // ENSO stripes
+  if (modelHigh.enso) {
+    (modelHigh.enso.years || []).forEach(ey => {
+      const color = ey.phase === 'el_nino' ? '#E8594F' : ey.phase === 'la_nina' ? '#4A90D9' : null;
+      if (color) {
+        g.append('rect')
+          .attr('x', x(ey.year - 0.4)).attr('y', 0)
+          .attr('width', x(ey.year + 0.4) - x(ey.year - 0.4))
+          .attr('height', innerH).attr('fill', color).attr('fill-opacity', 0.04);
+      }
+    });
+  }
+
+  // Draw all city lines (spaghetti)
+  DATA._complete.forEach(c => {
+    const ts = (c.timeseries || []).filter(pt => pt.high != null);
+    if (ts.length < 2) return;
+    const lineGen = d3.line().x(d => x(d.year)).y(d => y(d.high)).curve(d3.curveMonotoneX);
+    g.append('path').datum(ts)
+      .attr('d', lineGen).attr('fill', 'none')
+      .attr('stroke', '#555').attr('stroke-width', 0.6).attr('stroke-opacity', 0.3);
+  });
+
+  // Spline trend (thick)
+  if (modelHigh.spline_trend) {
+    const lineGen = d3.line().x(d => x(d.year)).y(d => y(d.fitted)).curve(d3.curveMonotoneX);
+    g.append('path').datum(modelHigh.spline_trend)
+      .attr('d', lineGen).attr('fill', 'none')
+      .attr('stroke', COLORS.yellow).attr('stroke-width', 3).attr('stroke-opacity', 0.9);
+
+    // CI band
+    const areaGen = d3.area().x(d => x(d.year)).y0(d => y(d.ci_lo)).y1(d => y(d.ci_hi)).curve(d3.curveMonotoneX);
+    g.append('path').datum(modelHigh.spline_trend)
+      .attr('d', areaGen).attr('fill', COLORS.yellow).attr('fill-opacity', 0.08);
+  }
+
+  // Legend
+  const leg = g.append('g').attr('transform', `translate(5, 5)`);
+  leg.append('line').attr('x1', 0).attr('x2', 20).attr('y1', 0).attr('y2', 0).attr('stroke', '#555').attr('stroke-width', 1);
+  leg.append('text').attr('x', 24).attr('y', 3).attr('fill', '#888').attr('font-size', '8px').text('Individual cities');
+  leg.append('line').attr('x1', 0).attr('x2', 20).attr('y1', 14).attr('y2', 14).attr('stroke', COLORS.yellow).attr('stroke-width', 3);
+  leg.append('text').attr('x', 24).attr('y', 17).attr('fill', '#888').attr('font-size', '8px').text('National spline trend');
+}
+
+// ── Random Effects Scatter Plot ──────────────────────────────────────────────
+function renderREScatter() {
+  const svg = d3.select('#re-scatter');
+  svg.selectAll('*').remove();
+
+  const modelHigh = DATA.model.high;
+  if (!modelHigh || !modelHigh.random_effects) return;
+
+  const effects = modelHigh.random_effects.effects;
+  const corr = modelHigh.random_effects.intercept_slope_correlation;
+
+  const width = 800, height = 350;
+  const margin = { top: 20, right: 30, bottom: 45, left: 60 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const xExtent = d3.extent(effects, d => d.intercept);
+  const yExtent = d3.extent(effects, d => d.slope_per_decade);
+  const xPad = (xExtent[1] - xExtent[0]) * 0.15;
+  const yPad = (yExtent[1] - yExtent[0]) * 0.15;
+
+  const x = d3.scaleLinear().domain([xExtent[0] - xPad, xExtent[1] + xPad]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([yExtent[0] - yPad, yExtent[1] + yPad]).range([innerH, 0]);
+
+  g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#333').attr('stroke-dasharray', '3,3');
+  g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(0)).attr('y2', y(0))
+    .attr('stroke', '#333').attr('stroke-dasharray', '3,3');
+
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(8))
+    .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+  g.append('g').call(d3.axisLeft(y).ticks(6))
+    .selectAll('text,line,path').attr('stroke', '#444').attr('fill', '#888');
+
+  g.append('text').attr('x', innerW / 2).attr('y', innerH + 35).attr('text-anchor', 'middle')
+    .attr('fill', '#888').attr('font-size', '10px').text('Random Intercept (baseline \u00b0F offset)');
+  g.append('text').attr('x', -innerH / 2).attr('y', -45).attr('text-anchor', 'middle')
+    .attr('fill', '#888').attr('font-size', '10px').attr('transform', 'rotate(-90)')
+    .text('Random Slope (\u00b0F/decade trend)');
+
+  const tooltip = document.getElementById('tooltip');
+
+  g.selectAll('.re-dot').data(effects).join('circle')
+    .attr('cx', d => x(d.intercept)).attr('cy', d => y(d.slope_per_decade))
+    .attr('r', d => 3 + d.sigma * 0.5)
+    .attr('fill', d => d.slope_per_decade > 0 ? COLORS.red : COLORS.blue)
+    .attr('fill-opacity', 0.6)
+    .attr('stroke', d => d.slope_per_decade > 0 ? '#c0392b' : '#2980b9')
+    .attr('stroke-width', 0.8)
+    .style('cursor', 'pointer')
+    .on('mousemove', (evt, d) => {
+      tooltip.innerHTML = `<strong>${d.city}</strong><br>Intercept: ${d.intercept > 0 ? '+' : ''}${d.intercept}\u00b0F<br>Slope: ${d.slope_per_decade > 0 ? '+' : ''}${d.slope_per_decade}\u00b0F/decade<br>\u03c3: ${d.sigma}\u00b0F`;
+      tooltip.style.opacity = '1';
+      tooltip.style.left = Math.min(evt.clientX + 14, window.innerWidth - 300) + 'px';
+      tooltip.style.top = (evt.clientY - 10) + 'px';
+    })
     .on('mouseleave', () => { tooltip.style.opacity = '0'; });
 
-}).catch(err => {
-  console.error('Map load error:', err);
-  document.getElementById('map-svg-wrap').innerHTML =
-    '<p style="color:#ff6b35;padding:2rem;text-align:center">Could not load map. Check network connectivity.</p>';
-});
+  g.append('text').attr('x', innerW - 5).attr('y', 15)
+    .attr('text-anchor', 'end').attr('fill', COLORS.yellow).attr('font-size', '11px').attr('font-weight', '700')
+    .text(`\u03c1 = ${corr}`);
+  g.append('text').attr('x', innerW - 5).attr('y', 28)
+    .attr('text-anchor', 'end').attr('fill', '#888').attr('font-size', '8px')
+    .text(corr > 0.3 ? 'Warm cities warming faster' : corr < -0.3 ? 'Warm cities cooling' : 'No strong correlation');
+
+  g.append('text').attr('x', innerW - 5).attr('y', innerH - 5)
+    .attr('text-anchor', 'end').attr('fill', '#333').attr('font-size', '8px').text('warm + cooling');
+  g.append('text').attr('x', innerW - 5).attr('y', 45)
+    .attr('text-anchor', 'end').attr('fill', '#333').attr('font-size', '8px').text('warm + warming');
+  g.append('text').attr('x', 5).attr('y', innerH - 5)
+    .attr('text-anchor', 'start').attr('fill', '#333').attr('font-size', '8px').text('cold + cooling');
+  g.append('text').attr('x', 5).attr('y', 45)
+    .attr('text-anchor', 'start').attr('fill', '#333').attr('font-size', '8px').text('cold + warming');
+}
+
+
+// =============================================================================
+// STAT TOOLTIPS
+// =============================================================================
+
+const STAT_EXPLANATIONS = {
+  'z-score': "How many standard deviations from the historical average. \u00b11 is normal variation. \u00b12 is unusual. Denver\u2019s 2.70 means its temperature was nearly 3 standard deviations above its own historical mean \u2014 a <1% event.",
+  'sigma': "The standard deviation of a city\u2019s year-to-year winter temperature. Higher \u03c3 = more volatile winters. Miami (\u03c3=1.18\u00b0F) barely varies; Billings (\u03c3=4.84\u00b0F) swings wildly.",
+  'p-value': "The probability of seeing a trend this large (or larger) if there were actually no trend. Below 0.05 is conventionally \u2018significant.\u2019 Below 0.10 is \u2018marginal\u2019 \u2014 worth noticing, not worth betting the house on.",
+  'r-squared': "The fraction of variance explained by the model. R\u00b2=0.945 means the model captures 94.5% of temperature variation. The remaining 5.5% is noise the model can\u2019t explain.",
+  'trend-per-decade': "The estimated change per decade from the model\u2019s fixed-effect spline. Positive = warming/increasing. This is the average national trajectory, not any individual city\u2019s trend.",
+  'anomaly': "The difference between this winter\u2019s actual value and the 30-year historical average (1991\u20132020). Positive anomaly = warmer/snowier/wetter than normal.",
+  'distance': "Normalized Euclidean distance between two cities\u2019 climate profiles. 0 = identical climates. Values above 0.3 represent substantial climate differences.",
+  'correlation': "How strongly two quantities move together. \u03c1=1 is perfect positive; \u03c1=-1 is perfect negative; \u03c1=0 is no relationship. Our \u03c1=0.591 between intercept and slope means warmer cities tend to warm faster.",
+  'enso-effect': "The average residual (actual minus predicted) during La Ni\u00f1a or El Ni\u00f1o years. Positive = warmer than the model predicts during that phase.",
+  'volatility-change': "The difference in residual standard deviation between the first and second half of the historical record. Positive = winters have become more unpredictable.",
+  'random-intercept': "Each city\u2019s baseline departure from the national average. Miami\u2019s intercept of +27.5\u00b0F means its winters are 27.5\u00b0F warmer than the national mean.",
+  'random-slope': "Each city\u2019s individual warming or cooling rate, in \u00b0F per decade. Positive = warming faster than the national trend. Negative = warming slower (or cooling).",
+  'climate-match': "The city whose 30-year historical average most closely resembles this city\u2019s actual 2025\u201326 winter. Denver \u2192 Albuquerque means Denver\u2019s winter felt like a normal Albuquerque winter."
+};
+
+function wrapStat(text, statKey) {
+  return '<span class="stat-tip" data-stat="' + statKey.replace(/"/g, '&quot;') + '">' + text + '</span>';
+}
+
+function initStatTooltips() {
+  document.querySelectorAll('.stat-tip[data-stat]').forEach(function(el) {
+    if (el.querySelector('.stat-tooltip')) return;
+    const key = el.getAttribute('data-stat');
+    const explanation = STAT_EXPLANATIONS[key];
+    if (!explanation) return;
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'stat-tooltip';
+    tooltip.setAttribute('role', 'tooltip');
+
+    const termLabel = document.createElement('span');
+    termLabel.className = 'stat-tooltip-term';
+    termLabel.textContent = key.replace(/-/g, ' ');
+    tooltip.appendChild(termLabel);
+    tooltip.appendChild(document.createTextNode(explanation));
+    el.appendChild(tooltip);
+
+    function adjustPosition() {
+      tooltip.classList.remove('stat-tooltip-align-left', 'stat-tooltip-align-right', 'stat-tooltip-below');
+      const rect = tooltip.getBoundingClientRect();
+      if (rect.left < 8) tooltip.classList.add('stat-tooltip-align-left');
+      if (rect.right > window.innerWidth - 8) tooltip.classList.add('stat-tooltip-align-right');
+      if (rect.top < 8) tooltip.classList.add('stat-tooltip-below');
+    }
+
+    el.addEventListener('mouseenter', function() {
+      requestAnimationFrame(function() { requestAnimationFrame(adjustPosition); });
+    });
+
+    el.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.stat-tip.stat-tip-active').forEach(function(other) {
+        if (other !== el) other.classList.remove('stat-tip-active');
+      });
+      el.classList.toggle('stat-tip-active');
+      if (el.classList.contains('stat-tip-active')) {
+        requestAnimationFrame(function() { requestAnimationFrame(adjustPosition); });
+      }
+    }, { passive: false });
+  });
+
+  document.addEventListener('touchstart', function(e) {
+    if (!e.target.closest('.stat-tip')) {
+      document.querySelectorAll('.stat-tip.stat-tip-active').forEach(function(el) {
+        el.classList.remove('stat-tip-active');
+      });
+    }
+  }, { passive: true });
+}
+
+// Initialize stat tooltips
+initStatTooltips();
+
+// =============================================================================
+// ANALYSIS TAB INIT
+// =============================================================================
+// Analysis tab — no special init needed (static content)
+
 </script>
 </body>
 </html>

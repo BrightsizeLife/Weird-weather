@@ -3,5 +3,9 @@ __pycache__/
 *.pyo
 *.egg-info/
 
+# macOS resource forks
+._*
+.DS_Store
+
 # Generated data — run fetch_data.py to create
 # data/

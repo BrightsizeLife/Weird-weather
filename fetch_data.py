@@ -69,18 +69,25 @@ def fetch_actuals(cities, year=2025):
     return results
 
 
-def fetch_normals(cities, start_year=1991, end_year=2020):
-    """Fetch 30-year winter normals for all cities.
+def fetch_normals_and_timeseries(cities, start_year=1991, end_year=2020):
+    """Fetch 30-year winter normals AND per-year time series for all cities.
 
-    This fetches each winter season individually and averages them.
+    This fetches each winter season individually, stores per-year values
+    for time series analysis, and averages them for normals.
     Makes ~30 API calls per city = ~1500 calls total for 50 cities.
     Takes a few minutes but only needs to run once.
+
+    Returns:
+        (normals_dict, timeseries_dict) where:
+        - normals_dict maps city_label -> aggregated normal stats
+        - timeseries_dict maps city_label -> list of per-year dicts
     """
     print(f"\n{'='*60}")
-    print(f"Computing {start_year}-{end_year} winter normals (this takes a few minutes)")
+    print(f"Computing {start_year}-{end_year} winter normals + time series")
     print(f"{'='*60}")
 
-    results = {}
+    normals = {}
+    timeseries = {}
     for i, city in enumerate(cities):
         label = f"{city['name']}, {city['state']}"
         print(f"  [{i+1:2d}/{len(cities)}] {label}...", end=" ", flush=True)
@@ -89,36 +96,50 @@ def fetch_normals(cities, start_year=1991, end_year=2020):
         yearly_lows = []
         yearly_snow = []
         yearly_precip = []
+        city_ts = []
 
         for year in range(start_year, end_year):
             start, end = winter_date_range(year)
             try:
                 df = get_daily_weather(city["lat"], city["lon"], start, end)
                 if not df.empty:
-                    yearly_highs.append(df["temp_max_f"].mean())
-                    yearly_lows.append(df["temp_min_f"].mean())
-                    yearly_snow.append(df["snowfall_in"].sum())
-                    yearly_precip.append(df["precip_in"].sum())
+                    high = df["temp_max_f"].mean()
+                    low = df["temp_min_f"].mean()
+                    snow = df["snowfall_in"].sum()
+                    precip = df["precip_in"].sum()
+                    yearly_highs.append(high)
+                    yearly_lows.append(low)
+                    yearly_snow.append(snow)
+                    yearly_precip.append(precip)
+                    city_ts.append({
+                        "year": year,
+                        "high": round(high, 1),
+                        "low": round(low, 1),
+                        "snow": round(snow, 1),
+                        "precip": round(precip, 1),
+                    })
             except Exception:
                 pass  # skip failed years
             time.sleep(0.05)  # light throttle
 
+        timeseries[label] = city_ts
+
         if yearly_highs:
-            results[label] = {
+            normals[label] = {
                 "avg_high": round(sum(yearly_highs) / len(yearly_highs), 1),
                 "avg_low": round(sum(yearly_lows) / len(yearly_lows), 1),
                 "avg_snow": round(sum(yearly_snow) / len(yearly_snow), 1),
                 "avg_precip": round(sum(yearly_precip) / len(yearly_precip), 1),
                 "years_sampled": len(yearly_highs),
             }
-            print(f"avg_high={results[label]['avg_high']}°F  "
-                  f"snow={results[label]['avg_snow']}\"  "
-                  f"precip={results[label]['avg_precip']}\"  "
+            print(f"avg_high={normals[label]['avg_high']}°F  "
+                  f"snow={normals[label]['avg_snow']}\"  "
+                  f"precip={normals[label]['avg_precip']}\"  "
                   f"({len(yearly_highs)} yrs)")
         else:
             print("NO DATA")
 
-    return results
+    return normals, timeseries
 
 
 def main():
@@ -128,8 +149,8 @@ def main():
     # Fetch actuals (fast — 1 API call per city)
     actuals = fetch_actuals(CITIES, year=2025)
 
-    # Fetch normals (slower — 29 API calls per city)
-    normals = fetch_normals(CITIES, start_year=1991, end_year=2020)
+    # Fetch normals + per-year time series (slower — 29 API calls per city)
+    normals, timeseries = fetch_normals_and_timeseries(CITIES, start_year=1991, end_year=2020)
 
     # Combine into final dataset
     combined = []
@@ -157,6 +178,18 @@ def main():
                 "snow": norm["avg_snow"],
                 "precip": norm["avg_precip"],
             }
+
+        # Add time series (historical years + 2025 actual)
+        ts = timeseries.get(label, [])
+        if act:
+            ts.append({
+                "year": 2025,
+                "high": act["avg_high"],
+                "low": act.get("avg_low", None),
+                "snow": act["total_snow"],
+                "precip": act["total_precip"],
+            })
+        entry["timeseries"] = ts
 
         combined.append(entry)
 
