@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "weird-weather",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8080"],
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8080", "--no-clipboard"],
       "port": 8080
     }
   ]
