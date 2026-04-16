@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Winter Elsewhere — Weird Weather">
+  <meta property="og:description" content="50 US cities, 30 years of data, one strange season. Denver became Albuquerque. New York became Albany. Whose winter did your city have?">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="og-image.png">
+  <meta name="twitter:title" content="Winter Elsewhere — Weird Weather">
+  <meta name="twitter:description" content="Denver was 11°F above normal. That's not a warm winter — that's Albuquerque's winter. I checked all 50 cities.">
   <title>Weird Weather: Winter 2025–2026</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -339,8 +347,90 @@
     }
 
     /* ── Blog / Essay Styles ── */
+    /* ── Footnotes ── */
+    .fn-ref {
+      display: inline;
+      cursor: pointer;
+      color: #E8594F;
+      font-size: 0.7em;
+      vertical-align: super;
+      line-height: 0;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-weight: 600;
+      padding: 0 2px;
+      transition: color .2s;
+    }
+    .fn-ref:hover { color: #F5A623; }
+    .fn-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .3s ease, opacity .3s ease;
+      opacity: 0;
+      background: #0d0d0d;
+      border-left: 3px solid #E8594F;
+      border-radius: 0 4px 4px 0;
+      margin: 0 0 1.4rem;
+      padding: 0 1.2rem;
+      font-size: 0.88em;
+      color: #999;
+      line-height: 1.65;
+    }
+    .fn-body.open {
+      max-height: 600px;
+      opacity: 1;
+      padding: 1rem 1.2rem;
+      margin: 0.5rem 0 1.4rem;
+    }
+    .fn-body .fn-label {
+      color: #E8594F;
+      font-family: 'SF Mono', monospace;
+      font-size: 0.8em;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* ── Graph expand (mobile) ── */
+    .spark-figure {
+      position: relative;
+    }
+    .spark-expand-hint {
+      display: none;
+      text-align: center;
+      font-family: 'SF Mono', monospace;
+      font-size: 0.65rem;
+      color: #555;
+      margin-top: 0.3rem;
+    }
+    .spark-figure.expanded {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1000;
+      background: #000;
+      margin: 0;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 0;
+      border: none;
+      overflow-y: auto;
+    }
+    .spark-figure.expanded svg {
+      max-height: 70vh;
+      width: 100%;
+    }
+    .spark-figure.expanded .spark-expand-hint { display: block; color: #888; }
+    .spark-figure.expanded .spark-expand-hint::after { content: 'Tap to close'; }
+
+    @media (max-width: 600px) {
+      .spark-expand-hint { display: block; }
+      .spark-expand-hint::after { content: 'Tap to expand'; }
+      .spark-figure.expanded .spark-expand-hint::after { content: 'Tap to close'; }
+    }
+
     .essay-container {
-      max-width: 680px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 2rem 1.5rem 3rem;
       font-family: 'Georgia', 'Times New Roman', serif;
@@ -845,24 +935,22 @@
   <div class="essay-container">
     <header class="blog-header">
       <div class="blog-kicker">Weird Weather / Analysis</div>
-      <h1 class="blog-title">The Winter That Moved</h1>
+      <h1 class="blog-title">Winter elsewhere</h1>
       <p class="blog-subtitle">Fifty American cities, one strange season, and the mathematics of displacement</p>
       <div class="blog-byline">March 2026</div>
     </header>
 
-    <p class="lead">There is a moment, sometime around the second week of February, when a winter declares itself. By then the cumulative evidence is in: the coats you needed or did not, the mornings you scraped ice or skipped the step entirely. By February you know what kind of winter it was, even if you lack the vocabulary to say so precisely. This past winter, in many American cities, the vocabulary failed.</p>
+    <p class="lead">This past winter, in many American cities, winter was functioning outside of expectations. In Denver, February felt like early April. In Boston and New York, winter held a grudge. After a nearly 90-degree day this March at ~5,000&rsquo; elevation in Colorado, I set out to explore if the patterns matched the vibe, and if there was anything there. After I collected the data, I realized there were a lot of fun, likely trivial, ways to explore and portray these patterns.</p>
 
-    <p>In Denver, February felt like early April. In Boston, winter held a grudge. Snow piled on snow. The T ran late, then later, then not at all.</p>
+    <p>The first thought was to take 2026&rsquo;s winter for 50 cities across the United States and compare that against thirty years of their own history. Winter 2025&ndash;26&mdash;December through February&mdash;against the 1991&ndash;2020 period.</p>
 
-    <p>We set out to measure this. Fifty cities across the United States, compared against thirty years of their own history. Winter 2025&ndash;26&mdash;December through February&mdash;against the 1991&ndash;2020 period, which climatologists call the &ldquo;normal.&rdquo; The word deserves its quotation marks. Normal is just the past tense of weather, averaged.</p>
-
-    <p>A note on what we measured and what we did not. Fifty cities is not America. Our sample skews toward the Northeast and toward large metros. Rural weather, which is most of the country&rsquo;s geography if not its population, is absent here. The Southern Plains are underrepresented. Hawaii is missing entirely. What follows is a portrait of fifty places, not a census. That said: even in this biased sample, the patterns are striking.</p>
+    <p>A note on what we measured and what we did not. Fifty cities is not America. Our sample skews toward the Northeast and toward large metros. Rural weather, which is most of the country&rsquo;s geography, is absent here. The Southern Plains are underrepresented. Hawaii is missing entirely. What follows is a portrait of fifty places, not a census. That said: even in&mdash;or because of&mdash;this biased sample, the patterns are striking.</p>
 
     <h2 class="essay-section-head">The National Picture</h2>
 
     <p>The national average temperature anomaly across our fifty cities came out to <span class="datum warm">+1.4&deg;F</span>. A small number. But national averages are to weather what GDP is to the economy&mdash;a figure that describes no one&rsquo;s actual experience. Twenty cities ran warmer than their norms. Fifteen ran cooler. Fifteen landed within the range of the expected.</p>
 
-    <p>The average itself carries a quiet limitation. Our baseline, 1991&ndash;2020, already includes three decades of warming. The &ldquo;normal&rdquo; is not some fixed, Platonic climate. It is a sliding window that absorbs the recent past, making each generation&rsquo;s strange weather the next generation&rsquo;s ordinary. A +1.4-degree anomaly measured against an already-warm baseline is more remarkable than it sounds.</p>
+    <p>The average itself carries a quiet limitation. Our baseline, 1991&ndash;2020, already includes three decades of warming. The &ldquo;normal&rdquo; is not some fixed, Platonic climate. It is a sliding window that absorbs the recent past, making each generation&rsquo;s strange weather the next generation&rsquo;s ordinary. A +1.4-degree <span class="stat-tip" data-stat="anomaly">anomaly</span> measured against an already-warm baseline is more remarkable than it sounds.</p>
 
     <h2 class="essay-section-head">The West&ndash;East Divide</h2>
 
@@ -912,19 +1000,21 @@
         <text x="500" y="215" fill="#4A90D9" font-family="monospace" font-size="10" text-anchor="middle" opacity=".7">cooler &darr;</text>
       </svg>
       <div class="spark-caption">Temperature deviation from 30-year normal (1991&ndash;2020), Winter 2025&ndash;26. Western cities ran dramatically warm; Eastern cities dipped below historical averages.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
     <p>The East cooled. New York posted <span class="datum cold">-5.3&deg;F</span> below normal. Boston dropped <span class="datum cold">-3.7&deg;F</span> and added snow beyond what history would suggest is plenty. Buffalo added to its surplus. Cleveland, Detroit, the great frozen crescent of the Northeast and Great Lakes&mdash;they all bent deeper.</p>
 
-    <p>This east-west dipole is not random. The jet stream&mdash;that atmospheric river at thirty thousand feet&mdash;buckled and held its shape for much of the season. A persistent ridge of high pressure sat over the West like a warm lid, while a trough funneled Arctic air south and east. This pattern has a name in meteorology: an amplified Rossby wave. It is consistent with what La Ni&ntilde;a winters tend to produce&mdash;the tropical Pacific&rsquo;s cold phase nudges the jet stream northward over the West and drops it southward over the East, splitting the continent thermally.</p>
+    <p>This east-west dipole is not random. The jet stream&mdash;that atmospheric river at thirty thousand feet&mdash;buckled and held its shape for much of the season.<span class="fn-ref" data-fn="jetstream">1</span> A persistent ridge of high pressure sat over the West like a warm lid, while a trough funneled Arctic air south and east. This pattern has a name in meteorology: an amplified <span class="stat-tip" data-stat="rossby-wave">Rossby wave</span>. It is consistent with what <span class="stat-tip" data-stat="la-nina">La Ni&ntilde;a</span> winters tend to produce&mdash;the tropical Pacific&rsquo;s cold phase nudges the jet stream northward over the West and drops it southward over the East, splitting the continent thermally.</p>
+    <div class="fn-body" id="fn-jetstream"><span class="fn-label">Note 1</span> I liked watching the Weather Channel as a kid, but I lack any depth of meteorological knowledge. The jet stream language here comes from standard NOAA explainers, not personal expertise.</div>
 
-    <p>NOAA&rsquo;s Climate Prediction Center had forecast a &ldquo;tilt of the odds&rdquo; toward exactly this pattern for a La Ni&ntilde;a winter. The forecast was correct in direction, though the magnitude&mdash;eleven degrees hot in Denver, five degrees cold in New York&mdash;exceeded what seasonal outlooks typically capture. The atmosphere followed the script&rsquo;s stage directions but ad-libbed the dialogue.</p>
+    <p>NOAA&rsquo;s Climate Prediction Center had <a href="https://www.cpc.ncep.noaa.gov/products/predictions/long_range/seasonal.php?lead=1" style="color:#4A90D9">forecast a &ldquo;tilt of the odds&rdquo;</a> toward exactly this pattern for a La Ni&ntilde;a winter. The forecast was correct in direction, though the magnitude&mdash;eleven degrees hot in Denver, five degrees cold in New York&mdash;exceeded what seasonal outlooks typically capture. The atmosphere followed the script&rsquo;s stage directions but ad-libbed the dialogue.</p>
 
     <h2 class="essay-section-head">The Teleportation Question</h2>
 
-    <p>The most useful thing we did with this data was to ask a question borrowed from science fiction: if your city&rsquo;s winter was teleported, where did it land?</p>
+    <p>The most useful (postable) thing I did with this data was to ask a question borrowed from science fiction: if your city&rsquo;s winter was teleported, where did it land? <a href="#" onclick="switchTab('map');return false" style="color:#4A90D9">[explore the map &rarr;]</a></p>
 
-    <p>The method is straightforward. Take each city&rsquo;s actual winter and compare it to the thirty-year normal of every other city. The closest match, measured by normalized Euclidean distance, tells you whose winter you actually had.</p>
+    <p>The method is straightforward. Take each city&rsquo;s actual winter and compare it to the thirty-year normal of every other city. The closest match, measured by <span class="stat-tip" data-stat="distance">normalized Euclidean distance</span> (each variable standardized by its cross-city standard deviation before computing distance), tells you whose winter you actually had.</p>
 
     <div class="teleport-grid">
       <span class="tg-header">City</span>
@@ -944,19 +1034,23 @@
 
     <h2 class="essay-section-head">The Geometry of Strangeness</h2>
 
-    <p>The teleportation question tells you where your city went. But the <span class="stat-tip" data-stat="distance">distance matrix</span> tells you something more fundamental: how alone your city is. Not emotionally. Mathematically. Every city sits at a point in climate space, and some points have neighbors and some do not.</p>
+    <p>The teleportation question tells you where your city went. But the <span class="stat-tip" data-stat="distance">distance matrix</span> <a href="#" onclick="switchTab('distance');return false" style="color:#4A90D9">[view it &rarr;]</a> tells you something more fundamental: how alone your city is. Every city sits at a point in climate space, and some points have neighbors and some do not.</p>
 
     <p>Cities at the temperature extremes&mdash;Miami, Anchorage, Phoenix&mdash;live in a kind of climate solitude. Their nearest neighbor in the distance matrix is still far away. Anchorage&rsquo;s nearest match is Burlington, VT, at a <span class="stat-tip" data-stat="distance">distance</span> of <span class="datum neutral">0.259</span>. Miami&rsquo;s is Tampa at <span class="datum neutral">0.149</span>. These cities have no close twins in our dataset. Their weather is too distinctive for comparison. They are the only copies of themselves.</p>
 
-    <p>Anchorage was the most displaced city in the dataset. Its self-distance&mdash;the <span class="stat-tip" data-stat="distance">distance</span> between its actual winter and its own thirty-year normal&mdash;was <span class="datum warm">0.492</span>, the highest of all fifty cities. Its winter was the furthest from its own autobiography. And yet its <span class="stat-tip" data-stat="z-score">z-scores</span> are modest: <span class="datum cold">-1.18</span> for temperature. This is the interesting part. The model and the distance metric agree: Anchorage was weird, but weird across multiple dimensions simultaneously. Temperature alone does not capture it. The combination of warmer temperatures, less snow, and less precipitation pushed Anchorage far from itself&mdash;a displacement that no single variable reveals.</p>
+    <p>Richmond, VA occupies the opposite position. Its average <span class="stat-tip" data-stat="distance">distance</span> to all other cities was <span class="datum neutral">0.371</span>, the lowest in the dataset. Richmond sits in the mathematical center of American winter&mdash;close enough to many cities that it could almost belong anywhere south of the Mason-Dixon line and east of the Mississippi.</p>
 
-    <p>Richmond, VA occupies the opposite position. Its average <span class="stat-tip" data-stat="distance">distance</span> to all other cities was <span class="datum neutral">0.371</span>, the lowest in the dataset. Richmond sits in the mathematical center of American winter&mdash;close enough to many cities that it could almost belong anywhere south of the Mason-Dixon line and east of the Mississippi. Portland, Oregon is its inverse: the highest average distance at <span class="datum warm">0.779</span>. Portland is climatically alone, a mild wet <span class="stat-tip" data-stat="anomaly">anomaly</span> in a dataset of cold dry winters and hot dry ones.</p>
+    <p>Portland, Oregon is its inverse: the highest average distance at <span class="datum warm">0.779</span>. Portland is climatically alone, a mild wet <span class="stat-tip" data-stat="anomaly">anomaly</span> in a dataset of cold dry winters and hot dry ones.</p>
 
     <p>At the pair level, the extremes confirm what intuition suspects. Albany and Burlington are practically the same city, climatically, with a <span class="stat-tip" data-stat="distance">distance</span> of <span class="datum neutral">0.038</span>. Miami and Anchorage are the most different pair at <span class="datum warm">1.443</span>&mdash;which surprises no one, but it is nice when the math confirms the obvious.</p>
 
-    <p>More interesting are the cities that stayed themselves. Ten cities matched themselves&mdash;their actual winter was closer to their own thirty-year normal than to any other city&rsquo;s. Tampa was the most emphatically itself, with a self-distance of just <span class="datum neutral">0.040</span>. Minneapolis was right behind at <span class="datum neutral">0.042</span>. Seven of the ten self-matching cities were either in very warm climates (Miami, Tampa, Phoenix) or very cold ones (Minneapolis, Burlington). The extremes held. The middle drifted.</p>
+    <p>The distance matrix&rsquo;s diagonal also allows us to compare a city to its thirty-year average. Anchorage was the city most unrecognizable to itself. Its self-distance&mdash;the distance between its actual winter and its own thirty-year normal&mdash;was <span class="datum warm">0.492</span>, the highest of all fifty cities. Its winter was the furthest from its recent history. Anchorage was weird, and weird across multiple dimensions simultaneously. Temperature alone does not capture it. The combination of colder-than-modeled temperatures (<span class="stat-tip" data-stat="z-score">z-score</span> of <span class="datum cold">-1.18</span>), less snow, and less precipitation pushed Anchorage far from itself&mdash;a displacement that no single variable reveals.</p>
+    <div class="fn-body" id="fn-anchorage"><span class="fn-label">Note 2</span> Despite this and for reasons we&rsquo;ll explore later, I don&rsquo;t know if people from Anchorage were terribly surprised. Its model-derived <span class="stat-tip" data-stat="z-score">z-scores</span> are modest: -1.18 for temperature (so winters this far from average happen about every 4&ndash;5 years). This is something important: Anchorage varies a lot (<span class="stat-tip" data-stat="sigma">&sigma;</span> = 3.64&deg;F), so despite being very different from its 30-year averages, Anchorage is <em>often</em> very different from its average. People in Anchorage might have only been a little weirded out.</div>
+    <span class="fn-ref" data-fn="anchorage">2</span>
 
-    <p>There is a pattern in that. The cities with the most distinctive climates&mdash;the ones that sit at the edges of the distribution&mdash;are the ones that stayed put. They have nowhere to go. A mild winter in Miami is still Miami. A warm winter in Minneapolis is still, recognizably, Minneapolis. But a warm winter in Denver is Albuquerque. A cold winter in New York is Albany. The cities in the middle of the distribution have more neighbors, and when the weather shifts, it shifts them into someone else&rsquo;s territory. The center does not hold because the center has options.</p>
+    <p>Some cities stayed themselves. Ten cities matched themselves&mdash;their actual winter was closer to their own thirty-year normal than to any other city&rsquo;s. Tampa was the most emphatically itself, with a self-distance of just <span class="datum neutral">0.040</span>. Minneapolis was right behind at <span class="datum neutral">0.042</span>. Seven of the ten self-matching cities were either in very warm climates (Miami, Tampa, Phoenix) or very cold ones (Minneapolis, Burlington). The extremes held. The middle drifted.</p>
+
+    <p>I suspect that this pattern is probably as much an artifact of the data as something generated from the noumenal realm. The cities with the most distinctive climates&mdash;the ones that sit at the edges of the distribution&mdash;are the ones that stayed put. They have nowhere to go. A mild winter in Miami is still Miami. A warm winter in Minneapolis is still, recognizably, Minneapolis. But a warm winter in Denver is Albuquerque. A cold winter in New York is Albany. The cities in the middle of the distribution have more neighbors, and when the weather shifts, it shifts them into someone else&rsquo;s territory. The center does not hold because the center has options.</p>
 
     <div class="spark-figure">
       <div class="spark-title">Self-distance spectrum: how far each city drifted from its own 30-year normal</div>
@@ -1028,23 +1122,21 @@
         <text x="594" y="316" fill="#69f0ae" font-family="monospace" font-size="7" text-anchor="middle" opacity=".6">&rarr; emphatically itself</text>
       </svg>
       <div class="spark-caption">Self-distance: the normalized Euclidean distance between each city&rsquo;s actual 2025&ndash;26 winter and its own 30-year normal. Higher = greater departure from historical identity. Anchorage drifted furthest; Tampa barely moved.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
-    <h2 class="essay-section-head">A Note on Snowfall Data</h2>
-
-    <p>Our snowfall figures come from Open-Meteo&rsquo;s reanalysis archive, which derives snowfall from precipitation and temperature using the ERA5 climate model. This method systematically underestimates actual measured snowfall, particularly in lake-effect regions (Buffalo, Cleveland) and mountain cities (Denver, Salt Lake City), where local atmospheric dynamics produce more snow than a gridded model captures. Buffalo&rsquo;s historical average appears as roughly 28 inches in our data; the actual measured December&ndash;February average is closer to 55 inches.</p>
-
-    <p>The analysis remains valid because we are comparing each city against its own baseline from the same source. The deltas, z-scores, and climate matches are internally consistent. But the absolute snowfall numbers should not be taken at face value.</p>
+    <div class="fn-body" id="fn-snowfall"><span class="fn-label">Note 3 &mdash; On Snowfall Data</span> Our snowfall figures come from Open-Meteo&rsquo;s reanalysis archive, which derives snowfall from precipitation and temperature using the ERA5 climate model. This method systematically underestimates actual measured snowfall, particularly in lake-effect regions (Buffalo, Cleveland) and mountain cities (Denver, Salt Lake City), where local atmospheric dynamics produce more snow than a gridded model captures. Buffalo&rsquo;s historical average appears as roughly 28 inches in our data; the actual measured December&ndash;February average is closer to 55 inches. The analysis remains valid because we are comparing each city against its own baseline from the same source. The deltas, z-scores, and climate matches are internally consistent. But the absolute snowfall numbers should not be taken at face value.</div>
+    <span class="fn-ref" data-fn="snowfall">3</span>
 
     <h2 class="essay-section-head">The Model</h2>
 
-    <p>How strange was this winter, statistically? To answer that, you need a model.</p>
+    <p>The distance matrix doesn&rsquo;t tell you about how different winter was from expectations. To answer that, you need a model.</p>
 
-    <p>Ours begins with a smooth curve fitted through thirty years of data: a B-spline, which bends to follow the data without chasing every wiggle. This gives the national trajectory&mdash;the slow, nonlinear drift of American winters over three decades.</p>
+    <p>My model has a smooth curve fitted through thirty years of data: a <span class="stat-tip" data-stat="b-spline">B-spline</span> (5 degrees of freedom, equally spaced knots), which bends to follow the data without chasing every wiggle. This gives the national trajectory&mdash;the slow, nonlinear drift of American winters over three decades.</p>
 
-    <p>But cities are not the nation. Miami is not Minneapolis. So each city gets its own intercept (its baseline personality) and its own slope (its individual rate of change over time). The technical name is a mixed-effects model. The fixed effect is the national trend. The random effects are each city&rsquo;s departures from it.</p>
+    <p>But cities are not the nation. Miami is not Minneapolis. So each city gets its own <span class="stat-tip" data-stat="random-intercept">intercept</span> (its baseline personality) and its own <span class="stat-tip" data-stat="random-slope">slope</span> (its individual rate of change over time). This is a <span class="stat-tip" data-stat="mixed-effects">mixed-effects model</span>. The fixed effect is the national trend. The random effects are each city&rsquo;s departure from it.</p>
 
-    <p>There is a further refinement. Not all cities are equally predictable. Miami&rsquo;s winter temperature varies little from year to year. Billings swings wildly. Our model assigns each city its own error variance&mdash;its own sigma&mdash;so that a two-sigma event in Miami (where sigma is <span class="datum neutral">1.18&deg;F</span>) means something different from a two-sigma event in Billings (where sigma is <span class="datum neutral">4.84&deg;F</span>). The technical term is <em>heteroscedastic</em>, from the Greek for &ldquo;different scatter.&rdquo; It sounds like a disease but describes something sensible.</p>
+    <p>There is a further refinement. Not all cities are equally predictable. Miami&rsquo;s winter temperature varies little from year to year. Billings swings wildly. Our model assigns each city its own error variance&mdash;its own <span class="stat-tip" data-stat="sigma">sigma</span>&mdash;so that a two-sigma winter temperature increase in Miami (where sigma is <span class="datum neutral">1.18&deg;F</span>) means something different from a two-sigma event in Billings (where sigma is <span class="datum neutral">4.84&deg;F</span>). The technical term is <em><span class="stat-tip" data-stat="heteroscedastic">heteroscedastic</span></em>, from the Greek for &ldquo;different scatter.&rdquo; Instead of treating heteroscedasticity as a disease afflicting the model, we made it part of our model, a parameter our model wanted to estimate.</p>
 
     <div class="spark-figure">
       <div class="spark-title">Per-city sigma (&sigma;): how predictable is each city&rsquo;s winter?</div>
@@ -1092,9 +1184,54 @@
         <text x="370" y="12" fill="#888" font-family="monospace" font-size="10" text-anchor="middle">Temperature &sigma; (&deg;F) &mdash; higher = more volatile</text>
       </svg>
       <div class="spark-caption">Each city gets its own &sigma;. Miami&rsquo;s winters barely vary (&sigma; = 1.18&deg;F). Billings swings wildly (&sigma; = 4.84&deg;F). A 2&sigma; event in Miami is a 2.4&deg;F departure; in Billings, it&rsquo;s 9.7&deg;F.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
     <p>Denver&rsquo;s temperature <span class="stat-tip" data-stat="z-score">z-score</span> was <span class="datum warm">2.70</span>. In a normal distribution, that occurs less than one percent of the time. Only two of the fifty cities exceeded the two-<span class="stat-tip" data-stat="sigma">sigma</span> threshold for temperature. The mean absolute z-score across all cities was <span class="datum neutral">1.06</span>&mdash;broadly unusual, not just locally.</p>
+
+    <p>This means a winter this unusual across these cities would happen about every <span class="datum neutral">3.5 years</span>, assuming winters don&rsquo;t bunch together because of underlying generation processes (La Ni&ntilde;a, El Ni&ntilde;o, etc.).</p>
+
+    <div class="spark-figure">
+      <div class="spark-title">How rare is rare? Standard deviations and average return periods</div>
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+        <rect x="60" y="10" width="620" height="185" fill="#0a0a0a" rx="4" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- Axes -->
+        <line x1="90" y1="180" x2="650" y2="180" stroke="#333" stroke-width="1"/>
+        <line x1="90" y1="25" x2="90" y2="180" stroke="#333" stroke-width="1"/>
+        <text x="370" y="210" fill="#888" font-family="monospace" font-size="10" text-anchor="middle">Standard deviations from expected (|z|)</text>
+        <text x="22" y="102" fill="#888" font-family="monospace" font-size="9" text-anchor="middle" transform="rotate(-90 22 102)">Avg. years between</text>
+        <!-- X ticks -->
+        <text x="90" y="195" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">0</text>
+        <text x="202" y="195" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">1&sigma;</text>
+        <text x="314" y="195" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">2&sigma;</text>
+        <text x="426" y="195" fill="#555" font-family="monospace" font-size="9" text-anchor="middle">3&sigma;</text>
+        <!-- Y ticks -->
+        <text x="82" y="180" fill="#555" font-family="monospace" font-size="8" text-anchor="end">1</text>
+        <text x="82" y="145" fill="#555" font-family="monospace" font-size="8" text-anchor="end">10</text>
+        <text x="82" y="105" fill="#555" font-family="monospace" font-size="8" text-anchor="end">50</text>
+        <text x="82" y="65" fill="#555" font-family="monospace" font-size="8" text-anchor="end">200</text>
+        <text x="82" y="35" fill="#555" font-family="monospace" font-size="8" text-anchor="end">750</text>
+        <!-- Grid -->
+        <line x1="90" y1="145" x2="650" y2="145" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="90" y1="105" x2="650" y2="105" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="90" y1="65" x2="650" y2="65" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="2,4"/>
+        <!-- Curve: exponential rise. Points at key z values -->
+        <!-- z=0.5: ~2.5yr (y≈172), z=1: ~3.1yr (y≈169), z=1.06: ~3.5yr (y≈167), z=1.5: ~7.5yr (y≈152), z=2: ~22yr (y≈132), z=2.5: ~80yr (y≈95), z=2.7: ~143yr (y≈78), z=3: ~370yr (y≈52) -->
+        <polyline points="90,175 146,172 202,169 230,163 258,155 286,148 314,132 342,118 370,102 398,88 414,78 426,65 454,52 482,42 510,35 538,30 566,27" fill="none" stroke="#E8594F" stroke-width="2" opacity=".8"/>
+        <!-- Markers -->
+        <!-- Mean |z| = 1.06 -->
+        <circle cx="214" cy="167" r="6" fill="#F5A623" opacity=".9"/>
+        <line x1="214" y1="167" x2="214" y2="180" stroke="#F5A623" stroke-width="1" stroke-dasharray="2,2" opacity=".5"/>
+        <text x="214" y="160" fill="#F5A623" font-family="monospace" font-size="8" text-anchor="middle">mean |z| = 1.06</text>
+        <text x="214" y="152" fill="#F5A623" font-family="monospace" font-size="8" text-anchor="middle">~3.5 yrs</text>
+        <!-- Denver z=2.70 -->
+        <circle cx="414" cy="78" r="6" fill="#E8594F" opacity=".9"/>
+        <text x="414" y="70" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">Denver z = 2.70</text>
+        <text x="414" y="62" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">~143 yrs</text>
+      </svg>
+      <div class="spark-caption">The return period rises exponentially with standard deviations. The average city&rsquo;s deviation (1.06&sigma;) recurs every ~3.5 years. Denver&rsquo;s 2.70&sigma; event? Once every ~143 years, assuming independent draws.</div>
+      <div class="spark-expand-hint"></div>
+    </div>
 
     <div class="spark-figure">
       <div class="spark-title">Temperature z-scores: how many standard deviations from expected?</div>
@@ -1147,13 +1284,16 @@
         <text x="650" y="167" fill="#666" font-family="monospace" font-size="9" text-anchor="middle">MIA</text>
       </svg>
       <div class="spark-caption">Each dot represents a city&rsquo;s temperature z-score for Winter 2025&ndash;26. Denver, at 2.70&sigma;, stands in rare statistical territory. Only two cities exceeded the 2&sigma; threshold.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
     <h2 class="essay-section-head">The Correlation No One Expected</h2>
 
-    <p>When you give each city its own intercept and slope, you can ask: do warmer cities warm faster?</p>
+    <p>When you give each city its own <span class="stat-tip" data-stat="random-intercept">intercept</span> and <span class="stat-tip" data-stat="random-slope">slope</span>, you can ask: do warmer cities warm faster? Or, more broadly, does where we start impact where we go?</p>
 
-    <p>They do. The <span class="stat-tip" data-stat="correlation">correlation</span> between <span class="stat-tip" data-stat="random-intercept">random intercepts</span> and <span class="stat-tip" data-stat="random-slope">random slopes</span> for temperature is <span class="datum warm">0.591</span>&mdash;a moderately strong positive relationship. Cities that start warmer in our thirty-year baseline also tend to have steeper warming trends over time. This is not a trivial finding. It suggests that whatever is driving the warming is amplified in places that are already warm&mdash;possibly through feedback mechanisms like reduced snow cover, urban heat island intensification, or changes in regional circulation.</p>
+    <p>They do.</p>
+
+    <p>The <span class="stat-tip" data-stat="correlation">correlation</span> between random intercepts and random slopes for temperature is <span class="datum warm">0.591</span>&mdash;a moderately strong positive relationship. Cities that start warmer in our thirty-year baseline also tend to have steeper warming trends over time. This suggests that whatever is driving the warming is amplified in places that are already warm&mdash;possibly through feedback mechanisms like reduced snow cover or changes in regional circulation.</p>
 
     <div class="spark-figure">
       <div class="spark-title">Random intercept vs. random slope: do warmer cities warm faster?</div>
@@ -1226,17 +1366,16 @@
         <text x="560" y="255" fill="#E8594F" font-family="monospace" font-size="11" text-anchor="end">&rho; = 0.591</text>
       </svg>
       <div class="spark-caption">Each dot is a city. Warmer cities (right) tend to have steeper warming trends (up). The dashed line shows the positive correlation (&rho; = 0.591). Cold northeastern cities cluster in the lower-left; hot southwestern cities pull toward the upper-right.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
-    <p>For snowfall, the <span class="stat-tip" data-stat="correlation">correlation</span> reverses: <span class="datum cold">-0.287</span>. Snowier cities tend to be losing snow faster, though the signal is weaker. For precipitation, there is essentially no correlation (<span class="datum neutral">0.097</span>). Temperature is where the feedback loop lives.</p>
+    <p>For snowfall, the <span class="stat-tip" data-stat="correlation">correlation</span> reverses: <span class="datum cold">-0.287</span>. Snowier cities tend to be losing snow faster, though the signal is weaker. For precipitation, there is essentially no correlation (<span class="datum neutral">0.097</span>). Temperature is where something&mdash;perhaps some feedback loops&mdash;lives.</p>
 
-    <p>Why would warmer cities warm faster? Three possibilities, none mutually exclusive. First, the <strong>urban heat island</strong>: warmer cities tend to be larger, sunbelt metros with more concrete and less vegetation, and these features amplify warming. Zhao et al. (2014) documented the nonlinear relationship between city size and heat island intensity. Second, <strong>snow-albedo feedback</strong>: cities that start warmer have less snow cover, which means less solar reflection, which means more absorbed heat, which means faster warming. The loop feeds itself. Third, <strong>regional circulation changes</strong>: the jet stream patterns that warmed the West this winter may disproportionately affect cities that were already on the warm side of the continental divide.</p>
-
-    <p>The correlation is not proof of any of these mechanisms. It is an observation that demands explanation. In the literature, it rhymes with what Manabe and Wetherald found as early as 1975 regarding polar amplification&mdash;though here we are seeing it not at the poles but at the warm end of the urban spectrum. The pattern deserves more investigation than a dashboard can provide.</p>
+    <p>These correlations are interesting and may be the result of how climate change is emerging, but I need to be emphatically clear: neither I nor the data are in the necessary shape to make claims. I have exceptionally low familiarity with the meteorological and climatologic literature. The data is temporally (only 30 years) and spatially (focused on metro areas) limited. Is this a micro-cycle or meso-cycle that would be obvious if we zoomed out? Is this the signature of a macro-cycle or new epoch taking hold? Is this the product of an error of someone messing around with data? Is this an artifact of said data?</p>
 
     <h2 class="essay-section-head">Trends</h2>
 
-    <p>The national temperature <span class="stat-tip" data-stat="trend-per-decade">trend</span> across our fifty cities is <span class="datum warm">+0.506&deg;F per decade</span>. This is not statistically significant at conventional levels (<span class="stat-tip" data-stat="p-value">p&nbsp;=&nbsp;0.16</span>), which may surprise people accustomed to hearing that warming is settled science. It is settled&mdash;but a thirty-year window with fifty cities is a small lens through which to measure a global phenomenon, and the year-to-year noise in winter temperatures is substantial. Our model explains <span class="stat-tip" data-stat="r-squared">94.5%</span> of the temperature variance, but almost all of that (94.2%) is city-to-city differences, not temporal trends. Winter temperature is overwhelmingly a function of where you are, not when you are.</p>
+    <p>The national temperature <span class="stat-tip" data-stat="trend-per-decade">trend</span> across our fifty cities is <span class="datum warm">+0.506&deg;F per decade</span>. This is not statistically significant at conventional levels (<span class="stat-tip" data-stat="p-value">p&nbsp;=&nbsp;0.16</span>), which may surprise people accustomed to hearing that warming is settled science. It is settled&mdash;but a thirty-year window with fifty cities is a small lens through which to measure a global phenomenon, and the year-to-year noise in winter temperatures is substantial. Our model explains <span class="stat-tip" data-stat="r-squared">94.5%</span> of the temperature variance, but almost all of that (94.2%) is city-to-city differences, not temporal trends. Winter temperature is overwhelmingly a function of where you are, not when you are. I can&rsquo;t help but wonder if the model&rsquo;s random effects and the sigmas predict a region&rsquo;s belief in climate change.</p>
 
     <div class="spark-figure">
       <div class="spark-title">Variance decomposition: what explains winter temperature?</div>
@@ -1258,15 +1397,16 @@
         <text x="360" y="20" fill="#aaa" font-family="monospace" font-size="10" text-anchor="middle">Where you are matters more than when you are</text>
       </svg>
       <div class="spark-caption">94.2% of winter temperature variance is explained by which city you&rsquo;re in. The temporal trend (red sliver) accounts for less than half a percent. Geography dominates.</div>
+      <div class="spark-expand-hint"></div>
     </div>
 
     <p>Snowfall shows no meaningful trend (<span class="datum neutral">+0.038&quot;/decade</span>, p&nbsp;=&nbsp;0.94). Neither does precipitation (<span class="datum neutral">-0.004&quot;/decade</span>, p&nbsp;=&nbsp;0.99). If winter is changing, it is changing in the background, beneath a fog of natural variability that a three-decade sample cannot fully resolve.</p>
 
-    <h2 class="essay-section-head">What the Research Says</h2>
+    <h2 class="essay-section-head">Connecting to the Literature</h2>
 
-    <p>Our findings are consistent with the broader literature. La Ni&ntilde;a winters have been linked to amplified jet stream patterns that warm the western US and cool the east since at least Ropelewski and Halpert&rsquo;s 1986 work on ENSO teleconnections. The warm-cities-warming-faster pattern echoes research on urban heat islands and temperature feedback loops documented by Zhao et al. (2014) and others. The heteroscedasticity we observe&mdash;continental interiors varying more than coastal or tropical cities&mdash;reflects the well-documented influence of maritime moderation and distance from oceanic heat reservoirs.</p>
+    <p>Our findings are consistent with the broader literature. La Ni&ntilde;a winters have been linked to amplified jet stream patterns that warm the western US and cool the east since at least <a href="https://doi.org/10.1175/1520-0493(1986)114%3C2352:NAPATR%3E2.0.CO;2" style="color:#4A90D9">Ropelewski and Halpert&rsquo;s 1986 work</a> on ENSO teleconnections. The warm-cities-warming-faster pattern echoes research on urban heat islands and temperature feedback loops documented by <a href="https://doi.org/10.1038/nature13462" style="color:#4A90D9">Zhao et al. (2014)</a> and others. The heteroscedasticity we observe&mdash;continental interiors varying more than coastal or tropical cities&mdash;reflects the well-documented influence of <a href="https://doi.org/10.1175/1520-0442(2004)017%3C1945:TEOCOM%3E2.0.CO;2" style="color:#4A90D9">maritime moderation</a> and distance from oceanic heat reservoirs.</p>
 
-    <p>What is newer, and less well-studied, is the magnitude of the current displacement. Denver running eleven degrees above normal is not merely a warm winter. It is a winter that no longer belongs to Denver. Whether the frequency of such displacements is itself increasing&mdash;whether the dice are not just loaded but increasingly so&mdash;is a question our thirty-year sample can gesture toward but not resolve.</p>
+    <p>I was drawn to this analysis by trying to contextualize an anomaly. Denver running eleven degrees above normal is not merely a warm winter. It is a winter that no longer belongs to Denver. Whether the frequency of such displacements is itself increasing&mdash;whether the dice are not just loaded but increasingly so&mdash;is a question our thirty-year sample can subtly gesture toward but not resolve.</p>
 
     <h2 class="essay-section-head">The Moving Baseline</h2>
 
@@ -1274,9 +1414,11 @@
 
     <p>This is both a feature and a limitation of how we measure climate normals. The 1991&ndash;2020 baseline already includes significant warming compared to the mid-twentieth century. An anomaly measured against it is an anomaly against an already-shifting reference point. Denver&rsquo;s +11.1&deg;F is extraordinary even by modern standards. Against a 1961&ndash;1990 baseline, it would be more extraordinary still.</p>
 
-    <p>Seven cities out of fifty had a normal winter. The other forty-three did not, and each of them did not in its own way. The strangeness was not evenly distributed. It rarely is.</p>
+    <p>Seven cities out of fifty had a normal winter. The other forty-three did not, and each of them did not in its own way. The strangeness was not evenly distributed. It rarely is. Next winter will be strange in its own way, and the baseline will absorb this one, and the vocabulary will fail again.</p>
 
     <div class="section-break">&mdash;&mdash;&mdash;</div>
+
+    <p style="font-style:italic;color:#999;font-size:0.9em;margin-top:2rem;">This dashboard was built as a side project by a quantitative researcher who wanted to understand one strange winter. The code, data, and model are <a href="https://github.com/BrightsizeLife/Weird-weather" style="color:#4A90D9">on GitHub</a>.</p>
 
     <p style="font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:.78rem;color:#666;line-height:1.7;margin-top:2rem;">
       Data: Open-Meteo Archive API<br/>
@@ -1793,11 +1935,19 @@ function switchTab(tabName) {
   const panel = document.getElementById('tab-' + tabName);
   if (panel) panel.classList.add('active');
   window.scrollTo(0, 0);
+  history.replaceState(null, '', '#' + tabName);
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
+
+// Deep-link from hash
+if (location.hash) {
+  const tab = location.hash.slice(1);
+  const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+  if (btn) switchTab(tab);
+}
 
 // ── Toggle Helpers ──────────────────────────────────────────────────────────
 function setupToggles(containerId, callback) {
@@ -2921,19 +3071,24 @@ function renderREScatter() {
 // =============================================================================
 
 const STAT_EXPLANATIONS = {
-  'z-score': "How many standard deviations from the historical average. \u00b11 is normal variation. \u00b12 is unusual. Denver\u2019s 2.70 means its temperature was nearly 3 standard deviations above its own historical mean \u2014 a <1% event.",
+  'z-score': "How many standard deviations from the historical average. \u00b11 is normal variation. \u00b12 is unusual. Denver\u2019s 2.70 means its temperature was nearly 3 standard deviations above its own historical mean\u2014a <1% event.",
   'sigma': "The standard deviation of a city\u2019s year-to-year winter temperature. Higher \u03c3 = more volatile winters. Miami (\u03c3=1.18\u00b0F) barely varies; Billings (\u03c3=4.84\u00b0F) swings wildly.",
-  'p-value': "The probability of seeing a trend this large (or larger) if there were actually no trend. Below 0.05 is conventionally \u2018significant.\u2019 Below 0.10 is \u2018marginal\u2019 \u2014 worth noticing, not worth betting the house on.",
+  'p-value': "The probability of seeing a trend this large (or larger) if there were actually no trend. Below 0.05 is conventionally \u2018significant.\u2019 Below 0.10 is \u2018marginal\u2019\u2014worth noticing, not worth betting the house on.",
   'r-squared': "The fraction of variance explained by the model. R\u00b2=0.945 means the model captures 94.5% of temperature variation. The remaining 5.5% is noise the model can\u2019t explain.",
   'trend-per-decade': "The estimated change per decade from the model\u2019s fixed-effect spline. Positive = warming/increasing. This is the average national trajectory, not any individual city\u2019s trend.",
   'anomaly': "The difference between this winter\u2019s actual value and the 30-year historical average (1991\u20132020). Positive anomaly = warmer/snowier/wetter than normal.",
-  'distance': "Normalized Euclidean distance between two cities\u2019 climate profiles. 0 = identical climates. Values above 0.3 represent substantial climate differences.",
+  'distance': "Normalized Euclidean distance between two cities\u2019 climate profiles (each variable standardized by its cross-city SD). 0 = identical climates. Values above 0.3 represent substantial differences.",
   'correlation': "How strongly two quantities move together. \u03c1=1 is perfect positive; \u03c1=-1 is perfect negative; \u03c1=0 is no relationship. Our \u03c1=0.591 between intercept and slope means warmer cities tend to warm faster.",
   'enso-effect': "The average residual (actual minus predicted) during La Ni\u00f1a or El Ni\u00f1o years. Positive = warmer than the model predicts during that phase.",
   'volatility-change': "The difference in residual standard deviation between the first and second half of the historical record. Positive = winters have become more unpredictable.",
-  'random-intercept': "Each city\u2019s baseline departure from the national average. Miami\u2019s intercept of +27.5\u00b0F means its winters are 27.5\u00b0F warmer than the national mean.",
+  'random-intercept': "Each city\u2019s baseline departure from the national average. Miami\u2019s intercept of +27.5\u00b0F means its winters are 27.5\u00b0F warmer than the national mean. The model estimates these jointly for all cities.",
   'random-slope': "Each city\u2019s individual warming or cooling rate, in \u00b0F per decade. Positive = warming faster than the national trend. Negative = warming slower (or cooling).",
-  'climate-match': "The city whose 30-year historical average most closely resembles this city\u2019s actual 2025\u201326 winter. Denver \u2192 Albuquerque means Denver\u2019s winter felt like a normal Albuquerque winter."
+  'climate-match': "The city whose 30-year historical average most closely resembles this city\u2019s actual 2025\u201326 winter. Denver \u2192 Albuquerque means Denver\u2019s winter felt like a normal Albuquerque winter.",
+  'b-spline': "A smooth curve built from piecewise polynomials joined at \u2018knots.\u2019 We used 5 degrees of freedom with equally spaced knots. It captures nonlinear trends without overfitting\u2014bending where the data bends, staying calm where it doesn\u2019t.",
+  'mixed-effects': "A model with both fixed effects (shared across all cities, like the national trend) and random effects (unique to each city, like baseline temperature and warming rate). It lets us learn from all cities while respecting that each is different.",
+  'heteroscedastic': "From the Greek for \u2018different scatter.\u2019 Instead of assuming all cities have equally noisy winters, we let each city have its own error variance (\u03c3). Miami\u2019s winters barely vary; Billings swings wildly. The model estimates this difference.",
+  'la-nina': "A periodic cooling of sea-surface temperatures in the tropical Pacific. La Ni\u00f1a winters tend to push the jet stream northward over the western US (warming it) and southward over the east (cooling it). The opposite phase is El Ni\u00f1o.",
+  'rossby-wave': "Large-scale meanders in the jet stream caused by Earth\u2019s rotation and temperature gradients. When these waves \u2018amplify,\u2019 they create persistent ridges (warm) and troughs (cold) that can lock weather patterns in place for weeks."
 };
 
 function wrapStat(text, statKey) {
@@ -2941,11 +3096,19 @@ function wrapStat(text, statKey) {
 }
 
 function initStatTooltips() {
+  const seen = {};
   document.querySelectorAll('.stat-tip[data-stat]').forEach(function(el) {
     if (el.querySelector('.stat-tooltip')) return;
     const key = el.getAttribute('data-stat');
     const explanation = STAT_EXPLANATIONS[key];
     if (!explanation) return;
+    // Only first occurrence of each term gets a tooltip
+    if (seen[key]) {
+      el.classList.remove('stat-tip');
+      el.removeAttribute('data-stat');
+      return;
+    }
+    seen[key] = true;
 
     const tooltip = document.createElement('span');
     tooltip.className = 'stat-tooltip';
@@ -2993,6 +3156,29 @@ function initStatTooltips() {
 
 // Initialize stat tooltips
 initStatTooltips();
+
+// =============================================================================
+// FOOTNOTES
+// =============================================================================
+document.querySelectorAll('.fn-ref[data-fn]').forEach(function(ref) {
+  ref.addEventListener('click', function(e) {
+    e.preventDefault();
+    const fnId = ref.getAttribute('data-fn');
+    const body = document.getElementById('fn-' + fnId);
+    if (body) body.classList.toggle('open');
+  });
+});
+
+// =============================================================================
+// SPARK FIGURE EXPAND (mobile tap-to-fullscreen)
+// =============================================================================
+document.querySelectorAll('.spark-figure').forEach(function(fig) {
+  fig.addEventListener('click', function(e) {
+    if (window.innerWidth > 600 && !fig.classList.contains('expanded')) return;
+    fig.classList.toggle('expanded');
+    document.body.style.overflow = fig.classList.contains('expanded') ? 'hidden' : '';
+  });
+});
 
 // =============================================================================
 // ANALYSIS TAB INIT
