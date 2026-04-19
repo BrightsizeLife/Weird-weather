@@ -1,0 +1,262 @@
+{
+  "pearson_r": 0.531167,
+  "r_squared": 0.282139,
+  "best_fit_line": {
+    "slope": 0.00095847,
+    "intercept": 2.484187,
+    "description": "sigma = slope * ocean_distance_miles + intercept"
+  },
+  "n_cities": 50,
+  "cities": [
+    {
+      "city": "Anchorage, AK",
+      "ocean_distance_miles": 0,
+      "sigma": 3.64
+    },
+    {
+      "city": "San Francisco, CA",
+      "ocean_distance_miles": 1,
+      "sigma": 1.54
+    },
+    {
+      "city": "San Diego, CA",
+      "ocean_distance_miles": 1,
+      "sigma": 1.769
+    },
+    {
+      "city": "Portland, ME",
+      "ocean_distance_miles": 1,
+      "sigma": 2.68
+    },
+    {
+      "city": "Miami, FL",
+      "ocean_distance_miles": 1,
+      "sigma": 1.184
+    },
+    {
+      "city": "Tampa, FL",
+      "ocean_distance_miles": 1,
+      "sigma": 2.096
+    },
+    {
+      "city": "Los Angeles, CA",
+      "ocean_distance_miles": 5,
+      "sigma": 2.651
+    },
+    {
+      "city": "Boston, MA",
+      "ocean_distance_miles": 5,
+      "sigma": 3.058
+    },
+    {
+      "city": "New Orleans, LA",
+      "ocean_distance_miles": 5,
+      "sigma": 2.074
+    },
+    {
+      "city": "Seattle, WA",
+      "ocean_distance_miles": 10,
+      "sigma": 1.618
+    },
+    {
+      "city": "New York, NY",
+      "ocean_distance_miles": 15,
+      "sigma": 3.322
+    },
+    {
+      "city": "Jacksonville, FL",
+      "ocean_distance_miles": 25,
+      "sigma": 2.12
+    },
+    {
+      "city": "Baltimore, MD",
+      "ocean_distance_miles": 50,
+      "sigma": 3.055
+    },
+    {
+      "city": "Houston, TX",
+      "ocean_distance_miles": 50,
+      "sigma": 2.369
+    },
+    {
+      "city": "Philadelphia, PA",
+      "ocean_distance_miles": 60,
+      "sigma": 3.243
+    },
+    {
+      "city": "Portland, OR",
+      "ocean_distance_miles": 70,
+      "sigma": 2.178
+    },
+    {
+      "city": "Sacramento, CA",
+      "ocean_distance_miles": 90,
+      "sigma": 1.865
+    },
+    {
+      "city": "Washington DC, DC",
+      "ocean_distance_miles": 100,
+      "sigma": 3.043
+    },
+    {
+      "city": "Richmond, VA",
+      "ocean_distance_miles": 100,
+      "sigma": 2.807
+    },
+    {
+      "city": "Albany, NY",
+      "ocean_distance_miles": 150,
+      "sigma": 3.407
+    },
+    {
+      "city": "Reno, NV",
+      "ocean_distance_miles": 200,
+      "sigma": 2.939
+    },
+    {
+      "city": "Burlington, VT",
+      "ocean_distance_miles": 200,
+      "sigma": 3.203
+    },
+    {
+      "city": "Charlotte, NC",
+      "ocean_distance_miles": 200,
+      "sigma": 2.388
+    },
+    {
+      "city": "San Antonio, TX",
+      "ocean_distance_miles": 200,
+      "sigma": 2.842
+    },
+    {
+      "city": "Tucson, AZ",
+      "ocean_distance_miles": 250,
+      "sigma": 2.601
+    },
+    {
+      "city": "Atlanta, GA",
+      "ocean_distance_miles": 250,
+      "sigma": 2.354
+    },
+    {
+      "city": "Las Vegas, NV",
+      "ocean_distance_miles": 270,
+      "sigma": 2.368
+    },
+    {
+      "city": "Phoenix, AZ",
+      "ocean_distance_miles": 300,
+      "sigma": 2.59
+    },
+    {
+      "city": "Pittsburgh, PA",
+      "ocean_distance_miles": 300,
+      "sigma": 3.114
+    },
+    {
+      "city": "Buffalo, NY",
+      "ocean_distance_miles": 300,
+      "sigma": 3.21
+    },
+    {
+      "city": "Cleveland, OH",
+      "ocean_distance_miles": 350,
+      "sigma": 3.375
+    },
+    {
+      "city": "Dallas, TX",
+      "ocean_distance_miles": 350,
+      "sigma": 2.723
+    },
+    {
+      "city": "Boise, ID",
+      "ocean_distance_miles": 400,
+      "sigma": 2.981
+    },
+    {
+      "city": "Cincinnati, OH",
+      "ocean_distance_miles": 450,
+      "sigma": 2.981
+    },
+    {
+      "city": "Nashville, TN",
+      "ocean_distance_miles": 450,
+      "sigma": 2.623
+    },
+    {
+      "city": "Memphis, TN",
+      "ocean_distance_miles": 450,
+      "sigma": 2.655
+    },
+    {
+      "city": "Indianapolis, IN",
+      "ocean_distance_miles": 500,
+      "sigma": 3.198
+    },
+    {
+      "city": "Detroit, MI",
+      "ocean_distance_miles": 600,
+      "sigma": 3.354
+    },
+    {
+      "city": "Oklahoma City, OK",
+      "ocean_distance_miles": 650,
+      "sigma": 2.852
+    },
+    {
+      "city": "Salt Lake City, UT",
+      "ocean_distance_miles": 700,
+      "sigma": 2.818
+    },
+    {
+      "city": "Minneapolis, MN",
+      "ocean_distance_miles": 700,
+      "sigma": 3.997
+    },
+    {
+      "city": "Albuquerque, NM",
+      "ocean_distance_miles": 750,
+      "sigma": 3.103
+    },
+    {
+      "city": "El Paso, TX",
+      "ocean_distance_miles": 750,
+      "sigma": 2.414
+    },
+    {
+      "city": "Billings, MT",
+      "ocean_distance_miles": 800,
+      "sigma": 4.844
+    },
+    {
+      "city": "St. Louis, MO",
+      "ocean_distance_miles": 800,
+      "sigma": 2.914
+    },
+    {
+      "city": "Milwaukee, WI",
+      "ocean_distance_miles": 850,
+      "sigma": 3.025
+    },
+    {
+      "city": "Chicago, IL",
+      "ocean_distance_miles": 900,
+      "sigma": 3.162
+    },
+    {
+      "city": "Kansas City, MO",
+      "ocean_distance_miles": 1000,
+      "sigma": 3.16
+    },
+    {
+      "city": "Omaha, NE",
+      "ocean_distance_miles": 1400,
+      "sigma": 4.222
+    },
+    {
+      "city": "Denver, CO",
+      "ocean_distance_miles": 1500,
+      "sigma": 3.311
+    }
+  ]
+}
