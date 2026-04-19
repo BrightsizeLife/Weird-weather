@@ -940,7 +940,7 @@
       <div class="blog-byline"><a href="https://www.linkedin.com/in/derekdebellis/" style="color:#aaa;text-decoration:none;border-bottom:1px solid #444">Derek DeBellis</a> &middot; March 2026</div>
     </header>
 
-    <p class="lead">I have a vague sense that many Americans didn&rsquo;t get the winter they expected. In Denver, February felt like early April, even late May. In Boston and New York, winter seemed to have a grudge. After a nearly 90-degree day this March at ~5,000&rsquo; elevation in Colorado, I set out to explore if the patterns matched the vibe I had collected from the ambient noise around me. An article or two probably would have answered my question, but, well, who can really explain why we do things?</p>
+    <p class="lead">I have a vague sense that many Americans didn&rsquo;t get the winter they expected. In Denver, February felt like early April, even late May. In Boston and New York, winter seemed to have a grudge. After a nearly 90-degree day this March at ~5,000&rsquo; elevation in Colorado, I set out to explore if the patterns matched the vibe I had collected from the ambient noise around me. An article or two probably would have answered my question, but, as Gogol notes in <em>The Overcoat</em>, &ldquo;there are such puzzles in the world, and it is not our place to judge.&rdquo;</p>
 
     <p>The first thought was to take 2026&rsquo;s winter for 50 cities across the United States and compare that against thirty years of their own history: Winter 2025&ndash;26&mdash;December through February&mdash;against the 1991&ndash;2020 period.</p>
 
@@ -1340,6 +1340,8 @@
 
     <p>The pattern holds, but imperfectly. Ocean proximity is a genuine moderating force&mdash;maritime air masses buffer winter temperatures against extreme swings. But it competes with latitude, continental air mass exposure, and regional topography. Billings&rsquo;s chinook winds and exposure to Arctic air masses make it the most volatile city regardless of its 800-mile ocean distance. Anchorage, coastal but Alaskan, defies the trend in the other direction. The r = 0.53 is worth showing, but not worth overstating.</p>
 
+    <p style="color:#888;font-size:0.9em;border-left:2px solid #222;padding-left:12px;margin-left:0"><em>On leverage:</em> a single outlier shouldn&rsquo;t drive a correlation. So I checked. Leave-one-out diagnostics show the relationship is robust&mdash;removing Anchorage (the most obvious coastal-but-volatile point) actually <em>strengthens</em> r to 0.57; dropping both Anchorage and Billings yields r = 0.56. The biggest single influence is Omaha, whose removal lowers r to 0.47. Spearman&rsquo;s rank correlation, which is insensitive to outliers, is &rho; = 0.47&mdash;close enough to the Pearson value that the linear story isn&rsquo;t an artifact of a few extreme cities.</p>
+
     <p>Denver&rsquo;s temperature <span class="stat-tip" data-stat="z-score">z-score</span> was <span class="datum warm">2.70</span>. In a normal distribution, that occurs less than one percent of the time. Only two of the fifty cities exceeded the two-sigma threshold for temperature. The mean absolute z-score across all cities was <span class="datum neutral">1.06</span>&mdash;broadly unusual, not just locally.</p>
 
     <p>This means a winter this unusual across these cities would happen about every <span class="datum neutral">3.5 years</span>, assuming winters don&rsquo;t bunch together because of underlying generation processes (<span class="stat-tip" data-stat="la-nina">La Ni&ntilde;a</span>, El Ni&ntilde;o, etc.).</p>
@@ -1382,7 +1384,7 @@
         <text x="414" y="70" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">Denver z = 2.70</text>
         <text x="414" y="62" fill="#E8594F" font-family="monospace" font-size="8" text-anchor="middle">~143 yrs</text>
       </svg>
-      <div class="spark-caption">The return period rises exponentially with standard deviations. The average city&rsquo;s deviation (1.06&sigma;) recurs every ~3.5 years. Denver&rsquo;s 2.70&sigma; event? Once every ~143 years, assuming independent draws.</div>
+      <div class="spark-caption">The return period rises exponentially with standard deviations. The average city&rsquo;s deviation (1.06&sigma;) recurs every ~3.5 years. Denver&rsquo;s 2.70&sigma; event? Once every ~143 years, assuming independent draws. Reassuringly, this matches the historical record: <a href="https://www.denver7.com/weather/denver-weather/colorado-winter-makes-a-hit-as-one-of-the-warmest-winters-on-record" style="color:#4A90D9" target="_blank" rel="noopener">Denver7 reports</a> this was Denver&rsquo;s second-warmest winter on record (39.6&deg;F), behind only 1933&ndash;34 (40.1&deg;F)&mdash;a 92-year gap that sits comfortably inside the model&rsquo;s ~143-year return interval and well outside the 30-year sample window, validating the anomaly call.</div>
       <div class="spark-expand-hint"></div>
     </div>
 
@@ -1526,7 +1528,7 @@
     <div class="fn-body" id="fn-snowcorr"><span class="fn-label">Note 6</span> Is this an artifact? Possibly, partially. Mixed-effects models can show &ldquo;regression to the mean&rdquo; in their random effects: cities with the highest intercepts (snowiest) get partially pulled toward the average, which can generate spurious negative correlations with slopes. But the pattern is probably also real&mdash;warmer temperatures convert snow to rain, and snow-albedo feedback means less snow cover leads to faster warming in places that had lots of snow to begin with. Both the statistical and physical stories predict the same sign. I can&rsquo;t cleanly separate them with this data.</div>
 
     <p>These correlations are interesting and may be the result of how climate change is emerging, but I need to be emphatically clear: neither I nor the data are in the necessary shape to make claims.<span class="fn-ref" data-fn="succession">7</span> I have exceptionally low familiarity with the meteorological and climatological literature. The data is temporally (only 30 years) and spatially (focused on metro areas) limited. Is this a micro-cycle or meso-cycle that would be obvious if we zoomed out? Is this the signature of a macro-cycle or new epoch taking hold? Is this the product of an error of someone messing around with data? Is this an artifact of said data?</p>
-    <div class="fn-body" id="fn-succession"><span class="fn-label">Note 7</span> <a href="https://www.reddit.com/r/SuccessionTV/comments/1nfzlml/i_use_a_couple_of_succession_quotes_but_this_has/" style="color:#4A90D9" target="_blank" rel="noopener">This feels apt.</a></div>
+    <div class="fn-body" id="fn-succession"><span class="fn-label">Note 7</span> This feels apt.<br><img src="succession%20image.gif" alt="Succession quote" style="max-width:100%;margin-top:8px;border-radius:4px;border:1px solid #222"></div>
 
     <h2 class="essay-section-head">Too small a window for seeing trends</h2>
 
