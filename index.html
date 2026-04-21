@@ -349,18 +349,30 @@
     /* ── Blog / Essay Styles ── */
     /* ── Footnotes ── */
     .fn-ref {
-      display: inline;
+      display: inline-block;
       cursor: pointer;
       color: #E8594F;
-      font-size: 0.7em;
+      font-size: 0.72em;
       vertical-align: super;
-      line-height: 0;
+      line-height: 1;
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-weight: 600;
-      padding: 0 2px;
-      transition: color .2s;
+      padding: 1px 4px;
+      margin: 0 1px;
+      border-bottom: 1px dotted #E8594F;
+      border-radius: 2px;
+      transition: color .2s, background .2s, border-color .2s;
     }
-    .fn-ref:hover { color: #F5A623; }
+    .fn-ref::after {
+      content: ' ▾';
+      font-size: 0.7em;
+      opacity: .7;
+      margin-left: 1px;
+      display: inline-block;
+      transition: transform .25s;
+    }
+    .fn-ref.open::after { transform: rotate(180deg); }
+    .fn-ref:hover { color: #F5A623; background: rgba(245,166,35,.08); border-bottom-color: #F5A623; }
     .fn-body {
       max-height: 0;
       overflow: hidden;
@@ -523,12 +535,32 @@
       margin-bottom: 1rem;
     }
     .spark-figure svg { display: block; width: 100%; height: auto; }
+    /* Override inline SVG font-size attrs for legibility across devices */
+    .spark-figure svg text { font-size: 11px; }
+    .spark-figure svg text[font-size="7"],
+    .spark-figure svg text[font-size="8"],
+    .spark-figure svg text[font-size="9"] { font-size: 11px; }
+    .spark-figure svg text[font-size="10"] { font-size: 12px; }
     .spark-caption {
       font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-      font-size: .78rem;
+      font-size: .72rem;
       color: #999;
       margin-top: .8rem;
       line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .spark-figure svg text { font-size: 13px !important; }
+      .spark-figure svg text[font-size="7"],
+      .spark-figure svg text[font-size="8"],
+      .spark-figure svg text[font-size="9"] { font-size: 13px !important; }
+      .spark-figure svg text[font-size="10"] { font-size: 14px !important; }
+      .spark-caption { font-size: .78rem; }
+      .spark-figure .spark-title { font-size: .72rem; }
+    }
+    /* Also apply to analysis-diagram SVGs */
+    .analysis-diagram svg text { font-size: 11px; }
+    @media (max-width: 640px) {
+      .analysis-diagram svg text { font-size: 13px !important; }
     }
 
     .teleport-grid {
@@ -937,7 +969,7 @@
       <div class="blog-kicker">Weird Weather / Analysis</div>
       <h1 class="blog-title">Winter elsewhere</h1>
       <p class="blog-subtitle">Where 50 American cities wintered this year</p>
-      <div class="blog-byline"><a href="https://www.linkedin.com/in/derekdebellis/" style="color:#aaa;text-decoration:none;border-bottom:1px solid #444">Derek DeBellis</a> &middot; March 2026</div>
+      <div class="blog-byline"><a href="https://www.linkedin.com/in/derekdebellis/" style="color:#aaa;text-decoration:none;border-bottom:1px solid #444">Derek DeBellis</a> &middot; April 2026</div>
     </header>
 
     <p class="lead">I have a vague sense that many Americans didn&rsquo;t get the winter they expected. In Denver, February felt like early April, even late May. In Boston and New York, winter seemed to have a grudge. After a nearly 90-degree day this March at ~5,000&rsquo; elevation in Colorado, I set out to explore if the patterns matched the vibe I had collected from the ambient noise around me. An article or two probably would have answered my question, but, as Gogol notes in <em>The Overcoat</em>, &ldquo;there are such puzzles in the world, and it is not our place to judge.&rdquo;</p>
@@ -946,7 +978,15 @@
 
     <p>An important note at the outset about what I measured and what I did not. Fifty cities is not America. This sample skews toward the Northeast and toward large metros. Rural weather, which is most of the country&rsquo;s geography, is absent here. The Southern Plains are underrepresented. Hawaii is missing entirely. What follows is a portrait of fifty places, not a census. That said: even in&mdash;or because of&mdash;this biased sample, the patterns are striking.</p>
 
-    <p style="color:#888;font-size:0.85em;font-style:italic;">Quick map: <a href="#" onclick="switchTab('essay');return false" style="color:#4A90D9">basic descriptions</a> &rarr; <a href="#" onclick="switchTab('distance');return false" style="color:#4A90D9">distance matrix</a> &rarr; <a href="#" onclick="switchTab('table');return false" style="color:#4A90D9">model-based stats</a></p>
+    <div style="margin:1.5rem 0 2rem;padding:1rem 1.2rem;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;font-family:'SF Mono',monospace;font-size:0.78em">
+      <div style="color:#888;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;margin-bottom:.5rem">What&rsquo;s inside &mdash; open any in a new tab</div>
+      <a href="#map" target="_blank" rel="noopener" style="color:#4A90D9;margin-right:1.2rem;white-space:nowrap">Map &#8599;</a>
+      <a href="#summary" target="_blank" rel="noopener" style="color:#4A90D9;margin-right:1.2rem;white-space:nowrap">Summary &#8599;</a>
+      <a href="#matrix" target="_blank" rel="noopener" style="color:#4A90D9;margin-right:1.2rem;white-space:nowrap">Distance matrix &#8599;</a>
+      <a href="#table" target="_blank" rel="noopener" style="color:#4A90D9;margin-right:1.2rem;white-space:nowrap">Data table &#8599;</a>
+      <a href="#ts-overview" target="_blank" rel="noopener" style="color:#4A90D9;margin-right:1.2rem;white-space:nowrap">Time series &#8599;</a>
+      <a href="#analysis" target="_blank" rel="noopener" style="color:#F5A623;white-space:nowrap">Full methodology &#8599;</a>
+    </div>
 
     <h2 class="essay-section-head">The National Picture</h2>
 
@@ -1015,7 +1055,7 @@
 
     <h2 class="essay-section-head">The Teleportation Question</h2>
 
-    <p>The most useful (postable) thing I did with this data was to ask a question: if your city&rsquo;s winter was teleported, where did it land? <a href="#" onclick="switchTab('map');return false" style="color:#4A90D9">[explore the map &rarr;]</a></p>
+    <p>The most useful (postable) thing I did with this data was to ask a question: if your city&rsquo;s winter was teleported, where did it land? <a href="#map" target="_blank" rel="noopener" style="color:#4A90D9">[explore the map &#8599;]</a></p>
 
     <p>The method is straightforward. Take each city&rsquo;s actual winter and compare it to the thirty-year normal of every other city. The closest match, measured by <span class="stat-tip" data-stat="distance">normalized Euclidean distance</span> (each variable standardized by its cross-city standard deviation before computing distance), tells you whose winter you actually had.</p>
 
@@ -1037,7 +1077,7 @@
 
     <h2 class="essay-section-head">The Geometry of Strangeness</h2>
 
-    <p>The teleportation question tells you where your city went. But the <span class="stat-tip" data-stat="distance">distance matrix</span> <a href="#" onclick="switchTab('distance');return false" style="color:#4A90D9">[view it &rarr;]</a> tells you something more fundamental: how alone your city is. Every city sits at a point in climate space, and some points have neighbors and some do not.</p>
+    <p>The teleportation question tells you where your city went. But the <span class="stat-tip" data-stat="distance">distance matrix</span> <a href="#matrix" target="_blank" rel="noopener" style="color:#4A90D9">[view it &#8599;]</a> tells you something more fundamental: how alone your city is. Every city sits at a point in climate space, and some points have neighbors and some do not.</p>
 
     <p>Cities at the temperature extremes&mdash;Miami, Anchorage, Phoenix&mdash;live in a kind of climate solitude. Their nearest neighbor in the distance matrix is still far away. Anchorage&rsquo;s nearest match is Burlington, VT, at a <span class="stat-tip" data-stat="distance">distance</span> of <span class="datum neutral">0.259</span>. Miami&rsquo;s is Tampa at <span class="datum neutral">0.149</span>. These cities have no close twins in our dataset. Their weather is too distinctive for comparison. They are the only copies of themselves.</p>
 
@@ -1134,7 +1174,7 @@
 
     <p>The distance matrix doesn&rsquo;t tell you about how different winter was from expectations. To answer that, you need a model.</p>
 
-    <p>My model has a smooth curve fitted through thirty years of data: a <span class="stat-tip" data-stat="b-spline">B-spline</span> (5 degrees of freedom, equally spaced knots), which bends to follow the data without chasing every wiggle. This gives the national trajectory&mdash;the slow, nonlinear drift of American winters over three decades.</p>
+    <p>My model has a smooth curve fitted through thirty years of data: a <span class="stat-tip" data-stat="b-spline">B-spline</span> (5 <span class="stat-tip" data-stat="spline-df">degrees of freedom</span>, equally spaced knots), which bends to follow the data without chasing every wiggle. This gives the national trajectory&mdash;the slow, nonlinear drift of American winters over three decades. <a href="#analysis" target="_blank" rel="noopener" style="color:#F5A623;font-size:.9em;white-space:nowrap">[full methodology &#8599;]</a></p>
 
     <p>But cities are not the nation. Miami is not Minneapolis. So each city gets its own <span class="stat-tip" data-stat="random-intercept">intercept</span> (its baseline personality) and its own <span class="stat-tip" data-stat="random-slope">slope</span> (its individual rate of change over time). This is a <span class="stat-tip" data-stat="mixed-effects">mixed-effects model</span>. The fixed effect is the national trend. The random effects are each city&rsquo;s departure from it.</p>
 
@@ -1527,8 +1567,8 @@
     <p>For snowfall, the correlation reverses: <span class="datum cold">-0.287</span>. Snowier cities tend to be losing snow faster, though the signal is weaker.<span class="fn-ref" data-fn="snowcorr">6</span> For precipitation, there is essentially no correlation (<span class="datum neutral">0.097</span>). Temperature is where something&mdash;perhaps some feedback loops&mdash;lives.</p>
     <div class="fn-body" id="fn-snowcorr"><span class="fn-label">Note 6</span> Is this an artifact? Possibly, partially. Mixed-effects models can show &ldquo;regression to the mean&rdquo; in their random effects: cities with the highest intercepts (snowiest) get partially pulled toward the average, which can generate spurious negative correlations with slopes. But the pattern is probably also real&mdash;warmer temperatures convert snow to rain, and snow-albedo feedback means less snow cover leads to faster warming in places that had lots of snow to begin with. Both the statistical and physical stories predict the same sign. I can&rsquo;t cleanly separate them with this data.</div>
 
-    <p>These correlations are interesting and may be the result of how climate change is emerging, but I need to be emphatically clear: neither I nor the data are in the necessary shape to make claims.<span class="fn-ref" data-fn="succession">7</span> I have exceptionally low familiarity with the meteorological and climatological literature. The data is temporally (only 30 years) and spatially (focused on metro areas) limited. Is this a micro-cycle or meso-cycle that would be obvious if we zoomed out? Is this the signature of a macro-cycle or new epoch taking hold? Is this the product of an error of someone messing around with data? Is this an artifact of said data?</p>
-    <div class="fn-body" id="fn-succession"><span class="fn-label">Note 7</span> This feels apt.<br><img src="succession%20image.gif" alt="Succession quote" style="max-width:100%;margin-top:8px;border-radius:4px;border:1px solid #222"></div>
+    <p>These correlations are interesting and may be the result of how climate change is emerging, but I need to be emphatically clear: neither I nor the data are in the necessary shape to make claims. <a href="#analysis" target="_blank" rel="noopener" style="color:#F5A623;font-size:.9em;white-space:nowrap">[caveats &amp; limitations &#8599;]</a><span class="fn-ref" data-fn="succession">7</span> I have exceptionally low familiarity with the meteorological and climatological literature. The data is temporally (only 30 years) and spatially (focused on metro areas) limited. Is this a micro-cycle or meso-cycle that would be obvious if we zoomed out? Is this the signature of a macro-cycle or new epoch taking hold? Is this the product of an error of someone messing around with data? Is this an artifact of said data?</p>
+    <div class="fn-body" id="fn-succession"><span class="fn-label">Note 7</span> This feels apt.<br><img src="succession.gif" alt="Succession quote" style="max-width:100%;margin-top:8px;border-radius:4px;border:1px solid #222"></div>
 
     <h2 class="essay-section-head">Too small a window for seeing trends</h2>
 
@@ -1717,7 +1757,7 @@
 
     <p>A distance matrix tells you what happened. A model tells you what <em>should</em> have happened. We built one so we could measure surprise.</p>
 
-    <p>The model is a <strong>B-spline mixed-effects regression</strong> with heteroscedastic errors. That sentence has too many words in it. Here is what each part means:</p>
+    <p>The model is a <strong>B-spline mixed-effects regression</strong> with <span class="stat-tip" data-stat="heteroscedastic">heteroscedastic</span> errors. That sentence has too many words in it. Here is what each part means:</p>
 
     <div class="recipe-step">
       <span class="step-num">1</span>
@@ -2999,7 +3039,7 @@ function renderOverviewAnalytics() {
 
   // Random effects card
   const reCard = document.getElementById('ov-re-card');
-  let reHtml = '<div class="label">RANDOM EFFECTS STRUCTURE</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem">';
+  let reHtml = '<div class="label">RANDOM EFFECTS STRUCTURE</div><div style="font-size:.7rem;color:#888;margin:.35rem 0 .6rem;line-height:1.5">\u03c1 (rho) is the <em>correlation between each city\u2019s random intercept and its random slope</em> \u2014 not a p-value, not a fixed-effect beta. Positive \u03c1: cities starting higher on a metric are also trending up faster. \u03c3<sub>int</sub> / \u03c3<sub>slope</sub> are the across-city standard deviations of those random effects.</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem">';
   ['high', 'snow', 'precip'].forEach(metric => {
     const m = DATA.model[metric];
     if (!m || !m.random_effects) return;
@@ -3011,7 +3051,7 @@ function renderOverviewAnalytics() {
       : 'No strong pattern';
     reHtml += `<div>
       <div style="color:${COLORS.muted};font-size:.72rem;text-transform:uppercase;letter-spacing:.03em">${label}</div>
-      <div style="font-size:.85rem;margin:.3rem 0"><span style="color:${corrColor}">\u03c1 = ${re.intercept_slope_correlation}</span></div>
+      <div style="font-size:.85rem;margin:.3rem 0" title="Correlation between this metric's random intercept and random slope. Not a p-value."><span style="color:#666;font-size:.68rem">int\u2194slope </span><span style="color:${corrColor}">\u03c1 = ${re.intercept_slope_correlation}</span></div>
       <div style="font-size:.72rem;color:#666">\u03c3<sub>int</sub>=${re.intercept_sd} | \u03c3<sub>slope</sub>=${re.slope_sd}</div>
       <div style="font-size:.72rem;color:#888;margin-top:.2rem">${corrNote}</div>
     </div>`;
@@ -3239,6 +3279,7 @@ const STAT_EXPLANATIONS = {
   'random-slope': "Each city\u2019s individual warming or cooling rate, in \u00b0F per decade. Positive = warming faster than the national trend. Negative = warming slower (or cooling).",
   'climate-match': "The city whose 30-year historical average most closely resembles this city\u2019s actual 2025\u201326 winter. Denver \u2192 Albuquerque means Denver\u2019s winter felt like a normal Albuquerque winter.",
   'b-spline': "A smooth curve built from piecewise polynomials joined at \u2018knots.\u2019 We used 5 degrees of freedom with equally spaced knots. It captures nonlinear trends without overfitting\u2014bending where the data bends, staying calm where it doesn\u2019t.",
+  'spline-df': "Degrees of freedom = how many wiggles the curve is allowed. 1 df = a flat line. 2 df = a straight slope. 5 df gives the spline enough flexibility to track gentle nonlinear drift (a warming decade, a plateau) without chasing every single-year bounce.",
   'mixed-effects': "A model with both fixed effects (shared across all cities, like the national trend) and random effects (unique to each city, like baseline temperature and warming rate). It lets us learn from all cities while respecting that each is different.",
   'heteroscedastic': "From the Greek for \u2018different scatter.\u2019 Instead of assuming all cities have equally noisy winters, we let each city have its own error variance (\u03c3). Miami\u2019s winters barely vary; Billings swings wildly. The model estimates this difference.",
   'la-nina': "A periodic cooling of sea-surface temperatures in the tropical Pacific. La Ni\u00f1a winters tend to push the jet stream northward over the western US (warming it) and southward over the east (cooling it). The opposite phase is El Ni\u00f1o.",
@@ -3256,6 +3297,15 @@ function initStatTooltips() {
     const key = el.getAttribute('data-stat');
     const explanation = STAT_EXPLANATIONS[key];
     if (!explanation) return;
+    // Table headers: use native title attribute (escapes overflow-x clipping).
+    // Do NOT consume the "seen" slot — let the first in-prose occurrence keep
+    // the rich tooltip.
+    if (el.closest('thead')) {
+      el.setAttribute('title', explanation);
+      el.classList.remove('stat-tip');
+      el.removeAttribute('data-stat');
+      return;
+    }
     // Only first occurrence of each term gets a tooltip
     if (seen[key]) {
       el.classList.remove('stat-tip');
@@ -3319,7 +3369,10 @@ document.querySelectorAll('.fn-ref[data-fn]').forEach(function(ref) {
     e.preventDefault();
     const fnId = ref.getAttribute('data-fn');
     const body = document.getElementById('fn-' + fnId);
-    if (body) body.classList.toggle('open');
+    if (body) {
+      const isOpen = body.classList.toggle('open');
+      ref.classList.toggle('open', isOpen);
+    }
   });
 });
 
