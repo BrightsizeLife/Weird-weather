@@ -1073,7 +1073,7 @@
 
     <p>Denver became Albuquerque. Boston became Burlington, Vermont. New York became Albany. Las Vegas turned into El Paso. Anchorage, which expected snow and did not get it, landed nearest to Burlington&mdash;not because Anchorage got warm, but because its snow deficit made it unrecognizable as itself.</p>
 
-    <p>Seven cities stayed close enough to their own norms that their nearest match was themselves. Phoenix was among them, though barely. These are the places where winter still resembles winter. The autobiography holds.</p>
+    <p>Seven cities stayed close enough to their own norms that their nearest match was themselves <em>and</em> the match was within a 5% band of self-identity. Phoenix was among them, though barely. (Loosening the threshold to &ldquo;nearest match is self, period,&rdquo; catches ten cities&mdash;we pick that number up again a few paragraphs down.) These are the places where winter still resembles winter. The autobiography holds.</p>
 
     <h2 class="essay-section-head">The Geometry of Strangeness</h2>
 
@@ -3269,11 +3269,11 @@ const STAT_EXPLANATIONS = {
   'sigma': "The standard deviation of a city\u2019s year-to-year winter temperature. Higher \u03c3 = more volatile winters. Miami (\u03c3=1.18\u00b0F) barely varies; Billings (\u03c3=4.84\u00b0F) swings wildly.",
   'p-value': "The probability of seeing a trend this large (or larger) if there were actually no trend. Below 0.05 is conventionally \u2018significant.\u2019 Below 0.10 is \u2018marginal\u2019\u2014worth noticing, not worth betting the house on.",
   'r-squared': "The fraction of variance explained by the model. R\u00b2=0.945 means the model captures 94.5% of temperature variation. The remaining 5.5% is noise the model can\u2019t explain.",
-  'trend-per-decade': "The estimated change per decade from the model\u2019s fixed-effect spline. Positive = warming/increasing. This is the average national trajectory, not any individual city\u2019s trend.",
+  'trend-per-decade': "The estimated change per decade for this city, combining the shared national spline trajectory with this city\u2019s own random slope. Positive = warming/increasing. Cities can run faster or slower than the national average.",
   'anomaly': "The difference between this winter\u2019s actual value and the 30-year historical average (1991\u20132020). Positive anomaly = warmer/snowier/wetter than normal.",
   'distance': "Normalized Euclidean distance between two cities\u2019 climate profiles (each variable standardized by its cross-city SD). 0 = identical climates. Values above 0.3 represent substantial differences.",
   'correlation': "How strongly two quantities move together. \u03c1=1 is perfect positive; \u03c1=-1 is perfect negative; \u03c1=0 is no relationship. Our \u03c1=0.591 between intercept and slope means warmer cities tend to warm faster.",
-  'enso-effect': "The average residual (actual minus predicted) during La Ni\u00f1a or El Ni\u00f1o years. Positive = warmer than the model predicts during that phase.",
+  'enso-effect': "The average model residual (actual minus predicted) during La Ni\u00f1a or El Ni\u00f1o years, in this metric\u2019s native units. Positive = higher-than-predicted (warmer / snowier / wetter, depending on the column). La Ni\u00f1a and El Ni\u00f1o are opposite ENSO phases, but their atmospheric effects are NOT exact mirror images \u2014 each phase perturbs the jet stream differently, and regional responses are asymmetric, so you\u2019ll see sign flips without matching magnitudes.",
   'volatility-change': "The difference in residual standard deviation between the first and second half of the historical record. Positive = winters have become more unpredictable.",
   'random-intercept': "Each city\u2019s baseline departure from the national average. Miami\u2019s intercept of +27.5\u00b0F means its winters are 27.5\u00b0F warmer than the national mean. The model estimates these jointly for all cities.",
   'random-slope': "Each city\u2019s individual warming or cooling rate, in \u00b0F per decade. Positive = warming faster than the national trend. Negative = warming slower (or cooling).",
@@ -3297,13 +3297,13 @@ function initStatTooltips() {
     const key = el.getAttribute('data-stat');
     const explanation = STAT_EXPLANATIONS[key];
     if (!explanation) return;
-    // Table headers: use native title attribute (escapes overflow-x clipping).
-    // Do NOT consume the "seen" slot — let the first in-prose occurrence keep
-    // the rich tooltip.
+    // Table headers: the scroll wrapper has overflow-x:auto which clips
+    // normal absolute-positioned tooltips. Use a body-portaled, position:fixed
+    // tooltip instead so it escapes the clip. Do NOT consume the "seen" slot.
     if (el.closest('thead')) {
-      el.setAttribute('title', explanation);
-      el.classList.remove('stat-tip');
-      el.removeAttribute('data-stat');
+      el.classList.add('stat-tip-portal');
+      el.setAttribute('data-explanation', explanation);
+      el.setAttribute('data-term', key.replace(/-/g, ' '));
       return;
     }
     // Only first occurrence of each term gets a tooltip
@@ -3361,6 +3361,63 @@ function initStatTooltips() {
 // Initialize stat tooltips
 initStatTooltips();
 
+// ── Portal tooltip for table-header stat-tips (escapes overflow-x clip) ────
+(function() {
+  let portal = document.getElementById('stat-tip-portal-tooltip');
+  if (!portal) {
+    portal = document.createElement('div');
+    portal.id = 'stat-tip-portal-tooltip';
+    portal.style.cssText = 'position:fixed;z-index:9999;visibility:hidden;opacity:0;pointer-events:none;max-width:340px;padding:.7rem .9rem;background:#111;border:1px solid #333;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.6);font-family:"SF Mono","Fira Code","Consolas",monospace;font-size:.72rem;line-height:1.55;color:#ccc;text-align:left;white-space:normal;transition:opacity .15s';
+    document.body.appendChild(portal);
+  }
+  function showPortal(el) {
+    const term = el.getAttribute('data-term') || '';
+    const explanation = el.getAttribute('data-explanation') || '';
+    portal.innerHTML = '<span style="display:block;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#F5A623;margin-bottom:.35rem">' + term + '</span>' + explanation;
+    const rect = el.getBoundingClientRect();
+    portal.style.visibility = 'hidden';
+    portal.style.opacity = '0';
+    portal.style.left = '0px';
+    portal.style.top = '0px';
+    // Measure
+    const tw = portal.offsetWidth;
+    const th = portal.offsetHeight;
+    let left = rect.left + rect.width / 2 - tw / 2;
+    let top = rect.bottom + 8; // below the header, below the little arrow
+    if (left < 8) left = 8;
+    if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 8;
+    if (top + th > window.innerHeight - 8) top = rect.top - th - 8; // flip above
+    portal.style.left = left + 'px';
+    portal.style.top = top + 'px';
+    portal.style.visibility = 'visible';
+    portal.style.opacity = '1';
+  }
+  function hidePortal() {
+    portal.style.opacity = '0';
+    portal.style.visibility = 'hidden';
+  }
+  document.querySelectorAll('.stat-tip-portal').forEach(function(el) {
+    el.style.borderBottom = '1px dotted #666';
+    el.style.cursor = 'help';
+    el.addEventListener('mouseenter', function() { showPortal(el); });
+    el.addEventListener('mouseleave', hidePortal);
+    el.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      if (portal.dataset.activeFor === el.getAttribute('data-term')) {
+        hidePortal(); portal.dataset.activeFor = '';
+      } else {
+        showPortal(el); portal.dataset.activeFor = el.getAttribute('data-term');
+      }
+    }, { passive: false });
+  });
+  document.addEventListener('touchstart', function(e) {
+    if (!e.target.closest('.stat-tip-portal')) {
+      hidePortal(); portal.dataset.activeFor = '';
+    }
+  }, { passive: true });
+  window.addEventListener('scroll', hidePortal, { passive: true });
+})();
+
 // =============================================================================
 // FOOTNOTES
 // =============================================================================
@@ -3393,5 +3450,26 @@ document.querySelectorAll('.spark-figure').forEach(function(fig) {
 // Analysis tab — no special init needed (static content)
 
 </script>
+
+<!-- ═══ Ko-fi support ═══ -->
+<div style="max-width: 720px; margin: 3rem auto 2rem; padding: 0 1.2rem;">
+  <div style="font-family:'SF Mono','Fira Code',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:.8rem;text-align:center">
+    If this was worth your time
+  </div>
+  <div style="border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a;">
+    <iframe id='kofiframe' src='https://ko-fi.com/cheapsensationalism/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;display:block' height='712' title='cheapsensationalism'></iframe>
+  </div>
+</div>
+
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('cheapsensationalism', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Data, tokens & self-respect',
+    'floating-chat.donateButton.background-color': '#794bc4',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+
 </body>
 </html>
