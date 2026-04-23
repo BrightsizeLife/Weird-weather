@@ -29,6 +29,29 @@
       border-bottom: 1px solid #222;
       padding: 1.5rem 2rem 1rem;
       text-align: center;
+      position: relative;
+    }
+    .home-link {
+      position: absolute;
+      top: 50%;
+      left: 1.2rem;
+      transform: translateY(-50%);
+      color: #555;
+      text-decoration: none;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: .72rem;
+      letter-spacing: .05em;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      transition: color .2s;
+    }
+    .home-link:hover { color: #E8594F; }
+    .home-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+    @media (max-width: 600px) {
+      .home-link span { display: none; }
+      .home-link { left: .8rem; }
+      .home-link svg { width: 16px; height: 16px; }
     }
     header h1 {
       font-size: 2.2rem;
@@ -947,6 +970,10 @@
 <body>
 
 <header>
+  <a class="home-link" href="https://cheapsensationalism.com" title="cheapsensationalism.com">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>cheapsensationalism</span>
+  </a>
   <h1>Weird Weather</h1>
   <div class="subtitle">Winter 2025–2026 vs. 30-year normals across 50 US cities</div>
 </header>
