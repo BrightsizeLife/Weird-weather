@@ -3358,35 +3358,44 @@ function initStatTooltips() {
   }, { passive: true });
 }
 
-// Initialize stat tooltips
-initStatTooltips();
-
 // ── Portal tooltip for table-header stat-tips (escapes overflow-x clip) ────
-(function() {
+// The data table re-renders dynamically, so we need this to be re-runnable.
+window._portalBoundEls = window._portalBoundEls || new WeakSet();
+function getPortalTooltipEl() {
   let portal = document.getElementById('stat-tip-portal-tooltip');
   if (!portal) {
     portal = document.createElement('div');
     portal.id = 'stat-tip-portal-tooltip';
     portal.style.cssText = 'position:fixed;z-index:9999;visibility:hidden;opacity:0;pointer-events:none;max-width:340px;padding:.7rem .9rem;background:#111;border:1px solid #333;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.6);font-family:"SF Mono","Fira Code","Consolas",monospace;font-size:.72rem;line-height:1.55;color:#ccc;text-align:left;white-space:normal;transition:opacity .15s';
     document.body.appendChild(portal);
+    document.addEventListener('touchstart', function(e) {
+      if (!e.target.closest('.stat-tip-portal')) {
+        portal.style.opacity = '0'; portal.style.visibility = 'hidden';
+        portal.dataset.activeFor = '';
+      }
+    }, { passive: true });
+    window.addEventListener('scroll', function() {
+      portal.style.opacity = '0'; portal.style.visibility = 'hidden';
+    }, { passive: true });
   }
+  return portal;
+}
+function bindPortalTooltips() {
+  const portal = getPortalTooltipEl();
   function showPortal(el) {
     const term = el.getAttribute('data-term') || '';
     const explanation = el.getAttribute('data-explanation') || '';
     portal.innerHTML = '<span style="display:block;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#F5A623;margin-bottom:.35rem">' + term + '</span>' + explanation;
+    portal.style.visibility = 'hidden'; portal.style.opacity = '0';
+    portal.style.left = '0px'; portal.style.top = '0px';
     const rect = el.getBoundingClientRect();
-    portal.style.visibility = 'hidden';
-    portal.style.opacity = '0';
-    portal.style.left = '0px';
-    portal.style.top = '0px';
-    // Measure
     const tw = portal.offsetWidth;
     const th = portal.offsetHeight;
     let left = rect.left + rect.width / 2 - tw / 2;
-    let top = rect.bottom + 8; // below the header, below the little arrow
+    let top = rect.bottom + 8;
     if (left < 8) left = 8;
     if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 8;
-    if (top + th > window.innerHeight - 8) top = rect.top - th - 8; // flip above
+    if (top + th > window.innerHeight - 8) top = rect.top - th - 8;
     portal.style.left = left + 'px';
     portal.style.top = top + 'px';
     portal.style.visibility = 'visible';
@@ -3397,26 +3406,33 @@ initStatTooltips();
     portal.style.visibility = 'hidden';
   }
   document.querySelectorAll('.stat-tip-portal').forEach(function(el) {
-    el.style.borderBottom = '1px dotted #666';
+    if (window._portalBoundEls.has(el)) return;
+    window._portalBoundEls.add(el);
+    el.style.borderBottom = '1px dotted #888';
     el.style.cursor = 'help';
     el.addEventListener('mouseenter', function() { showPortal(el); });
     el.addEventListener('mouseleave', hidePortal);
     el.addEventListener('touchstart', function(e) {
       e.preventDefault();
-      if (portal.dataset.activeFor === el.getAttribute('data-term')) {
+      const term = el.getAttribute('data-term');
+      if (portal.dataset.activeFor === term && portal.style.visibility === 'visible') {
         hidePortal(); portal.dataset.activeFor = '';
       } else {
-        showPortal(el); portal.dataset.activeFor = el.getAttribute('data-term');
+        showPortal(el); portal.dataset.activeFor = term;
       }
     }, { passive: false });
   });
-  document.addEventListener('touchstart', function(e) {
-    if (!e.target.closest('.stat-tip-portal')) {
-      hidePortal(); portal.dataset.activeFor = '';
-    }
-  }, { passive: true });
-  window.addEventListener('scroll', hidePortal, { passive: true });
-})();
+}
+
+// Patch initStatTooltips to also bind portal tooltips after each invocation
+const _origInitStatTooltips = initStatTooltips;
+initStatTooltips = function() {
+  _origInitStatTooltips();
+  bindPortalTooltips();
+};
+
+// Initial run
+initStatTooltips();
 
 // =============================================================================
 // FOOTNOTES
@@ -3452,24 +3468,101 @@ document.querySelectorAll('.spark-figure').forEach(function(fig) {
 </script>
 
 <!-- ═══ Ko-fi support ═══ -->
-<div style="max-width: 720px; margin: 3rem auto 2rem; padding: 0 1.2rem;">
-  <div style="font-family:'SF Mono','Fira Code',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:.8rem;text-align:center">
-    If this was worth your time
+<style>
+  .kofi-card {
+    max-width: 460px;
+    margin: 3rem auto 2.5rem;
+    padding: 1.4rem 1.4rem 1rem;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+  .kofi-kicker {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: #F5A623;
+    margin-bottom: .4rem;
+    text-align: center;
+  }
+  .kofi-sub {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: .75rem;
+    color: #888;
+    margin-bottom: 1rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .kofi-iframe-wrap {
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f9f9f9;
+    border: 1px solid #222;
+  }
+  .kofi-iframe-wrap iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: #f9f9f9;
+  }
+  .kofi-footlink {
+    display: block;
+    text-align: center;
+    margin-top: .8rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: .7rem;
+    color: #666;
+    text-decoration: none;
+  }
+  .kofi-footlink:hover { color: #F5A623; }
+  /* Floating mug button */
+  #kofi-mug {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #794bc4;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 1000;
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  #kofi-mug:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: #8a5dd4;
+    box-shadow: 0 6px 20px rgba(121,75,196,.55);
+  }
+  #kofi-mug svg { width: 28px; height: 28px; fill: #fff; }
+  @media (max-width: 640px) {
+    #kofi-mug { width: 44px; height: 44px; bottom: 14px; right: 14px; }
+    #kofi-mug svg { width: 22px; height: 22px; }
+    .kofi-card { margin: 2rem 1rem; padding: 1.1rem 1rem .9rem; }
+  }
+</style>
+
+<div class="kofi-card">
+  <div class="kofi-kicker">If this was worth your time</div>
+  <div class="kofi-sub">No ads, no tracking, no paywall &mdash; just a side project.<br>Tip jar, if the spirit moves you.</div>
+  <div class="kofi-iframe-wrap">
+    <iframe id="kofiframe" src="https://ko-fi.com/cheapsensationalism/?hidefeed=true&widget=true&embed=true&preview=true" height="480" title="Support cheap-sensationalism on Ko-fi"></iframe>
   </div>
-  <div style="border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a;">
-    <iframe id='kofiframe' src='https://ko-fi.com/cheapsensationalism/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;display:block' height='712' title='cheapsensationalism'></iframe>
-  </div>
+  <a class="kofi-footlink" href="https://ko-fi.com/cheapsensationalism" target="_blank" rel="noopener">or open on ko-fi.com &#8599;</a>
 </div>
 
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('cheapsensationalism', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Data, tokens & self-respect',
-    'floating-chat.donateButton.background-color': '#794bc4',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
+<!-- Floating coffee-mug button (replaces Ko-fi's floating-chat widget; we control the styling so it stays on-brand and tiny on mobile) -->
+<a id="kofi-mug" href="https://ko-fi.com/cheapsensationalism" target="_blank" rel="noopener" aria-label="Support on Ko-fi" title="Support on Ko-fi">
+  <!-- Minimal coffee-mug glyph -->
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M4 4h13v9a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V4zm13 3h2a3 3 0 0 1 0 6h-2V7zm0 2v2h2a1 1 0 0 0 0-2h-2zM3 20h16v2H3v-2z"/>
+  </svg>
+</a>
 
 </body>
 </html>
