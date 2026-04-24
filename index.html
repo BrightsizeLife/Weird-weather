@@ -965,6 +965,214 @@
       .tab-bar { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
       .tab-btn { white-space: nowrap; flex-shrink: 0; }
     }
+
+    /* ══════════ Artifacts / Posters ══════════ */
+    .artifacts-wrap { max-width: 1280px; margin: 0 auto; }
+    .artifacts-intro {
+      text-align: center;
+      color: #aaa;
+      font-size: .85rem;
+      max-width: 680px;
+      margin: .5rem auto 2.5rem;
+      line-height: 1.65;
+    }
+    .artifacts-intro strong { color: #E8594F; font-weight: 600; }
+    .poster-wrap {
+      margin: 0 auto 4rem;
+      max-width: 1200px;
+      border-top: 1px solid #222;
+      padding-top: 1.4rem;
+    }
+    .poster-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0 .2rem;
+      gap: 1rem;
+    }
+    .poster-index {
+      color: #666;
+      font-size: .72rem;
+      letter-spacing: .18em;
+    }
+    .poster-meta {
+      color: #888;
+      font-size: .78rem;
+      flex: 1;
+      margin-left: 1rem;
+    }
+    .export-btn {
+      background: transparent;
+      border: 1px solid #444;
+      color: #E0E0E0;
+      padding: .45rem 1rem;
+      font-family: inherit;
+      font-size: .75rem;
+      letter-spacing: .05em;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .export-btn:hover { border-color: #E8594F; color: #E8594F; }
+    .export-btn:disabled { opacity: .5; cursor: wait; }
+    .poster-stage {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 4 / 5;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #222;
+      background: #000;
+    }
+    .poster {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1200px;
+      height: 1500px;
+      background: #000;
+      color: #E0E0E0;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      overflow: hidden;
+      padding: 56px 64px 0;
+      transform-origin: top left;
+    }
+    .poster-kicker {
+      color: #888;
+      font-size: 14px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .poster-title {
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: -1.2px;
+      line-height: 1.02;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, #E8594F, #F5A623, #4A90D9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .poster-subtitle {
+      color: #bbb;
+      font-size: 19px;
+      line-height: 1.45;
+      margin-bottom: 28px;
+      max-width: 1000px;
+    }
+    .poster-annotation {
+      color: #aaa;
+      font-size: 15px;
+      line-height: 1.55;
+      margin-top: 14px;
+    }
+    .poster-annotation em { color: #F5A623; font-style: normal; font-weight: 500; }
+    .poster-annotation b { color: #E8594F; font-weight: 600; }
+    .poster-footer {
+      position: absolute;
+      left: 64px;
+      right: 64px;
+      bottom: 34px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #666;
+      font-size: 13px;
+      letter-spacing: .05em;
+      border-top: 1px solid #222;
+      padding-top: 16px;
+    }
+    .poster-footer .brand { color: #E8594F; letter-spacing: .1em; font-weight: 600; }
+    .poster-footer .author { color: #888; }
+    .poster svg { display: block; }
+    .poster .ax-line { stroke: #333; stroke-width: 1; }
+    .poster .ax-tick { fill: #777; font-size: 12px; font-family: inherit; }
+    .poster .grid-line { stroke: #1a1a1a; stroke-width: 1; }
+    .poster .zero-line { stroke: #555; stroke-width: 1.2; }
+    .poster .city-label { fill: #E0E0E0; font-size: 12px; font-family: inherit; }
+    .poster .chart-title { fill: #E0E0E0; font-size: 18px; font-weight: 600; font-family: inherit; }
+    .poster .chart-sub { fill: #888; font-size: 13px; font-family: inherit; }
+    .poster .legend-swatch { font-size: 13px; font-family: inherit; }
+    .poster .stat-big { font-size: 62px; font-weight: 700; font-family: inherit; }
+    .poster .stat-label { fill: #888; font-size: 14px; font-family: inherit; letter-spacing: .12em; text-transform: uppercase; }
+
+    .poster-table { width: 100%; border-collapse: collapse; font-size: 13px; color: #ccc; }
+    .poster-table th {
+      color: #888;
+      font-weight: 600;
+      text-align: right;
+      padding: 7px 10px;
+      border-bottom: 1px solid #333;
+      letter-spacing: .04em;
+    }
+    .poster-table th:first-child, .poster-table td:first-child { text-align: left; color: #E0E0E0; }
+    .poster-table td {
+      padding: 5px 10px;
+      text-align: right;
+      border-bottom: 1px solid #151515;
+      font-variant-numeric: tabular-nums;
+    }
+    .poster-table tbody tr:hover { background: transparent; }
+    .poster-table .pos { color: #E8594F; }
+    .poster-table .neg { color: #4A90D9; }
+    .poster-table .dim { color: #666; }
+
+    .callout-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .callout-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .callout-card {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 22px 24px;
+    }
+    .callout-card .c-label {
+      color: #888;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .callout-card .c-value {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -.8px;
+    }
+    .callout-card .c-value.small { font-size: 30px; }
+    .callout-card .c-value.red { color: #E8594F; }
+    .callout-card .c-value.blue { color: #4A90D9; }
+    .callout-card .c-value.yellow { color: #F5A623; }
+    .callout-card .c-value.green { color: #69f0ae; }
+    .callout-card .c-detail {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .model-formula {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 26px 30px;
+      font-size: 22px;
+      color: #E0E0E0;
+      letter-spacing: .02em;
+      margin-bottom: 28px;
+    }
+    .model-formula .tok-fn { color: #F5A623; }
+    .model-formula .tok-var { color: #4A90D9; }
+    .model-formula .tok-op { color: #E8594F; }
+    .model-formula .formula-note { color: #888; font-size: 14px; margin-top: 14px; }
   </style>
 </head>
 <body>
@@ -987,6 +1195,7 @@
   <button class="tab-btn" data-tab="table">Data Table</button>
   <button class="tab-btn" data-tab="ts-overview">Time Series: Overview</button>
   <button class="tab-btn" data-tab="ts-city">Time Series: City</button>
+  <button class="tab-btn" data-tab="artifacts">Artifacts</button>
 </nav>
 
 <!-- ═══ Essay Tab ═══ -->
@@ -2099,6 +2308,85 @@
   <div class="ts-stats" id="ts-stats"></div>
 </div>
 
+<!-- ═══ Artifacts Tab ═══ -->
+<div id="tab-artifacts" class="tab-panel">
+  <div class="artifacts-wrap">
+    <p class="artifacts-intro">
+      Seven posters drawn from the analysis. Each one renders at <strong>1200&times;1500</strong> on screen and exports as a <strong>4800&times;6000</strong> PNG &mdash; high enough for print or a carousel deck. Click <em>Export PNG</em> on any poster.
+    </p>
+
+    <!-- Poster 1 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">01 / 07</div>
+        <div class="poster-meta">Winter teleportation &middot; nearest-match cities</div>
+        <button class="export-btn" data-target="poster-1" data-name="01-winter-teleportation">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-1"></div></div>
+    </div>
+
+    <!-- Poster 2 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">02 / 07</div>
+        <div class="poster-meta">ENSO signatures &middot; La Ni&ntilde;a and El Ni&ntilde;o response per city</div>
+        <button class="export-btn" data-target="poster-2" data-name="02-enso-signatures">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-2"></div></div>
+    </div>
+
+    <!-- Poster 3 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">03 / 07</div>
+        <div class="poster-meta">Random intercept &times; slope correlation &middot; warmer cities warm faster</div>
+        <button class="export-btn" data-target="poster-3" data-name="03-intercept-slope">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-3"></div></div>
+    </div>
+
+    <!-- Poster 4 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">04 / 07</div>
+        <div class="poster-meta">&sigma; per city &middot; continental interiors swing harder</div>
+        <button class="export-btn" data-target="poster-4" data-name="04-sigma-ocean">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-4"></div></div>
+    </div>
+
+    <!-- Poster 5 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">05 / 07</div>
+        <div class="poster-meta">50-city scorecard &middot; trend, &sigma;, nearest match, this year</div>
+        <button class="export-btn" data-target="poster-5" data-name="05-scorecard">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-5"></div></div>
+    </div>
+
+    <!-- Poster 6 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">06 / 07</div>
+        <div class="poster-meta">Model summary &middot; formula, variance decomposition, trends</div>
+        <button class="export-btn" data-target="poster-6" data-name="06-model-summary">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-6"></div></div>
+    </div>
+
+    <!-- Poster 7 -->
+    <div class="poster-wrap">
+      <div class="poster-header">
+        <div class="poster-index">07 / 07</div>
+        <div class="poster-meta">Strange but true &middot; summary stats worth sharing</div>
+        <button class="export-btn" data-target="poster-7" data-name="07-strange-but-true">Export PNG</button>
+      </div>
+      <div class="poster-stage"><div class="poster" id="poster-7"></div></div>
+    </div>
+  </div>
+</div>
+
 <div id="tooltip"></div>
 
 <footer>
@@ -2113,6 +2401,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
 <script>
 // =============================================================================
 // WEIRD WEATHER DASHBOARD
@@ -2157,6 +2446,9 @@ function switchTab(tabName) {
   if (panel) panel.classList.add('active');
   window.scrollTo(0, 0);
   history.replaceState(null, '', '#' + tabName);
+  if (tabName === 'artifacts' && typeof rescalePosters === 'function') {
+    setTimeout(rescalePosters, 0);
+  }
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -2201,6 +2493,7 @@ fetch('data/dashboard_data.json')
     initDataTable();
     initTimeSeriesCity();
     initTimeSeriesOverview();
+    initArtifacts();
   })
   .catch(err => {
     document.getElementById('loading').innerHTML =
@@ -3491,6 +3784,842 @@ document.querySelectorAll('.spark-figure').forEach(function(fig) {
 // ANALYSIS TAB INIT
 // =============================================================================
 // Analysis tab — no special init needed (static content)
+
+// =============================================================================
+// ARTIFACTS TAB — shareable infographic posters
+// =============================================================================
+
+const ENSO_PHASES = {
+  1991:'el_nino',1992:'neutral',1993:'neutral',1994:'el_nino',1995:'la_nina',
+  1996:'neutral',1997:'el_nino',1998:'la_nina',1999:'la_nina',2000:'la_nina',
+  2001:'neutral',2002:'el_nino',2003:'neutral',2004:'el_nino',2005:'la_nina',
+  2006:'el_nino',2007:'la_nina',2008:'la_nina',2009:'el_nino',2010:'la_nina',
+  2011:'la_nina',2012:'neutral',2013:'neutral',2014:'el_nino',2015:'el_nino',
+  2016:'neutral',2017:'la_nina',2018:'el_nino',2019:'neutral',2020:'la_nina',
+  2021:'la_nina',2022:'la_nina',2023:'el_nino',2024:'neutral',2025:'la_nina'
+};
+
+const POSTER_BRAND = 'weather.cheapsensationalism.com';
+const POSTER_AUTHOR = 'linkedin.com/in/derekdebellis';
+
+let OCEAN_DATA = null;
+let US_TOPO = null;
+
+function cityKey(c) { return c.name + ', ' + c.state; }
+
+function posterFooterHTML(idx) {
+  return `<div class="poster-footer">
+    <span class="brand">${POSTER_BRAND}</span>
+    <span class="author">Derek DeBellis &middot; ${POSTER_AUTHOR}</span>
+    <span>0${idx} / 07</span>
+  </div>`;
+}
+
+function initArtifacts() {
+  const oceanP = fetch('data/ocean_distance_sigma.json').then(r => r.json());
+  const topoP = fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(r => r.json());
+  Promise.all([oceanP, topoP]).then(([ocean, topo]) => {
+    OCEAN_DATA = ocean; US_TOPO = topo;
+    try { buildPoster1(); } catch (e) { console.error('P1', e); }
+    try { buildPoster2(); } catch (e) { console.error('P2', e); }
+    try { buildPoster3(); } catch (e) { console.error('P3', e); }
+    try { buildPoster4(); } catch (e) { console.error('P4', e); }
+    try { buildPoster5(); } catch (e) { console.error('P5', e); }
+    try { buildPoster6(); } catch (e) { console.error('P6', e); }
+    try { buildPoster7(); } catch (e) { console.error('P7', e); }
+    wireExportButtons();
+    rescalePosters();
+  }).catch(err => console.warn('Artifacts data load failed', err));
+  window.addEventListener('resize', rescalePosters);
+}
+
+function rescalePosters() {
+  document.querySelectorAll('.poster-stage').forEach(stage => {
+    const poster = stage.querySelector('.poster');
+    if (!poster) return;
+    const w = stage.clientWidth;
+    if (w > 0) poster.style.transform = `scale(${w/1200})`;
+  });
+}
+
+function wireExportButtons() {
+  document.querySelectorAll('.export-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const poster = document.getElementById(btn.dataset.target);
+      if (!poster) return;
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Rendering…';
+      const prevTransform = poster.style.transform;
+      poster.style.transform = 'scale(1)';
+      try {
+        const dataUrl = await htmlToImage.toPng(poster, {
+          pixelRatio: 4, width: 1200, height: 1500,
+          backgroundColor: '#000', cacheBust: true,
+        });
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = (btn.dataset.name || 'poster') + '.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      } catch (e) {
+        console.error('Export failed', e);
+        alert('Export failed: ' + e.message);
+      } finally {
+        poster.style.transform = prevTransform;
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+  });
+}
+
+// Per-city per-phase ENSO residuals computed from fitted_values
+function enumCityEnso(metric) {
+  const cityResults = DATA.model[metric].city_results;
+  return Object.keys(cityResults).map(name => {
+    const fv = cityResults[name].fitted_values || [];
+    const byPhase = { la_nina: [], el_nino: [], neutral: [] };
+    fv.forEach(pt => {
+      if (pt.year === 2025) return; // exclude current year (evaluation year)
+      const phase = ENSO_PHASES[pt.year] || 'neutral';
+      byPhase[phase].push(pt.actual - pt.fitted);
+    });
+    const summarize = arr => {
+      if (!arr.length) return {mean:0, std:0, se:0, n:0};
+      const m = arr.reduce((a,b)=>a+b,0) / arr.length;
+      const v = arr.length > 1 ? arr.reduce((a,b)=>a+(b-m)**2,0)/(arr.length-1) : 0;
+      const sd = Math.sqrt(v);
+      return { mean:m, std:sd, n:arr.length, se: sd/Math.sqrt(arr.length) };
+    };
+    return { city:name, laNina:summarize(byPhase.la_nina), elNino:summarize(byPhase.el_nino), neutral:summarize(byPhase.neutral) };
+  });
+}
+
+function drawErrorBar(g, x1, x2, y) {
+  const col = 'rgba(255,255,255,0.55)';
+  g.append('line').attr('x1',x1).attr('x2',x2).attr('y1',y).attr('y2',y).attr('stroke',col).attr('stroke-width',1.4);
+  g.append('line').attr('x1',x1).attr('x2',x1).attr('y1',y-3).attr('y2',y+3).attr('stroke',col).attr('stroke-width',1.4);
+  g.append('line').attr('x1',x2).attr('x2',x2).attr('y1',y-3).attr('y2',y+3).attr('stroke',col).attr('stroke-width',1.4);
+}
+
+// ── POSTER 1: Teleportation Map ─────────────────────────────────────────────
+function buildPoster1() {
+  const poster = document.getElementById('poster-1');
+  poster.innerHTML = `
+    <div class="poster-kicker">Winter 2025–2026</div>
+    <div class="poster-title">Where winter went</div>
+    <div class="poster-subtitle">
+      Each city&rsquo;s actual winter compared against every other city&rsquo;s 30-year normal.
+      The closest match &mdash; by normalized Euclidean distance across temperature, snow, and precipitation &mdash;
+      tells you whose winter your city really had.
+    </div>
+    <div id="p1-map" style="position:relative;width:1072px;height:820px;"></div>
+    <div class="poster-annotation" style="max-width:1072px;">
+      <b>Denver &rarr; Albuquerque.</b> <b>New York &rarr; Albany.</b> <b>Boston &rarr; Burlington.</b>
+      <em>Seven cities</em> stayed close enough to themselves to self-match.
+      Forty-three of them wintered elsewhere.
+    </div>
+    ${posterFooterHTML(1)}
+  `;
+
+  const W = 1072, H = 820;
+  const svg = d3.select('#p1-map').append('svg')
+    .attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`);
+  const proj = d3.geoAlbersUsa().scale(1480).translate([W/2, H/2 - 10]);
+  const path = d3.geoPath().projection(proj);
+  const states = topojson.feature(US_TOPO, US_TOPO.objects.states);
+  svg.append('g').selectAll('path').data(states.features).enter().append('path')
+    .attr('d', path).attr('fill', '#242424').attr('stroke', '#666').attr('stroke-width', 1);
+
+  const matches = DATA.matches.overall;
+  const items = [];
+  DATA._complete.forEach(c => {
+    const p = proj([c.lon, c.lat]); if (!p) return;
+    const key = cityKey(c); const m = matches[key]; if (!m) return;
+    const delta = c.act.high - c.hist.high;
+    items.push({
+      city: c.name, x: p[0], y: p[1],
+      color: anomalyColor(delta),
+      isSelf: m.match === key,
+      dest: m.match.split(',')[0],
+    });
+  });
+
+  // Dots
+  const g = svg.append('g');
+  items.forEach(it => {
+    g.append('circle').attr('cx',it.x).attr('cy',it.y).attr('r',5)
+      .attr('fill',it.color).attr('stroke','#000').attr('stroke-width',1.5);
+    if (it.isSelf) {
+      g.append('circle').attr('cx',it.x).attr('cy',it.y).attr('r',9)
+        .attr('fill','none').attr('stroke',it.color).attr('stroke-width',1).attr('opacity',.55);
+    }
+  });
+
+  // Labels: for displaced cities, show DESTINATION name only (where winter "went");
+  // for self-matching cities, show nothing — the ringed dot tells the story.
+  const placed = [];
+  items.sort((a,b) => a.y - b.y);
+  items.forEach(it => {
+    if (it.isSelf) return;
+    const text = it.dest;
+    const fs = 13;
+    const estW = text.length * 7.4;
+    const cands = [
+      {ax:it.x+10, ay:it.y+4, anchor:'start'},
+      {ax:it.x-10, ay:it.y+4, anchor:'end'},
+      {ax:it.x+10, ay:it.y-10, anchor:'start'},
+      {ax:it.x-10, ay:it.y-10, anchor:'end'},
+      {ax:it.x+10, ay:it.y+20, anchor:'start'},
+      {ax:it.x-10, ay:it.y+20, anchor:'end'},
+      {ax:it.x+22, ay:it.y+4, anchor:'start'},
+      {ax:it.x-22, ay:it.y+4, anchor:'end'},
+    ];
+    let chosen = null;
+    for (const c of cands) {
+      const bx = c.anchor === 'end' ? c.ax - estW : c.ax;
+      const box = { x: bx-2, y: c.ay-11, w: estW+4, h: 15 };
+      if (box.x < 0 || box.x + box.w > W) continue;
+      const hit = placed.some(p => !(box.x+box.w < p.x || p.x+p.w < box.x || box.y+box.h < p.y || p.y+p.h < box.y));
+      if (!hit) { chosen = {...c, box}; break; }
+    }
+    if (!chosen) { chosen = {ax:it.x+10, ay:it.y+4, anchor:'start', box:{x:it.x+10,y:it.y-7,w:estW,h:15}}; }
+    placed.push(chosen.box);
+    const dist = Math.hypot(chosen.ax - it.x, chosen.ay - it.y);
+    if (dist > 16) {
+      g.append('line')
+        .attr('x1', it.x).attr('y1', it.y)
+        .attr('x2', chosen.ax + (chosen.anchor==='end'?3:-3)).attr('y2', chosen.ay - 3)
+        .attr('stroke', '#555').attr('stroke-width', .6);
+    }
+    g.append('text')
+      .attr('x', chosen.ax).attr('y', chosen.ay)
+      .attr('text-anchor', chosen.anchor)
+      .attr('fill', '#E0E0E0')
+      .attr('font-size', fs)
+      .attr('font-weight', 500)
+      .attr('font-family', "'SF Mono','Fira Code',monospace")
+      .text(text);
+  });
+
+  // Legend
+  const legend = svg.append('g').attr('transform', `translate(18,${H-118})`);
+  [
+    {c:'#E8594F', l:'Hot (+6°F+)'},
+    {c:'#F5A623', l:'Warm (+2 to +5)'},
+    {c:'#69f0ae', l:'Normal (±2)'},
+    {c:'#4A90D9', l:'Cool (−2 to −5)'},
+    {c:'#1565c0', l:'Cold (−6°F−)'},
+  ].forEach((it, i) => {
+    legend.append('circle').attr('cx',7).attr('cy',i*20+8).attr('r',5).attr('fill',it.c);
+    legend.append('text').attr('x',20).attr('y',i*20+12).attr('fill','#aaa').attr('font-size',12)
+      .attr('font-family',"'SF Mono','Fira Code',monospace").text(it.l);
+  });
+}
+
+// ── POSTER 2: ENSO Signatures ────────────────────────────────────────────────
+function buildPoster2() {
+  const poster = document.getElementById('poster-2');
+  const data = enumCityEnso('high').map(d => ({
+    ...d,
+    magnitude: (Math.abs(d.laNina.mean) + Math.abs(d.elNino.mean)) / 2,
+    magSE: Math.sqrt(d.laNina.se*d.laNina.se + d.elNino.se*d.elNino.se) / 2,
+  }));
+  const topMag = [...data].sort((a,b) => b.magnitude - a.magnitude).slice(0, 12);
+  const topLN = [...data].sort((a,b) => Math.abs(b.laNina.mean) - Math.abs(a.laNina.mean)).slice(0,10);
+  const topEN = [...data].sort((a,b) => Math.abs(b.elNino.mean) - Math.abs(a.elNino.mean)).slice(0,10);
+
+  poster.innerHTML = `
+    <div class="poster-kicker">30 years · 1991–2024</div>
+    <div class="poster-title">ENSO signatures</div>
+    <div class="poster-subtitle">
+      Every city lives through both La Niña and El Niño winters over 30 years.
+      Below, the cities most moved by ENSO, and how each phase tips their winter.
+      Residual = departure (°F) from the city&rsquo;s modeled trend. Error bars: ±1 SE.
+    </div>
+    <svg id="p2-svg" width="1072" height="1040" viewBox="0 0 1072 1040"></svg>
+    <div class="poster-annotation" style="max-width:1072px;">
+      <b>La Niña and El Niño are not mirror images.</b> A city isn&rsquo;t &ldquo;either/or&rdquo; &mdash;
+      it lives through both. The atmosphere&rsquo;s response isn&rsquo;t a sign-flip:
+      El Niño tends to warm the southern US via a stronger subtropical jet; La Niña pushes the jet north in its own way.
+      <em>Sample sizes differ</em> (~11 La Niña vs ~9 El Niño winters in 1991–2024),
+      and non-ENSO forcings (Arctic Oscillation, volcanic years) add noise that isn&rsquo;t phase-locked.
+    </div>
+    ${posterFooterHTML(2)}
+  `;
+
+  const svg = d3.select('#p2-svg');
+  drawEnsoMagnitudeChart(svg, 0, 0, 1072, 520, topMag);
+  drawEnsoChart(svg, 0, 540, 516, 500, 'La Niña response',
+    'Top 10 cities · °F residual (+ = warmer than trend)',
+    topLN, false, 'laNina');
+  drawEnsoChart(svg, 556, 540, 516, 500, 'El Niño response',
+    'Top 10 cities · °F residual (+ = warmer than trend)',
+    topEN, false, 'elNino');
+}
+
+function drawEnsoMagnitudeChart(svg, x0, y0, w, h, items) {
+  const g = svg.append('g').attr('transform', `translate(${x0},${y0})`);
+  const padL = 170, padR = 60, padT = 56, padB = 34;
+  const iW = w - padL - padR, iH = h - padT - padB;
+
+  g.append('text').attr('class','chart-title').attr('x',0).attr('y',22).text('Most ENSO-affected cities');
+  g.append('text').attr('class','chart-sub').attr('x',0).attr('y',42)
+    .text('Top 12 by average magnitude across both phases · mean(|La Niña|, |El Niño|) residual °F');
+
+  const maxVal = Math.ceil(d3.max(items, d => d.magnitude + d.magSE) * 1.1 * 4) / 4;
+  const x = d3.scaleLinear().domain([0, maxVal]).range([padL, padL+iW]);
+  const y = d3.scaleBand().domain(items.map(it => it.city)).range([padT, padT+iH]).padding(.22);
+
+  // Gridlines + ticks
+  x.ticks(6).forEach(t => {
+    g.append('line').attr('class','grid-line')
+      .attr('x1',x(t)).attr('x2',x(t)).attr('y1',padT).attr('y2',padT+iH);
+    g.append('text').attr('class','ax-tick')
+      .attr('x',x(t)).attr('y',padT+iH+18).attr('text-anchor','middle').text(t+'°');
+  });
+
+  // Bars
+  items.forEach(it => {
+    const yB = y(it.city), bW = y.bandwidth();
+    g.append('text').attr('class','city-label')
+      .attr('x',padL-10).attr('y',yB+bW/2+4).attr('text-anchor','end')
+      .text(it.city.split(',')[0]);
+    // Single bar colored F5A623 (yellow = ENSO amplitude)
+    const bx1 = x(0), bx2 = x(it.magnitude);
+    g.append('rect')
+      .attr('x',bx1).attr('y',yB + bW*0.15)
+      .attr('width',Math.max(1, bx2-bx1)).attr('height',bW*0.7)
+      .attr('fill','#F5A623');
+    drawErrorBar(g, x(Math.max(0, it.magnitude - it.magSE)), x(it.magnitude + it.magSE), yB + bW/2);
+    // Value label
+    g.append('text').attr('class','ax-tick')
+      .attr('x',bx2+8).attr('y',yB+bW/2+4)
+      .attr('text-anchor','start').attr('fill','#ccc')
+      .text(it.magnitude.toFixed(2)+'°');
+  });
+}
+
+function drawEnsoChart(svg, x0, y0, w, h, title, sub, items, grouped, phase) {
+  const g = svg.append('g').attr('transform', `translate(${x0},${y0})`);
+  const padL = grouped ? 170 : 130, padR = 30, padT = 56, padB = 32;
+  const iW = w - padL - padR, iH = h - padT - padB;
+  const n = items.length;
+
+  let maxVal = 0;
+  items.forEach(it => {
+    if (grouped) {
+      maxVal = Math.max(maxVal, Math.abs(it.laNina.mean)+it.laNina.se, Math.abs(it.elNino.mean)+it.elNino.se);
+    } else {
+      const v = it[phase];
+      maxVal = Math.max(maxVal, Math.abs(v.mean)+v.se);
+    }
+  });
+  maxVal = Math.ceil(maxVal*1.08 * 2)/2;
+
+  const x = d3.scaleLinear().domain([-maxVal, maxVal]).range([padL, padL+iW]);
+  const y = d3.scaleBand().domain(items.map(it=>it.city)).range([padT, padT+iH]).padding(.18);
+
+  g.append('text').attr('class','chart-title').attr('x',0).attr('y',22).text(title);
+  g.append('text').attr('class','chart-sub').attr('x',0).attr('y',42).text(sub);
+
+  // X ticks
+  x.ticks(6).forEach(t => {
+    if (Math.abs(t) < 1e-9) return;
+    g.append('line').attr('class','grid-line')
+      .attr('x1',x(t)).attr('x2',x(t)).attr('y1',padT).attr('y2',padT+iH);
+    g.append('text').attr('class','ax-tick')
+      .attr('x',x(t)).attr('y',padT+iH+18).attr('text-anchor','middle')
+      .text((t>0?'+':'')+t+'°');
+  });
+  g.append('line').attr('class','zero-line')
+    .attr('x1',x(0)).attr('x2',x(0)).attr('y1',padT-4).attr('y2',padT+iH);
+
+  items.forEach(it => {
+    const yB = y(it.city), bW = y.bandwidth();
+    const shortName = it.city.split(',')[0];
+    g.append('text').attr('class','city-label')
+      .attr('x',padL-10).attr('y',yB+bW/2+4).attr('text-anchor','end')
+      .text(shortName);
+
+    if (grouped) {
+      const half = bW/2 - 1.5;
+      // La Niña (top)
+      const lnX1 = x(Math.min(0, it.laNina.mean)), lnX2 = x(Math.max(0, it.laNina.mean));
+      g.append('rect').attr('x',lnX1).attr('y',yB).attr('width',Math.max(1,lnX2-lnX1)).attr('height',half).attr('fill','#4A90D9');
+      drawErrorBar(g, x(it.laNina.mean-it.laNina.se), x(it.laNina.mean+it.laNina.se), yB + half/2);
+      // El Niño (bottom)
+      const enX1 = x(Math.min(0, it.elNino.mean)), enX2 = x(Math.max(0, it.elNino.mean));
+      g.append('rect').attr('x',enX1).attr('y',yB+half+3).attr('width',Math.max(1,enX2-enX1)).attr('height',half).attr('fill','#E8594F');
+      drawErrorBar(g, x(it.elNino.mean-it.elNino.se), x(it.elNino.mean+it.elNino.se), yB + half + 3 + half/2);
+    } else {
+      const v = it[phase];
+      const col = phase === 'laNina' ? '#4A90D9' : '#E8594F';
+      const bx1 = x(Math.min(0,v.mean)), bx2 = x(Math.max(0,v.mean));
+      g.append('rect').attr('x',bx1).attr('y',yB+bW*0.18).attr('width',Math.max(1,bx2-bx1)).attr('height',bW*0.64).attr('fill',col);
+      drawErrorBar(g, x(v.mean-v.se), x(v.mean+v.se), yB+bW/2);
+      g.append('text').attr('class','ax-tick')
+        .attr('x', v.mean>=0 ? bx2+6 : bx1-6).attr('y', yB+bW/2+4)
+        .attr('text-anchor', v.mean>=0?'start':'end').attr('fill','#ccc')
+        .text((v.mean>=0?'+':'')+v.mean.toFixed(2));
+    }
+  });
+
+  if (grouped) {
+    const leg = g.append('g').attr('transform',`translate(${padL+iW-220},14)`);
+    leg.append('rect').attr('x',0).attr('y',3).attr('width',14).attr('height',10).attr('fill','#4A90D9');
+    leg.append('text').attr('x',20).attr('y',12).attr('class','legend-swatch').attr('fill','#aaa').text('La Niña');
+    leg.append('rect').attr('x',100).attr('y',3).attr('width',14).attr('height',10).attr('fill','#E8594F');
+    leg.append('text').attr('x',120).attr('y',12).attr('class','legend-swatch').attr('fill','#aaa').text('El Niño');
+  }
+}
+
+// ── POSTER 3: Random intercept × slope scatter ──────────────────────────────
+function buildPoster3() {
+  const poster = document.getElementById('poster-3');
+  const model = DATA.model.high;
+  const effects = model.random_effects.effects;
+  const r = model.random_effects.intercept_slope_correlation;
+
+  poster.innerHTML = `
+    <div class="poster-kicker">Mixed-effects model · winter temperature</div>
+    <div class="poster-title">Warmer cities<br/>warm faster</div>
+    <div class="poster-subtitle">
+      Each city gets its own baseline (random intercept) and its own rate of change (random slope per decade).
+      A moderately strong positive correlation &mdash; <strong>r = +${r.toFixed(2)}</strong> &mdash; links the two.
+    </div>
+    <svg id="p3-svg" width="1072" height="800"></svg>
+    <div class="poster-annotation" style="max-width:1072px;">
+      <b>Cities that start warmer are warming faster.</b>
+      Possible mechanisms: urban heat island, snow-albedo feedback, shifting regional circulation.
+      The correlation doesn&rsquo;t prove a mechanism &mdash; it describes a pattern that demands one.
+      <em>Snowfall: r = −0.29. Precipitation: r = +0.10.</em> Temperature is where the feedback lives.
+    </div>
+    ${posterFooterHTML(3)}
+  `;
+
+  const svg = d3.select('#p3-svg');
+  const W = 1072, H = 800;
+  const padL = 130, padR = 60, padT = 50, padB = 90;
+  const iW = W - padL - padR, iH = H - padT - padB;
+
+  const xExt = d3.extent(effects, d=>d.intercept);
+  const yExt = d3.extent(effects, d=>d.slope_per_decade);
+  const xPad = (xExt[1]-xExt[0])*0.1, yPad = (yExt[1]-yExt[0])*0.1;
+  const x = d3.scaleLinear().domain([xExt[0]-xPad, xExt[1]+xPad]).range([padL, padL+iW]);
+  const y = d3.scaleLinear().domain([yExt[0]-yPad, yExt[1]+yPad]).range([padT+iH, padT]);
+
+  x.ticks(8).forEach(t => {
+    svg.append('line').attr('class','grid-line').attr('x1',x(t)).attr('x2',x(t)).attr('y1',padT).attr('y2',padT+iH);
+    svg.append('text').attr('class','ax-tick').attr('x',x(t)).attr('y',padT+iH+22).attr('text-anchor','middle')
+      .text(t>0?'+'+t:''+t);
+  });
+  y.ticks(6).forEach(t => {
+    svg.append('line').attr('class','grid-line').attr('x1',padL).attr('x2',padL+iW).attr('y1',y(t)).attr('y2',y(t));
+    svg.append('text').attr('class','ax-tick').attr('x',padL-12).attr('y',y(t)+4).attr('text-anchor','end')
+      .text((t>0?'+':'')+t.toFixed(1));
+  });
+  // Axes
+  svg.append('line').attr('class','ax-line').attr('x1',padL).attr('x2',padL+iW).attr('y1',padT+iH).attr('y2',padT+iH);
+  svg.append('line').attr('class','ax-line').attr('x1',padL).attr('x2',padL).attr('y1',padT).attr('y2',padT+iH);
+  if (x.domain()[0] < 0 && x.domain()[1] > 0)
+    svg.append('line').attr('class','zero-line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',padT).attr('y2',padT+iH).attr('opacity',.4);
+  if (y.domain()[0] < 0 && y.domain()[1] > 0)
+    svg.append('line').attr('class','zero-line').attr('x1',padL).attr('x2',padL+iW).attr('y1',y(0)).attr('y2',y(0)).attr('opacity',.4);
+
+  // Axis labels
+  svg.append('text').attr('class','chart-sub').attr('x',padL+iW/2).attr('y',padT+iH+58).attr('text-anchor','middle')
+    .text('Random intercept — city baseline temperature offset (°F)');
+  svg.append('text').attr('class','chart-sub')
+    .attr('transform',`translate(${padL-80},${padT+iH/2}) rotate(-90)`).attr('text-anchor','middle')
+    .text('Random slope (°F per decade)');
+
+  // Best-fit line
+  const xs = effects.map(d=>d.intercept), ys = effects.map(d=>d.slope_per_decade);
+  const mx = d3.mean(xs), my = d3.mean(ys);
+  const num = d3.sum(xs.map((v,i)=>(v-mx)*(ys[i]-my)));
+  const den = d3.sum(xs.map(v=>(v-mx)**2));
+  const slope = num/den, intercept = my - slope*mx;
+  const xA = xExt[0]-xPad, xB = xExt[1]+xPad;
+  svg.append('line')
+    .attr('x1', x(xA)).attr('x2', x(xB))
+    .attr('y1', y(intercept+slope*xA)).attr('y2', y(intercept+slope*xB))
+    .attr('stroke','#E8594F').attr('stroke-width',2).attr('stroke-dasharray','7,5').attr('opacity',.85);
+
+  // Points — color by intercept
+  const iExt = d3.extent(effects, d=>d.intercept);
+  const cScale = d3.scaleLinear().domain([iExt[0], 0, iExt[1]]).range(['#1565c0','#69f0ae','#E8594F']).clamp(true);
+  effects.forEach(d => {
+    svg.append('circle').attr('cx',x(d.intercept)).attr('cy',y(d.slope_per_decade))
+      .attr('r',7).attr('fill', cScale(d.intercept))
+      .attr('stroke','#000').attr('stroke-width',1.2);
+  });
+
+  // Label notable cities
+  const labeled = new Set();
+  const notable = [
+    ...effects.slice().sort((a,b)=>b.intercept-a.intercept).slice(0,3),
+    ...effects.slice().sort((a,b)=>a.intercept-b.intercept).slice(0,3),
+    ...effects.slice().sort((a,b)=>b.slope_per_decade-a.slope_per_decade).slice(0,2),
+    ...effects.slice().sort((a,b)=>a.slope_per_decade-b.slope_per_decade).slice(0,2),
+    effects.find(e=>e.city==='Denver, CO'),
+    effects.find(e=>e.city==='Anchorage, AK'),
+  ].filter(Boolean);
+  notable.forEach(d => {
+    if (labeled.has(d.city)) return; labeled.add(d.city);
+    svg.append('text').attr('class','city-label')
+      .attr('x',x(d.intercept)+10).attr('y',y(d.slope_per_decade)+4)
+      .attr('fill','#E0E0E0').text(d.city.split(',')[0]);
+  });
+
+  // r box
+  const box = svg.append('g').attr('transform',`translate(${padL+20},${padT+16})`);
+  box.append('rect').attr('width',240).attr('height',96).attr('fill','#0a0a0a').attr('stroke','#333').attr('rx',6);
+  box.append('text').attr('x',16).attr('y',30).attr('fill','#888').attr('font-size',12).attr('letter-spacing','.15em').attr('font-family',"'SF Mono',monospace").text('PEARSON r');
+  box.append('text').attr('x',16).attr('y',72).attr('fill','#E8594F').attr('font-size',44).attr('font-weight',700).attr('font-family',"'SF Mono',monospace").text('+'+r.toFixed(2));
+  box.append('text').attr('x',16).attr('y',88).attr('fill','#888').attr('font-size',11).attr('font-family',"'SF Mono',monospace").text('50 cities · temperature');
+}
+
+// ── POSTER 4: σ ranking + σ vs ocean distance ───────────────────────────────
+function buildPoster4() {
+  const poster = document.getElementById('poster-4');
+  const effects = DATA.model.high.random_effects.effects;
+  const sigmas = effects.map(d => ({city:d.city, sigma:d.sigma})).sort((a,b)=>b.sigma-a.sigma);
+  const r = OCEAN_DATA.pearson_r;
+  const r2 = OCEAN_DATA.r_squared;
+  const sl = OCEAN_DATA.best_fit_line.slope, ic = OCEAN_DATA.best_fit_line.intercept;
+
+  poster.innerHTML = `
+    <div class="poster-kicker">Year-to-year variability · temperature</div>
+    <div class="poster-title">σ · who&rsquo;s predictable</div>
+    <div class="poster-subtitle">
+      Each city has its own error variance. Miami barely moves; Billings swings wildly.
+      The ocean moderates &mdash; continental interiors don&rsquo;t have that luxury.
+    </div>
+    <svg id="p4-svg" width="1072" height="1020"></svg>
+    <div class="poster-annotation" style="max-width:1072px;">
+      <b>Miami σ = 1.18°F.</b> <b>Billings σ = 4.84°F.</b>
+      A two-sigma winter in Miami is 2.4° warm; in Billings it&rsquo;s 9.7°.
+      Distance from ocean explains <em>${(r2*100).toFixed(0)}%</em> of the variance in σ (r = +${r.toFixed(2)}).
+    </div>
+    ${posterFooterHTML(4)}
+  `;
+
+  const svg = d3.select('#p4-svg');
+  // Top: bar chart of σ for all 50 cities
+  (function drawSigmaBars() {
+    const g = svg.append('g').attr('transform','translate(0,0)');
+    const w = 1072, h = 520, padL = 60, padR = 20, padT = 50, padB = 130;
+    const iW = w - padL - padR, iH = h - padT - padB;
+    g.append('text').attr('class','chart-title').attr('x',0).attr('y',22).text('Temperature σ per city');
+    g.append('text').attr('class','chart-sub').attr('x',0).attr('y',42).text('All 50 cities · model residual standard deviation (°F) · ranked high → low');
+    const yMax = Math.ceil(d3.max(sigmas, d=>d.sigma));
+    const y = d3.scaleLinear().domain([0, yMax]).range([padT+iH, padT]);
+    const barW = iW / sigmas.length;
+    y.ticks(5).forEach(t => {
+      g.append('line').attr('class','grid-line').attr('x1',padL).attr('x2',padL+iW).attr('y1',y(t)).attr('y2',y(t));
+      g.append('text').attr('class','ax-tick').attr('x',padL-8).attr('y',y(t)+4).attr('text-anchor','end').text(t);
+    });
+    sigmas.forEach((d, i) => {
+      const bx = padL + i*barW;
+      const col = d.sigma>=4?'#E8594F':d.sigma>=3?'#F5A623':d.sigma>=2?'#69f0ae':'#4A90D9';
+      g.append('rect').attr('x',bx+1).attr('y',y(d.sigma)).attr('width',barW-2).attr('height',y(0)-y(d.sigma)).attr('fill',col);
+      const short = d.city.split(',')[0];
+      g.append('text').attr('class','city-label')
+        .attr('x',bx+barW/2).attr('y',y(0)+10).attr('text-anchor','end').attr('fill','#aaa').attr('font-size',9.5)
+        .attr('transform',`rotate(-58, ${bx+barW/2}, ${y(0)+10})`).text(short);
+    });
+    g.append('text').attr('class','chart-sub')
+      .attr('transform',`translate(${padL-40},${padT+iH/2}) rotate(-90)`).attr('text-anchor','middle').text('σ (°F)');
+  })();
+
+  // Bottom: scatter σ vs ocean distance
+  (function drawScatter() {
+    const g = svg.append('g').attr('transform','translate(0,540)');
+    const w = 1072, h = 480, padL = 100, padR = 30, padT = 50, padB = 60;
+    const iW = w - padL - padR, iH = h - padT - padB;
+    g.append('text').attr('class','chart-title').attr('x',0).attr('y',22).text('σ vs distance from ocean');
+    g.append('text').attr('class','chart-sub').attr('x',0).attr('y',42).text(`50 cities · r = +${r.toFixed(2)} · maritime moderation in action`);
+    const xMax = d3.max(OCEAN_DATA.cities, d=>d.ocean_distance_miles)*1.04;
+    const yDom = d3.extent(OCEAN_DATA.cities, d=>d.sigma);
+    const yPadV = (yDom[1]-yDom[0])*0.1;
+    const x = d3.scaleLinear().domain([0, xMax]).range([padL, padL+iW]);
+    const y = d3.scaleLinear().domain([yDom[0]-yPadV, yDom[1]+yPadV]).range([padT+iH, padT]);
+    x.ticks(7).forEach(t => {
+      g.append('line').attr('class','grid-line').attr('x1',x(t)).attr('x2',x(t)).attr('y1',padT).attr('y2',padT+iH);
+      g.append('text').attr('class','ax-tick').attr('x',x(t)).attr('y',padT+iH+18).attr('text-anchor','middle').text(t);
+    });
+    y.ticks(5).forEach(t => {
+      g.append('line').attr('class','grid-line').attr('x1',padL).attr('x2',padL+iW).attr('y1',y(t)).attr('y2',y(t));
+      g.append('text').attr('class','ax-tick').attr('x',padL-10).attr('y',y(t)+4).attr('text-anchor','end').text(t);
+    });
+    // Best-fit line
+    g.append('line')
+      .attr('x1',x(0)).attr('x2',x(xMax))
+      .attr('y1',y(ic)).attr('y2',y(ic+sl*xMax))
+      .attr('stroke','#E8594F').attr('stroke-width',2).attr('stroke-dasharray','7,5').attr('opacity',.85);
+    OCEAN_DATA.cities.forEach(d => {
+      const col = d.sigma>=4?'#E8594F':d.sigma>=3?'#F5A623':'#69f0ae';
+      g.append('circle').attr('cx',x(d.ocean_distance_miles)).attr('cy',y(d.sigma))
+        .attr('r',6).attr('fill',col).attr('stroke','#000').attr('stroke-width',1);
+    });
+    const notable = ['Miami','Billings','San Francisco','Anchorage','Minneapolis','Denver','Omaha'];
+    OCEAN_DATA.cities.forEach(d => {
+      const short = d.city.split(',')[0];
+      if (!notable.includes(short)) return;
+      g.append('text').attr('class','city-label')
+        .attr('x',x(d.ocean_distance_miles)+10).attr('y',y(d.sigma)+4).text(short);
+    });
+    g.append('text').attr('class','chart-sub').attr('x',padL+iW/2).attr('y',padT+iH+46).attr('text-anchor','middle')
+      .text('Distance from ocean (miles)');
+    g.append('text').attr('class','chart-sub')
+      .attr('transform',`translate(${padL-70},${padT+iH/2}) rotate(-90)`).attr('text-anchor','middle').text('σ (°F)');
+  })();
+}
+
+// ── POSTER 5: 50-city scorecard table ───────────────────────────────────────
+function buildPoster5() {
+  const poster = document.getElementById('poster-5');
+  const complete = DATA._complete.slice();
+  const cityResults = DATA.model.high.city_results;
+  const effects = DATA.model.high.random_effects.effects;
+  const nationalSlope = DATA.model.high.trend.per_decade;
+  const effectByCity = Object.fromEntries(effects.map(e => [e.city, e]));
+  const matches = DATA.matches.overall;
+
+  const rows = complete.map(c => {
+    const key = cityKey(c);
+    const cr = cityResults[key] || {};
+    const eff = effectByCity[key] || {};
+    const m = matches[key];
+    const trend = nationalSlope + (eff.slope_per_decade || 0);
+    const delta = c.act.high - c.hist.high;
+    const dest = m && m.match !== key ? m.match.split(',')[0] : '—';
+    return {
+      name: c.name, state: c.state,
+      trend,
+      sigma: eff.sigma ?? 0,
+      dest,
+      delta,
+      z: cr.z_score_2025 ?? 0,
+    };
+  }).sort((a,b) => b.delta - a.delta);
+
+  const body = rows.map(r => `
+    <tr>
+      <td>${r.name}, <span class="dim">${r.state}</span></td>
+      <td class="${r.trend>=0?'pos':'neg'}">${r.trend>=0?'+':''}${r.trend.toFixed(2)}</td>
+      <td>${r.sigma.toFixed(2)}</td>
+      <td>${r.dest === '—' ? '<span class="dim">self</span>' : r.dest}</td>
+      <td class="${r.delta>=0?'pos':'neg'}">${r.delta>=0?'+':''}${r.delta.toFixed(1)}</td>
+      <td class="${r.z>=0?'pos':'neg'}">${r.z>=0?'+':''}${r.z.toFixed(2)}</td>
+    </tr>
+  `).join('');
+
+  poster.innerHTML = `
+    <div class="poster-kicker">50-city scorecard · sorted by 2025–26 anomaly</div>
+    <div class="poster-title">The scoreboard</div>
+    <div class="poster-subtitle">
+      Each city&rsquo;s 30-year warming trend, its year-to-year noise (σ),
+      the city whose winter it actually got this year, and how far it drifted.
+    </div>
+    <table class="poster-table">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Trend °F / dec</th>
+          <th>σ (°F)</th>
+          <th>Wintered as</th>
+          <th>Δ 2025–26</th>
+          <th>z-score</th>
+        </tr>
+      </thead>
+      <tbody>${body}</tbody>
+    </table>
+    ${posterFooterHTML(5)}
+  `;
+}
+
+// ── POSTER 6: Model summary ─────────────────────────────────────────────────
+function buildPoster6() {
+  const poster = document.getElementById('poster-6');
+  const hi = DATA.model.high, sn = DATA.model.snow, pr = DATA.model.precip;
+  const vd = hi.variance_decomposition;
+  const sr = hi.sigma_rankings;
+
+  poster.innerHTML = `
+    <div class="poster-kicker">Mixed-effects model · 50 cities × 30 years</div>
+    <div class="poster-title">The model</div>
+    <div class="poster-subtitle">
+      A smooth national trend, each city its own personality, each city its own noise.
+    </div>
+
+    <div class="model-formula">
+      <span class="tok-var">temperature</span><sub style="color:#888">city,year</sub>
+      &nbsp;=&nbsp;
+      <span class="tok-fn">spline</span>(<span class="tok-var">year</span>)
+      &nbsp;<span class="tok-op">+</span>&nbsp;
+      α<sub style="color:#888">city</sub>
+      &nbsp;<span class="tok-op">+</span>&nbsp;
+      β<sub style="color:#888">city</sub> · <span class="tok-var">year</span>
+      &nbsp;<span class="tok-op">+</span>&nbsp;
+      ε<sub style="color:#888">city</sub>
+      <div class="formula-note">
+        Fixed effect: smooth B-spline of year (national trend) &middot;
+        Random effects per city: intercept α, slope β, error variance σ &middot;
+        Heteroscedastic — each city its own σ.
+      </div>
+    </div>
+
+    <div class="callout-grid cols-3">
+      <div class="callout-card">
+        <div class="c-label">R² (temperature)</div>
+        <div class="c-value red">${(vd.r_squared*100).toFixed(1)}%</div>
+        <div class="c-detail">variance explained across<br>1,500 city-years</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">City variance share</div>
+        <div class="c-value yellow">${(vd.city_share*100).toFixed(1)}%</div>
+        <div class="c-detail">winter temperature is<br>overwhelmingly about <em>where</em></div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Spline trend share</div>
+        <div class="c-value blue">${(vd.spline_share*100).toFixed(2)}%</div>
+        <div class="c-detail">the signal from time itself<br>is small inside 30 years</div>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+
+    <div class="callout-grid cols-3">
+      <div class="callout-card">
+        <div class="c-label">Trend · temperature</div>
+        <div class="c-value red small">+${hi.trend.per_decade.toFixed(2)}°F / dec</div>
+        <div class="c-detail">p = ${hi.trend.p_value.toFixed(2)} · ${hi.trend.significant?'significant':'not significant'}</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Trend · snowfall</div>
+        <div class="c-value blue small">${sn.trend.per_decade>=0?'+':''}${sn.trend.per_decade.toFixed(2)}″ / dec</div>
+        <div class="c-detail">p = ${sn.trend.p_value.toFixed(2)} · no clear signal</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Trend · precipitation</div>
+        <div class="c-value yellow small">${pr.trend.per_decade>=0?'+':''}${pr.trend.per_decade.toFixed(2)}″ / dec</div>
+        <div class="c-detail">p = ${pr.trend.p_value.toFixed(2)} · no clear signal</div>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+
+    <div class="callout-grid">
+      <div class="callout-card">
+        <div class="c-label">Random intercept–slope correlation</div>
+        <div class="c-value red">+${hi.random_effects.intercept_slope_correlation.toFixed(2)}</div>
+        <div class="c-detail">Warmer cities warm faster. For snow, r = −0.29. For precip, r ≈ 0.<br>Temperature is where the feedback lives.</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">σ range</div>
+        <div class="c-value yellow small">${sr.lowest_sigma_val.toFixed(2)} → ${sr.highest_sigma_val.toFixed(2)}°F</div>
+        <div class="c-detail">${sr.lowest_sigma_city} (least noisy) →<br>${sr.highest_sigma_city} (most)</div>
+      </div>
+    </div>
+
+    ${posterFooterHTML(6)}
+  `;
+}
+
+// ── POSTER 7: Strange but true ──────────────────────────────────────────────
+function buildPoster7() {
+  const poster = document.getElementById('poster-7');
+  const hi = DATA.model.high;
+  const cr = hi.city_results;
+  const complete = DATA._complete;
+  const matches = DATA.matches.overall;
+
+  let selfCount = 0;
+  complete.forEach(c => {
+    const key = cityKey(c);
+    if (matches[key] && matches[key].match === key) selfCount++;
+  });
+  const nationalAvg = d3.mean(complete, c => c.act.high - c.hist.high);
+  const sortedDelta = [...complete].sort((a,b) => (b.act.high-b.hist.high) - (a.act.high-a.hist.high));
+  const hottest = sortedDelta[0], coldest = sortedDelta[sortedDelta.length-1];
+  let twoSigmaCount = 0;
+  Object.values(cr).forEach(c => { if (Math.abs(c.z_score_2025) > 2) twoSigmaCount++; });
+  const denverZ = cr['Denver, CO']?.z_score_2025 ?? 0;
+  const denverDelta = hottest.name === 'Denver'
+    ? (hottest.act.high - hottest.hist.high)
+    : (complete.find(c => c.name === 'Denver')?.act.high - complete.find(c => c.name === 'Denver')?.hist.high) || 0;
+  const hottestKey = cityKey(hottest), coldestKey = cityKey(coldest);
+  const hottestDest = matches[hottestKey]?.match.split(',')[0] || '—';
+  const coldestDest = matches[coldestKey]?.match.split(',')[0] || '—';
+
+  poster.innerHTML = `
+    <div class="poster-kicker">Strange but true</div>
+    <div class="poster-title">Winter 2025–2026,<br/>in nine numbers</div>
+    <div class="poster-subtitle">The headline stats worth sharing.</div>
+
+    <div class="callout-grid cols-3">
+      <div class="callout-card">
+        <div class="c-label">50-city anomaly</div>
+        <div class="c-value red">${nationalAvg>=0?'+':''}${nationalAvg.toFixed(1)}°F</div>
+        <div class="c-detail">mean vs 1991–2020<br>winter normal</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Hottest</div>
+        <div class="c-value red small">${hottest.name}<br>+${(hottest.act.high-hottest.hist.high).toFixed(1)}°F</div>
+        <div class="c-detail">z = +${(cr[hottestKey]?.z_score_2025||0).toFixed(2)}<br>wintered as ${hottestDest}</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Coldest</div>
+        <div class="c-value blue small">${coldest.name}<br>${(coldest.act.high-coldest.hist.high).toFixed(1)}°F</div>
+        <div class="c-detail">z = ${(cr[coldestKey]?.z_score_2025||0).toFixed(2)}<br>wintered as ${coldestDest}</div>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+
+    <div class="callout-grid cols-3">
+      <div class="callout-card">
+        <div class="c-label">Stayed themselves</div>
+        <div class="c-value green">${selfCount} / 50</div>
+        <div class="c-detail">nearest-match is the city itself<br>the extremes held</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Beyond 2σ</div>
+        <div class="c-value yellow">${twoSigmaCount}</div>
+        <div class="c-detail">residuals exceeded their own<br>two-sigma band (hot or cold)</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Warmer → faster warming</div>
+        <div class="c-value red">r = +.59</div>
+        <div class="c-detail">random intercept × slope<br>for winter temperature</div>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+
+    <div class="callout-grid cols-3">
+      <div class="callout-card">
+        <div class="c-label">σ range</div>
+        <div class="c-value blue small">1.18 → 4.84°F</div>
+        <div class="c-detail">Miami&rsquo;s predictability<br>vs Billings&rsquo;s drama</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Ocean distance × σ</div>
+        <div class="c-value yellow">r = +.53</div>
+        <div class="c-detail">maritime moderation<br>explains 28% of variance</div>
+      </div>
+      <div class="callout-card">
+        <div class="c-label">Denver z-score</div>
+        <div class="c-value red">+${denverZ.toFixed(2)}</div>
+        <div class="c-detail">${denverDelta>=0?'+':''}${denverDelta.toFixed(1)}°F above normal —<br>a winter that left Denver</div>
+      </div>
+    </div>
+
+    ${posterFooterHTML(7)}
+  `;
+}
 
 </script>
 
