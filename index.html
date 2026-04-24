@@ -4006,7 +4006,7 @@ function buildPoster1() {
   items.filter(it => !it.isSelf).forEach(it => placeLabel(it, it.dest, '#E0E0E0', 13));
 
   // Legend — lower right to stay clear of Alaska (lower-left inset)
-  const legend = svg.append('g').attr('transform', `translate(${W-180},${H-112})`);
+  const legend = svg.append('g').attr('transform', `translate(${W-180},${H-90})`);
   [
     {c:'#E8594F', l:'Hot (+6°F+)'},
     {c:'#F5A623', l:'Warm (+2 to +5)'},
