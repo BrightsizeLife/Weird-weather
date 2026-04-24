@@ -3956,14 +3956,12 @@ function buildPoster1() {
     }
   });
 
-  // Labels: for displaced cities, show DESTINATION name only (where winter "went");
-  // for self-matching cities, show nothing — the ringed dot tells the story.
+  // Labels: self-match cities get their own name (muted); displaced cities get destination name.
+  // Process self-match first so they seed the collision grid.
   const placed = [];
   items.sort((a,b) => a.y - b.y);
-  items.forEach(it => {
-    if (it.isSelf) return;
-    const text = it.dest;
-    const fs = 13;
+
+  function placeLabel(it, text, fill, fs) {
     const estW = text.length * 7.4;
     const cands = [
       {ax:it.x+10, ay:it.y+4, anchor:'start'},
@@ -3995,15 +3993,20 @@ function buildPoster1() {
     g.append('text')
       .attr('x', chosen.ax).attr('y', chosen.ay)
       .attr('text-anchor', chosen.anchor)
-      .attr('fill', '#E0E0E0')
+      .attr('fill', fill)
       .attr('font-size', fs)
       .attr('font-weight', 500)
       .attr('font-family', "'SF Mono','Fira Code',monospace")
       .text(text);
-  });
+  }
 
-  // Legend
-  const legend = svg.append('g').attr('transform', `translate(18,${H-118})`);
+  // Self-match cities first (own name, muted)
+  items.filter(it => it.isSelf).forEach(it => placeLabel(it, it.city, '#999', 12));
+  // Displaced cities (destination name, bright)
+  items.filter(it => !it.isSelf).forEach(it => placeLabel(it, it.dest, '#E0E0E0', 13));
+
+  // Legend — lower right to stay clear of Alaska (lower-left inset)
+  const legend = svg.append('g').attr('transform', `translate(${W-180},${H-112})`);
   [
     {c:'#E8594F', l:'Hot (+6°F+)'},
     {c:'#F5A623', l:'Warm (+2 to +5)'},
