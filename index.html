@@ -2850,7 +2850,17 @@ beta = np.linalg.solve(X.T @ X + np.diag(penalty), X.T @ y)
       <strong>What this model is and isn&rsquo;t.</strong> It&rsquo;s a deliberately simple linear model with smooth trend + city-level random effects + per-city variance. It is <em>not</em> a climate projection, a causal model, or a forecast. It&rsquo;s a descriptive lens that says: relative to its own past, how unusual was this city&rsquo;s winter? The two limits above are real but addressable &mdash; if you fork this, those are the natural next moves.
     </div>
 
-    <p style="margin-top: 2rem;">If you want to run this end-to-end: <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">clone the repo</a>, <code>pip install -r requirements.txt</code>, then <code>python fetch_data.py &amp;&amp; python fit_model.py</code>. The dashboard reads <code>data/dashboard_data.json</code>, which both scripts write.</p>
+    <h2 class="essay-section-head">If we did this by the books &middot; in R</h2>
+
+    <p>If you came here hoping for R, here is the version that does it properly: ENSO as a fixed effect in the model, smoothing parameter chosen by REML (no hard-coded df), block leave-one-year-out CV comparing nested models, and real diagnostics &mdash; QQ, residuals vs fitted, leverage, concurvity, DHARMa simulation-based residuals, variance components.</p>
+
+    <p>One file, runnable with <code>Rscript</code>, drops in next to <code>fit_model.py</code>:</p>
+
+    <p style="margin-top: 1.4rem;">
+      <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather/blob/main/if_we_did_this_in_R.R" target="_blank" rel="noopener">if_we_did_this_in_R.R &rarr;</a>
+    </p>
+
+    <p style="margin-top: 2rem;">If you want to run the Python version end-to-end: <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">clone the repo</a>, <code>pip install -r requirements.txt</code>, then <code>python fetch_data.py &amp;&amp; python fit_model.py</code>. The dashboard reads <code>data/dashboard_data.json</code>, which both scripts write.</p>
 
   </div>
 </div>
