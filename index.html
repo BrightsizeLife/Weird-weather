@@ -2374,6 +2374,10 @@
       <span class="pill">no fancy ML libs</span>
     </div>
 
+    <div class="callout-box">
+      <strong>Why Python and not R?</strong> Honestly, just because the dashboard is HTML/JS and Python kept the data pipeline next to the rest. R would have been more natural for the model &mdash; <code>mgcv::gam(y ~ s(year) + s(city, bs="re") + s(year, city, bs="re"))</code> in a single line, or <code>lme4::lmer(y ~ s(year) + (year | city))</code> if you don't mind a basis-prep step. The Python here uses NumPy + a hand-rolled ridge solve to keep dependencies tiny, but the math is identical. If you fork this and rewrite the model in R, the dashboard JSON contract is in <code>fit_model.py</code> &mdash; just emit the same <code>data/dashboard_data.json</code> shape.
+    </div>
+
     <!-- ═════════════ PART 1: DISTANCES ═════════════ -->
     <h2 class="essay-section-head">Part 1 &middot; Distances</h2>
 
@@ -2707,8 +2711,143 @@ for label, ci in city_map.items():
       <div class="math-note">Denver&rsquo;s z-score for 2025 was +2.70. Under a normal distribution that&rsquo;s a less-than-1% event. Two cities exceeded the &plusmn;2&sigma; band.</div>
     </div>
 
+    <!-- ═════════════ PART 3: WHAT WE DIDN'T DO ═════════════ -->
+    <h2 class="essay-section-head">Part 3 &middot; What we didn&rsquo;t do (and how you would)</h2>
+
+    <p>Two honest gaps worth disclosing, because someone trying to replicate this would otherwise re-derive them and wonder whether they&rsquo;d misread the source.</p>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">1. We hard-coded df = 6. We did not pick it by cross-validation.</h3>
+
+    <p>The B-spline degrees of freedom is a single line in <code>fit_model.py</code>: <code>spline_df=6</code>. Six basis functions over 30 years gives a curve that can bend a couple of times without chasing every wiggle &mdash; it&rsquo;s a sensible default, but it&rsquo;s a default, not a result. The principled way is <strong>leave-one-out cross-validation</strong> (LOOCV): hold out one observation at a time, refit, predict the held-out point, repeat across a grid of df values, pick the df with the lowest held-out error. Here&rsquo;s the pattern, ready to drop in:</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">loocv_select_df.py <span class="dim">&middot; suggested addition</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="32">import numpy as np
+
+def loocv_rmse_for_df(df, X_builder, y, ci_arr, n_cities, lambda_re=0.1):
+    """Mean leave-one-out RMSE for a given spline df.
+
+    X_builder(years): returns the design matrix using the supplied df.
+    Refits n_obs times — fine for ~1,500 city-years, slow above ~50k.
+    """
+    n = len(y)
+    sq_errs = np.empty(n)
+    for k in range(n):
+        mask = np.ones(n, dtype=bool); mask[k] = False
+        X_train = X_builder()[mask]
+        y_train = y[mask]
+        # ridge solve on the leave-one-out fold
+        n_total = X_train.shape[1]
+        n_spline = X_train.shape[1] - 2 * n_cities  # spline | city | city*year
+        penalty = np.zeros(n_total); penalty[n_spline:] = lambda_re
+        beta = np.linalg.solve(X_train.T @ X_train + np.diag(penalty),
+                               X_train.T @ y_train)
+        x_k = X_builder()[k]
+        sq_errs[k] = (y[k] - x_k @ beta) ** 2
+    return float(np.sqrt(np.mean(sq_errs)))
+
+# Sweep df, pick the minimum.
+results = {}
+for df in [4, 5, 6, 7, 8, 10]:
+    results[df] = loocv_rmse_for_df(df, ...)
+best_df = min(results, key=results.get)
+print(results, "→ best df:", best_df)</textarea>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">Why this matters</span>
+        <span class="anno-val">If df is too low, the model under-fits real curvature in the trend &mdash; anomalies get inflated. If too high, the curve hugs the data and z-scores get suppressed. LOOCV gives an empirical answer instead of a guess.</span>
+      </li>
+      <li>
+        <span class="anno-key">Computational cost</span>
+        <span class="anno-val">~1,500 obs &times; ~6 candidate df values = ~9,000 ridge solves. Each is a small linear system &mdash; total runtime is seconds. No reason not to do it; we just didn&rsquo;t.</span>
+      </li>
+      <li>
+        <span class="anno-key">Faster variant</span>
+        <span class="anno-val">For ridge regression specifically, there&rsquo;s a closed-form LOOCV via the hat matrix (the PRESS statistic): <code>e_loo = e_train / (1 &minus; h_ii)</code>. Avoids refitting in the loop.</span>
+      </li>
+    </ul>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">2. ENSO is not a model term. It&rsquo;s post-hoc residual analysis.</h3>
+
+    <p>The Artifacts tab and the Time Series tab both show ENSO patterns &mdash; bars per phase, residuals colored by El Niño / La Niña / Neutral. None of that flows back into the model fit. Our model is <em>blind</em> to ENSO. After fitting, we group the residuals by year-phase and average them. That&rsquo;s descriptive, not predictive.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; ENSO as it actually exists today</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="14"># After the model fits, residuals are grouped by ENSO phase.
+# This is observational — ENSO is NOT a regressor in fit_metric_model().
+
+enso_effects = {"el_nino": [], "la_nina": [], "neutral": []}
+for i, yr in enumerate(years_all):
+    phase = ENSO_PHASES.get(int(yr), "neutral")
+    enso_effects[phase].append(float(residuals[i]))
+
+# Per-phase mean residual: how much warmer/colder than the trend
+# did winters of each phase tend to be?
+enso_means = {p: np.mean(v) for p, v in enso_effects.items() if v}</textarea>
+    </div>
+
+    <p>If you want ENSO to be a <em>model term</em> &mdash; so its effect is estimated jointly with the trend and city effects, with proper standard errors &mdash; here&rsquo;s the change. One-hot the phase (with neutral as the reference category) and append it to the design matrix:</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; suggested: ENSO as a fixed effect</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="22"># Build two contrast columns: 1 if El Niño, 1 if La Niña, else 0.
+# Neutral is the reference (intercept absorbs it).
+
+phases = np.array([ENSO_PHASES.get(int(y), "neutral") for y in years_all])
+X_elnino = (phases == "el_nino").astype(float).reshape(-1, 1)
+X_lanina = (phases == "la_nina").astype(float).reshape(-1, 1)
+
+# Glue ENSO columns onto the existing design matrix.
+X = np.column_stack([X_spline, X_city, X_city_year, X_elnino, X_lanina])
+
+# Don't penalize the ENSO coefs — we want them estimated, not shrunk.
+n_total = X.shape[1]
+penalty = np.zeros(n_total)
+penalty[n_spline : n_spline + 2 * n_cities] = lambda_re  # only random effects
+
+beta = np.linalg.solve(X.T @ X + np.diag(penalty), X.T @ y)
+
+# β_elnino, β_lanina are now estimated effects in the model's units (°F),
+# adjusted for trend, city, and city × year.</textarea>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">Why we didn&rsquo;t bake it in</span>
+        <span class="anno-val">The dashboard&rsquo;s primary frame is "how did each city's winter compare to its own past?" ENSO as a regressor would shift z-scores away from the simple climatology baseline (a 2&sigma; warm winter that lands during a strong El Niño would be partially "explained" by ENSO and the residual would shrink). For the descriptive frame we wanted, climatology + city is the right baseline.</span>
+      </li>
+      <li>
+        <span class="anno-key">When you&rsquo;d want it</span>
+        <span class="anno-val">If you&rsquo;re asking "how much of this city's variability is ENSO?" or "is El Niño's effect statistically distinguishable from zero after accounting for trend?" &mdash; then ENSO belongs <em>in</em> the model, with a Wald test or LRT on its coefficients.</span>
+      </li>
+      <li>
+        <span class="anno-key">City-by-ENSO interactions</span>
+        <span class="anno-val">For "does El Niño hit the South harder than the Northwest?" extend with <code>X_city &times; X_elnino</code> columns. That&rsquo;s 50&times;2 extra predictors &mdash; you&rsquo;ll definitely want LOOCV or AIC to keep it honest.</span>
+      </li>
+    </ul>
+
     <div class="callout-box">
-      <strong>What this model is and isn&rsquo;t.</strong> It&rsquo;s a deliberately simple linear model with smooth trend + city-level random effects + per-city variance. It is <em>not</em> a climate projection, a causal model, or a forecast. It&rsquo;s a descriptive lens that says: relative to its own past, how unusual was this city&rsquo;s winter?
+      <strong>What this model is and isn&rsquo;t.</strong> It&rsquo;s a deliberately simple linear model with smooth trend + city-level random effects + per-city variance. It is <em>not</em> a climate projection, a causal model, or a forecast. It&rsquo;s a descriptive lens that says: relative to its own past, how unusual was this city&rsquo;s winter? The two limits above are real but addressable &mdash; if you fork this, those are the natural next moves.
     </div>
 
     <p style="margin-top: 2rem;">If you want to run this end-to-end: <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">clone the repo</a>, <code>pip install -r requirements.txt</code>, then <code>python fetch_data.py &amp;&amp; python fit_model.py</code>. The dashboard reads <code>data/dashboard_data.json</code>, which both scripts write.</p>
