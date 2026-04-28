@@ -759,6 +759,158 @@
     .code-block .code-func { color: #F5A623; }
     .code-block .code-var { color: #4A90D9; }
 
+    /* ── Editable code blocks (Code tab) ───────────────────────────────── */
+    .code-card {
+      margin: 1.4rem 0 2rem;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      background: #0d0d0d;
+      overflow: hidden;
+    }
+    .code-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .55rem .9rem .55rem 1.1rem;
+      background: #0a0a0a;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #888;
+    }
+    .code-card-header .file-name {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #F5A623;
+      letter-spacing: .04em;
+      text-transform: none;
+    }
+    .code-card-header .file-name .dim { color: #555; }
+    .code-card-actions { display: flex; gap: .4rem; align-items: center; }
+    .code-card-btn {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: #aaa;
+      padding: .3rem .65rem;
+      border-radius: 3px;
+      font-family: inherit;
+      font-size: .68rem;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .code-card-btn:hover { border-color: #E8594F; color: #E8594F; }
+    .code-card-btn.copied { border-color: #69f0ae; color: #69f0ae; }
+    .code-editable {
+      width: 100%;
+      background: #0d0d0d;
+      color: #c8c8c8;
+      border: 0;
+      padding: 1.1rem 1.3rem;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      resize: vertical;
+      outline: none;
+      tab-size: 4;
+      -moz-tab-size: 4;
+      white-space: pre;
+      overflow: auto;
+      display: block;
+    }
+    .code-editable:focus { background: #0f0f0f; }
+
+    .math-card {
+      background: linear-gradient(135deg, #0d0d0d 0%, #0a0a0a 100%);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 1.5rem 1.6rem 1.3rem;
+      margin: 1.2rem 0 1.6rem;
+    }
+    .math-card .math-label {
+      color: #888;
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+    .math-card .math-formula {
+      font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif;
+      font-size: 1.45rem;
+      color: #E0E0E0;
+      letter-spacing: .02em;
+      line-height: 1.6;
+      padding: .35rem 0;
+    }
+    .math-card .math-formula .var { color: #4A90D9; font-style: italic; }
+    .math-card .math-formula .op { color: #E8594F; }
+    .math-card .math-formula .fn { color: #F5A623; font-style: italic; }
+    .math-card .math-note {
+      color: #888;
+      font-size: .8rem;
+      margin-top: .7rem;
+      line-height: 1.55;
+    }
+
+    .annotated-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.2rem 0 1.8rem;
+    }
+    .annotated-list li {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1.4rem;
+      padding: .9rem 0;
+      border-bottom: 1px dashed #1a1a1a;
+    }
+    .annotated-list li:last-child { border-bottom: 0; }
+    .annotated-list .anno-key {
+      font-family: 'SF Mono', monospace;
+      color: #F5A623;
+      font-size: .85rem;
+      padding-top: .15rem;
+    }
+    .annotated-list .anno-key .dim { color: #555; }
+    .annotated-list .anno-val {
+      color: #c8c8c8;
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+    .annotated-list .anno-val em { color: #F5A623; font-style: normal; }
+    .annotated-list .anno-val code {
+      background: #1a1a1a;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: .8rem;
+      color: #69f0ae;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 1.5rem;
+    }
+    .pill {
+      background: #111;
+      border: 1px solid #222;
+      color: #aaa;
+      padding: .35rem .8rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      letter-spacing: .03em;
+    }
+    .pill.red { border-color: #E8594F; color: #E8594F; }
+    .pill.blue { border-color: #4A90D9; color: #4A90D9; }
+    .pill.yellow { border-color: #F5A623; color: #F5A623; }
+
+    @media (max-width: 700px) {
+      .annotated-list li { grid-template-columns: 1fr; gap: .25rem; }
+      .annotated-list .anno-key { padding-top: 0; }
+      .code-editable { font-size: .72rem; padding: .9rem 1rem; }
+    }
+
     .callout-box {
       background: #0a0a0a;
       border-left: 3px solid #F5A623;
@@ -1189,6 +1341,7 @@
 <nav class="tab-bar">
   <button class="tab-btn active" data-tab="essay">Essay</button>
   <button class="tab-btn" data-tab="analysis">Analysis</button>
+  <button class="tab-btn" data-tab="code">Code</button>
   <button class="tab-btn" data-tab="map">Map</button>
   <button class="tab-btn" data-tab="summary">Summary</button>
   <button class="tab-btn" data-tab="matrix">Distance Matrix</button>
@@ -2197,6 +2350,368 @@
       <p>Want to replicate this? The full code&mdash;data fetching, model fitting, and this dashboard&mdash;is on GitHub.</p>
       <a class="cta-link" href="https://github.com/derekdebellis/weird-weather" target="_blank" rel="noopener">View on GitHub &rarr;</a>
     </div>
+
+  </div>
+</div>
+
+<!-- ═══ Code Tab ═══ -->
+<div id="tab-code" class="tab-panel">
+  <div class="essay-container">
+
+    <div class="blog-header">
+      <div class="blog-kicker">Source &middot; Python</div>
+      <h1 class="blog-title">The Code</h1>
+      <p class="blog-subtitle">Two pieces do most of the work: the distance functions that decide which cities had similar winters, and the mixed-effects model that turns 30 years of data into trends, anomalies, and z-scores.</p>
+      <div class="blog-byline">Read it, copy it, fork it &middot; everything below is editable</div>
+    </div>
+
+    <p>Every block on this page is a real <code>textarea</code>. Click in, change a number, copy it, paste it into a notebook. Nothing on the dashboard reruns &mdash; the goal is for you to see what the math actually looks like in code, not to wait on a build. The full repo is on <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">GitHub</a>.</p>
+
+    <div class="pill-row">
+      <span class="pill blue">numpy</span>
+      <span class="pill yellow">scipy.interpolate.BSpline</span>
+      <span class="pill red">least squares + ridge</span>
+      <span class="pill">no fancy ML libs</span>
+    </div>
+
+    <!-- ═════════════ PART 1: DISTANCES ═════════════ -->
+    <h2 class="essay-section-head">Part 1 &middot; Distances</h2>
+
+    <p>The dashboard answers two questions that both reduce to a distance measurement:</p>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">Climate match</span>
+        <span class="anno-val">Whose 30-year normal is closest to <em>your</em> city's actual 2025&ndash;26 winter? (Denver wintered as Albuquerque.)</span>
+      </li>
+      <li>
+        <span class="anno-key">Distance matrix</span>
+        <span class="anno-val">For every pair of cities, how different were their winters? A 50&times;50 matrix. The map's heatmap reads from it.</span>
+      </li>
+    </ul>
+
+    <p>Both questions need to compare cities along three axes: average winter high (&deg;F), total snowfall (in), total precipitation (in). Those scales are wildly different &mdash; precipitation might be 5 to 80, snowfall 0 to 90, temperature 10 to 75. So <strong>step zero is normalization</strong>: rescale every dimension to <code>[0, 1]</code> using the cross-city min and max. After that, no single dimension dominates.</p>
+
+    <div class="math-card">
+      <div class="math-label">Min&ndash;max normalization</div>
+      <div class="math-formula"><span class="fn">x&prime;</span> <span class="op">=</span> (<span class="var">x</span> <span class="op">&minus;</span> min) / (max <span class="op">&minus;</span> min)</div>
+      <div class="math-note">Applied per dimension, so all three metrics live on the same [0, 1] axis before any distance is computed.</div>
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">weather/analysis.py <span class="dim">&middot; bounds &amp; normalize</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="14"># Compute per-dimension min and max across all cities,
+# then build a normalize() that maps any value to [0, 1].
+
+bounds = {
+    "high":   (min(all_highs),   max(all_highs)),
+    "snow":   (min(all_snows),   max(all_snows)),
+    "precip": (min(all_precips), max(all_precips)),
+}
+
+def normalize(val, key):
+    lo, hi = bounds[key]
+    if hi == lo:
+        return 0
+    return (val - lo) / (hi - lo)</textarea>
+    </div>
+
+    <p>With everything normalized, we can write the distance functions. Both Euclidean and Manhattan summarize how far apart two cities are with a single number. They differ only in <em>how</em> they aggregate the per-dimension differences.</p>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Euclidean distance</h3>
+
+    <div class="math-card">
+      <div class="math-label">L<sub>2</sub> &middot; Euclidean</div>
+      <div class="math-formula">d(<span class="var">a</span>, <span class="var">b</span>) <span class="op">=</span> <span class="fn">&radic;</span>&thinsp;&Sigma;<sub>i</sub> (<span class="var">a</span><sub>i</sub> <span class="op">&minus;</span> <span class="var">b</span><sub>i</sub>)<sup>2</sup></div>
+      <div class="math-note">Square the gap on each axis, sum, take the square root. Geometrically: the straight-line distance between two points in n-dimensional space &mdash; the Pythagorean theorem with more legs.</div>
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">weather/analysis.py <span class="dim">&middot; climate_dist</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="9">def climate_dist(a, b):
+    """Normalized Euclidean distance across (high, snow, precip)."""
+    return math.sqrt(
+        (normalize(a["high"],   "high")   - normalize(b["high"],   "high"))   ** 2
+      + (normalize(a["snow"],   "snow")   - normalize(b["snow"],   "snow"))   ** 2
+      + (normalize(a["precip"], "precip") - normalize(b["precip"], "precip")) ** 2
+    )</textarea>
+    </div>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Manhattan distance</h3>
+
+    <div class="math-card">
+      <div class="math-label">L<sub>1</sub> &middot; Manhattan (a.k.a. taxicab)</div>
+      <div class="math-formula">d(<span class="var">a</span>, <span class="var">b</span>) <span class="op">=</span> &Sigma;<sub>i</sub> &nbsp;|<span class="var">a</span><sub>i</sub> <span class="op">&minus;</span> <span class="var">b</span><sub>i</sub>|</div>
+      <div class="math-note">Sum of absolute gaps. Named for navigating a grid of city blocks &mdash; you can&rsquo;t cut diagonally through buildings, you walk along axes. No squaring, no square root.</div>
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; in compute_distance_matrices()</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="11">import numpy as np
+
+# act_vecs and hist_vecs are (n_cities, n_dims) arrays of normalized values.
+# We build full 50×50 matrices: row i = city i's actual winter,
+# col j = city j's 30-year normal.
+
+for i in range(n):
+    for j in range(n):
+        diff = act_vecs[i] - hist_vecs[j]
+        euclidean_mat[i, j] = float(np.sqrt(np.sum(diff ** 2)))   # L2
+        manhattan_mat[i, j] = float(np.sum(np.abs(diff)))          # L1</textarea>
+    </div>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">How they relate</h3>
+
+    <p>Both are members of the same family &mdash; the <strong>Minkowski distance</strong>:</p>
+
+    <div class="math-card">
+      <div class="math-label">Minkowski (parameterized by p)</div>
+      <div class="math-formula">d<sub>p</sub>(<span class="var">a</span>, <span class="var">b</span>) <span class="op">=</span> ( &Sigma;<sub>i</sub> |<span class="var">a</span><sub>i</sub> <span class="op">&minus;</span> <span class="var">b</span><sub>i</sub>|<sup>p</sup> )<sup>1/p</sup></div>
+      <div class="math-note"><em>p</em> = 1 gives Manhattan. <em>p</em> = 2 gives Euclidean. <em>p</em> &rarr; &infin; gives Chebyshev (just the largest single-dimension gap).</div>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">Euclidean (L<sub>2</sub>)</span>
+        <span class="anno-val">Penalizes <em>large</em> gaps disproportionately because it squares them. A city that&rsquo;s very different on one axis lands far away even if the other axes match. This is the dashboard&rsquo;s primary metric &mdash; it matches geometric intuition.</span>
+      </li>
+      <li>
+        <span class="anno-key">Manhattan (L<sub>1</sub>)</span>
+        <span class="anno-val">Treats all gaps linearly. More forgiving of one big mismatch, but punishes many small ones a bit harder. Useful as a sanity check &mdash; if Euclidean and Manhattan rank cities very differently, one outlier dimension is doing the work.</span>
+      </li>
+      <li>
+        <span class="anno-key">When they agree</span>
+        <span class="anno-val">When two cities are similar on every dimension. They tend to disagree most when one dimension is way off and others are tight.</span>
+      </li>
+    </ul>
+
+    <div class="callout-box">
+      <strong>Why normalize first?</strong> Without normalization, temperature&rsquo;s range (~65 units) would swamp snowfall (~90 units of inches) and precipitation (~75 units of inches) in a way that depends on units, not on signal. Min&ndash;max scaling makes a 1-unit move on each axis represent the same fraction of cross-city spread. That&rsquo;s the assumption being made &mdash; an honest one to flag.
+    </div>
+
+    <!-- ═════════════ PART 2: THE MODEL ═════════════ -->
+    <h2 class="essay-section-head">Part 2 &middot; The Model</h2>
+
+    <p>The model has one job: take 30 years of winter data for 50 cities and tell us, for every city-year, whether what happened was within the realm of normal. Its formula:</p>
+
+    <div class="math-card">
+      <div class="math-label">Mixed-effects model</div>
+      <div class="math-formula"><span class="var">y</span><sub>c,t</sub> <span class="op">=</span> <span class="fn">spline</span>(<span class="var">t</span>) <span class="op">+</span> <span class="var">&alpha;</span><sub>c</sub> <span class="op">+</span> <span class="var">&beta;</span><sub>c</sub>&middot;<span class="var">t</span> <span class="op">+</span> <span class="var">&epsilon;</span><sub>c</sub></div>
+      <div class="math-note">
+        <em>y</em><sub>c,t</sub>: weather metric (high, snow, or precip) for city <em>c</em> in year <em>t</em>.<br>
+        <em>spline(t)</em>: smooth national trend over time (a B-spline). One curve for everyone.<br>
+        <em>&alpha;</em><sub>c</sub>: city&rsquo;s baseline offset (random intercept). Miami is warmer than Minneapolis &mdash; this captures it.<br>
+        <em>&beta;</em><sub>c</sub>&middot;<em>t</em>: city&rsquo;s personal slope (random slope). Some cities warm faster than others.<br>
+        <em>&epsilon;</em><sub>c</sub>: per-city error variance. Miami&rsquo;s winter barely moves; Billings swings wildly. Each city gets its own &sigma;.
+      </div>
+    </div>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Step 1 &middot; B-spline knots</h3>
+
+    <p>A B-spline is a smooth curve built from local pieces. Knots are the joints &mdash; the x-values where the pieces meet. We place internal knots at quantiles of the year range so the curve gets equal data on each side, then pad both ends with repeated knots so the spline can reach the boundaries cleanly.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; make_bspline_knots</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="22">import numpy as np
+
+def make_bspline_knots(x, df=6, degree=3):
+    """B-spline knot vector.
+
+    df:     degrees of freedom (number of basis functions)
+    degree: spline degree (3 = cubic — smooth and standard)
+    """
+    x = np.asarray(x, dtype=float)
+    n_internal = max(0, df - degree - 1)
+
+    # Place internal knots at evenly-spaced data quantiles.
+    if n_internal > 0:
+        qs = np.linspace(0, 100, n_internal + 2)[1:-1]
+        internal_knots = np.percentile(x, qs)
+    else:
+        internal_knots = np.array([])
+
+    lo, hi = x.min(), x.max()
+    return np.concatenate([
+        np.repeat(lo, degree + 1),  # boundary repeats (left)
+        internal_knots,
+        np.repeat(hi, degree + 1),  # boundary repeats (right)
+    ])</textarea>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">df = 6</span>
+        <span class="anno-val">How wiggly the curve can be. Six basis functions ≈ a curve that can have a couple of bends but not chase every wiggle. Lower = stiffer (closer to a line), higher = more flexible (risks overfitting).</span>
+      </li>
+      <li>
+        <span class="anno-key">degree = 3</span>
+        <span class="anno-val">Cubic B-spline &mdash; pieces are cubic polynomials, and the curve is smooth in value, slope, and curvature where pieces meet. The standard choice for smooth trends.</span>
+      </li>
+      <li>
+        <span class="anno-key">Quantile knots</span>
+        <span class="anno-val">Equal data per piece. Avoids placing knots in years with no observations.</span>
+      </li>
+    </ul>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Step 2 &middot; Design matrix</h3>
+
+    <p>The model has three blocks of features. They&rsquo;re glued side by side into one big design matrix <code>X</code>, then linear regression handles the rest.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; in fit_metric_model()</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="22"># Center year and rescale to decades for numerical stability.
+year_center = years.mean()
+year_scaled = (years - year_center) / 10.0
+
+# (1) Spline basis: a smooth curve over year (the national trend).
+spline_knots = make_bspline_knots(years, df=spline_df)
+X_spline = bspline_basis(years, knots=spline_knots)
+
+# (2) City dummies: each city's own intercept (random α_c).
+X_city = np.zeros((n_obs, n_cities))
+for i, ci in enumerate(ci_arr):
+    X_city[i, ci] = 1.0
+
+# (3) City × year_scaled: each city's own slope (random β_c).
+X_city_year = np.zeros((n_obs, n_cities))
+for i, ci in enumerate(ci_arr):
+    X_city_year[i, ci] = year_scaled[i]
+
+# Glue together.
+X = np.column_stack([X_spline, X_city, X_city_year])</textarea>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">X_spline</span>
+        <span class="anno-val">The national trend &mdash; one curve for all 50 cities. Captures the signal of time itself.</span>
+      </li>
+      <li>
+        <span class="anno-key">X_city</span>
+        <span class="anno-val">A one-hot column per city. The fitted coefficient is that city&rsquo;s baseline offset relative to the national curve. (Miami: positive. Anchorage: very negative.)</span>
+      </li>
+      <li>
+        <span class="anno-key">X_city_year</span>
+        <span class="anno-val">A column per city, holding centered/scaled year only on that city&rsquo;s rows. The coefficient is the city&rsquo;s personal trend in &deg;F per decade.</span>
+      </li>
+    </ul>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Step 3 &middot; Solve, with a ridge penalty on random effects</h3>
+
+    <p>Standard ordinary least squares minimizes &Sigma;(<em>y</em> &minus; <em>X&beta;</em>)<sup>2</sup>. We add a small penalty &lambda;&Sigma;<em>&beta;</em><sup>2</sup> on just the city-level coefficients. That shrinks them toward zero so wild outlier cities don&rsquo;t dominate. It&rsquo;s a poor-man&rsquo;s mixed-effects fit using only NumPy &mdash; no <code>statsmodels.MixedLM</code> required.</p>
+
+    <div class="math-card">
+      <div class="math-label">Ridge-regularized least squares</div>
+      <div class="math-formula"><span class="var">&beta;&#770;</span> <span class="op">=</span> ( <span class="var">X</span><sup>T</sup><span class="var">X</span> <span class="op">+</span> <span class="var">P</span> )<sup>&minus;1</sup> <span class="var">X</span><sup>T</sup><span class="var">y</span></div>
+      <div class="math-note"><em>P</em> is a diagonal penalty matrix &mdash; zeros on the spline coefficients (no shrinkage on the trend) and a small &lambda; on the city intercepts and slopes (shrink random effects toward zero).</div>
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; ridge solve</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="13">n_spline = X_spline.shape[1]
+n_total  = X.shape[1]
+
+# Penalize only the random-effect blocks, not the spline.
+lambda_re = 0.1
+penalty = np.zeros(n_total)
+penalty[n_spline:] = lambda_re
+P = np.diag(penalty)
+
+# Solve (X'X + P) β = X'y.
+beta = np.linalg.solve(X.T @ X + P, X.T @ y)</textarea>
+    </div>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key">lambda_re = 0.1</span>
+        <span class="anno-val">Strength of shrinkage on city effects. Higher &rarr; cities pulled harder toward the population mean. 0.1 is light &mdash; it stabilizes the fit without flattening real city-to-city differences.</span>
+      </li>
+      <li>
+        <span class="anno-key">No penalty on the spline</span>
+        <span class="anno-val">The national trend isn&rsquo;t a "deviation" &mdash; we want it estimated freely. Only the city-specific random effects get the ridge.</span>
+      </li>
+      <li>
+        <span class="anno-key">np.linalg.solve</span>
+        <span class="anno-val">Direct solve, no iterative optimizer. With only ~1,500 city-years, this finishes in milliseconds.</span>
+      </li>
+    </ul>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Step 4 &middot; Per-city &sigma; (heteroscedasticity)</h3>
+
+    <p>One global &sigma; would be a lie. Miami&rsquo;s residuals are tiny &mdash; its winters are predictable. Billings&rsquo;s residuals are huge. So we estimate &sigma; <em>per city</em> from each city&rsquo;s own residuals. This is what makes a 2&sigma; event mean something useful: 2&sigma; in Miami is 2.4&deg;, while 2&sigma; in Billings is 9.7&deg;.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="file-name">fit_model.py <span class="dim">&middot; per-city sigma</span></span>
+        <div class="code-card-actions">
+          <button class="code-card-btn" data-copy>Copy</button>
+          <button class="code-card-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <textarea class="code-editable" spellcheck="false" rows="12">y_hat     = X @ beta
+residuals = y - y_hat
+
+city_sigmas = {}
+for label, ci in city_map.items():
+    city_resid = residuals[ci_arr == ci]
+    if len(city_resid) > 2:
+        city_sigmas[label] = float(np.std(city_resid, ddof=1))
+    else:
+        # fallback for tiny samples: pool variance
+        city_sigmas[label] = float(np.std(residuals, ddof=1))</textarea>
+    </div>
+
+    <h3 style="color:#E0E0E0; font-size:1.15rem; margin: 2rem 0 .8rem; letter-spacing:.02em;">Step 5 &middot; The z-score</h3>
+
+    <p>Once you have city-specific predictions and city-specific &sigma;, this year&rsquo;s anomaly becomes a z-score: how many of <em>this city&rsquo;s</em> standard deviations is the actual value from the model&rsquo;s expectation?</p>
+
+    <div class="math-card">
+      <div class="math-label">Per-city z-score</div>
+      <div class="math-formula"><span class="var">z</span><sub>c, 2025</sub> <span class="op">=</span> ( <span class="var">y</span><sub>c, 2025</sub> <span class="op">&minus;</span> <span class="var">&#375;</span><sub>c, 2025</sub> ) / <span class="var">&sigma;</span><sub>c</sub></div>
+      <div class="math-note">Denver&rsquo;s z-score for 2025 was +2.70. Under a normal distribution that&rsquo;s a less-than-1% event. Two cities exceeded the &plusmn;2&sigma; band.</div>
+    </div>
+
+    <div class="callout-box">
+      <strong>What this model is and isn&rsquo;t.</strong> It&rsquo;s a deliberately simple linear model with smooth trend + city-level random effects + per-city variance. It is <em>not</em> a climate projection, a causal model, or a forecast. It&rsquo;s a descriptive lens that says: relative to its own past, how unusual was this city&rsquo;s winter?
+    </div>
+
+    <p style="margin-top: 2rem;">If you want to run this end-to-end: <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">clone the repo</a>, <code>pip install -r requirements.txt</code>, then <code>python fetch_data.py &amp;&amp; python fit_model.py</code>. The dashboard reads <code>data/dashboard_data.json</code>, which both scripts write.</p>
 
   </div>
 </div>
@@ -3784,6 +4299,70 @@ document.querySelectorAll('.spark-figure').forEach(function(fig) {
 // ANALYSIS TAB INIT
 // =============================================================================
 // Analysis tab — no special init needed (static content)
+
+// =============================================================================
+// CODE TAB — copy/reset buttons on editable code blocks
+// =============================================================================
+(function initCodeTab() {
+  document.querySelectorAll('.code-card').forEach(card => {
+    const ta = card.querySelector('textarea.code-editable');
+    if (!ta) return;
+    // Capture the original code so Reset can restore it.
+    const original = ta.value;
+
+    // Auto-size on load and as the user types.
+    function autosize() {
+      ta.style.height = 'auto';
+      ta.style.height = (ta.scrollHeight + 4) + 'px';
+    }
+    ta.addEventListener('input', autosize);
+    // Defer initial sizing — needed because the panel may be display:none on load.
+    requestAnimationFrame(autosize);
+
+    const copyBtn  = card.querySelector('[data-copy]');
+    const resetBtn = card.querySelector('[data-reset]');
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(ta.value);
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.textContent = orig;
+            copyBtn.classList.remove('copied');
+          }, 1400);
+        } catch (e) {
+          // Fallback: select + execCommand for older browsers.
+          ta.select();
+          document.execCommand('copy');
+        }
+      });
+    }
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        ta.value = original;
+        autosize();
+      });
+    }
+  });
+
+  // When the Code tab becomes visible, reflow textarea heights —
+  // they can't size correctly while display:none.
+  const codePanel = document.getElementById('tab-code');
+  if (codePanel) {
+    const obs = new MutationObserver(() => {
+      if (codePanel.classList.contains('active')) {
+        codePanel.querySelectorAll('textarea.code-editable').forEach(ta => {
+          ta.style.height = 'auto';
+          ta.style.height = (ta.scrollHeight + 4) + 'px';
+        });
+      }
+    });
+    obs.observe(codePanel, { attributes: true, attributeFilter: ['class'] });
+  }
+})();
 
 // =============================================================================
 // ARTIFACTS TAB — shareable infographic posters
