@@ -2348,7 +2348,7 @@
 
     <div class="cta-box">
       <p>Want to replicate this? The full code&mdash;data fetching, model fitting, and this dashboard&mdash;is on GitHub.</p>
-      <a class="cta-link" href="https://github.com/derekdebellis/weird-weather" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      <a class="cta-link" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">View on GitHub &rarr;</a>
     </div>
 
   </div>
@@ -2859,6 +2859,21 @@ beta = np.linalg.solve(X.T @ X + np.diag(penalty), X.T @ y)
     <p style="margin-top: 1.4rem;">
       <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather/blob/main/if_we_did_this_in_R.R" target="_blank" rel="noopener">if_we_did_this_in_R.R &rarr;</a>
     </p>
+
+    <h2 class="essay-section-head">Skills · run this on your own data</h2>
+
+    <p>Two reusable skills extracted from this project. Both are agent-agnostic &mdash; paste the prompt into Claude, ChatGPT, Gemini, or whatever else you've got, fill in your parameters, get a complete artifact back.</p>
+
+    <ul class="annotated-list">
+      <li>
+        <span class="anno-key"><a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather/tree/main/skills/replicate-mixed-effects-in-R" target="_blank" rel="noopener">replicate-mixed-effects-in-R</a></span>
+        <span class="anno-val">Apply this exact analysis to any panel dataset (stores &times; weeks, hospitals &times; months, schools &times; years). Returns a runnable R script with REML mixed-effects GAM, block LOOCV across nested models, full diagnostics, per-unit &sigma; and z-scores.</span>
+      </li>
+      <li>
+        <span class="anno-key"><a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather/tree/main/skills/design-data-storytelling-site" target="_blank" rel="noopener">design-data-storytelling-site</a></span>
+        <span class="anno-val">Generate a complete single-file HTML/CSS/JS site in this visual language &mdash; dark theme, monospace, tabbed structure, editable code blocks, exportable infographic posters, mobile-friendly. One brief in, one <code>index.html</code> out.</span>
+      </li>
+    </ul>
 
     <p style="margin-top: 2rem;">If you want to run the Python version end-to-end: <a class="cta-link" style="display:inline" href="https://github.com/BrightsizeLife/Weird-weather" target="_blank" rel="noopener">clone the repo</a>, <code>pip install -r requirements.txt</code>, then <code>python fetch_data.py &amp;&amp; python fit_model.py</code>. The dashboard reads <code>data/dashboard_data.json</code>, which both scripts write.</p>
 
