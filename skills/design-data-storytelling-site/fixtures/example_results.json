@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-15T10:30:00Z",
+    "data_path": "fixtures/minimal_panel.csv",
+    "n_rows": 30,
+    "n_units": 5,
+    "unit_col": "unit",
+    "time_col": "time",
+    "outcome_col": "outcome",
+    "factor_cols": ["factor"],
+    "time_min": 1,
+    "time_max": 6,
+    "packages": {
+      "brms": "2.21.0",
+      "loo": "2.7.0",
+      "tidybayes": "3.0.6",
+      "bayesplot": "1.11.1"
+    },
+    "modeling_engine": "brms",
+    "backend": "cmdstanr",
+    "warnings": []
+  },
+  "summary_statistics": {
+    "overall": { "n": 30, "mean": 1.31, "sd": 0.27, "median": 1.31, "min": 0.78, "max": 1.81 },
+    "by_unit": [
+      { "unit": "U01", "n": 6, "mean": 1.16, "sd": 0.18, "n_missing": 0 },
+      { "unit": "U02", "n": 6, "mean": 1.59, "sd": 0.15, "n_missing": 0 },
+      { "unit": "U03", "n": 6, "mean": 1.07, "sd": 0.20, "n_missing": 0 },
+      { "unit": "U04", "n": 6, "mean": 1.49, "sd": 0.17, "n_missing": 0 },
+      { "unit": "U05", "n": 6, "mean": 1.06, "sd": 0.19, "n_missing": 0 }
+    ],
+    "by_time": [
+      { "time": 1, "n": 5, "mean": 1.03, "sd": 0.27 },
+      { "time": 6, "n": 5, "mean": 1.59, "sd": 0.21 }
+    ],
+    "by_factor": [
+      { "factor": "factor", "level": "A", "n": 12, "mean": 1.54, "sd": 0.17 },
+      { "factor": "factor", "level": "B", "n": 18, "mean": 1.16, "sd": 0.18 }
+    ]
+  },
+  "candidate_models": [
+    {
+      "model_id": "M1",
+      "formula": "outcome ~ 1 + s(time_numeric) + (1 | unit)",
+      "fit_status": "success",
+      "skip_reason": null,
+      "priors": [
+        { "class": "Intercept", "prior": "normal(1.31, 0.54)" },
+        { "class": "b",         "prior": "normal(0, 1)" },
+        { "class": "sd",        "prior": "student_t(3, 0, 2.5)" },
+        { "class": "sigma",     "prior": "student_t(3, 0, 2.5)" }
+      ],
+      "sampling": { "chains": 4, "iter": 4000, "warmup": 1000, "adapt_delta": 0.95, "max_treedepth": 12, "elapsed_seconds": 18.4 },
+      "diagnostics": { "max_rhat": 1.002, "min_bulk_ess": 2400, "min_tail_ess": 1900, "n_divergent": 0, "max_treedepth_hits": 0, "ebfmi_min": 0.98, "status": "ok" },
+      "loo": { "elpd_loo": -8.42, "se_elpd_loo": 2.91, "p_loo": 5.4, "looic": 16.84, "pareto_k_bad_count": 0 }
+    },
+    {
+      "model_id": "M2",
+      "formula": "outcome ~ 1 + s(time_numeric) + factor + (1 | unit)",
+      "fit_status": "success",
+      "skip_reason": null,
+      "priors": [
+        { "class": "Intercept", "prior": "normal(1.31, 0.54)" },
+        { "class": "b",         "prior": "normal(0, 1)" },
+        { "class": "sd",        "prior": "student_t(3, 0, 2.5)" },
+        { "class": "sigma",     "prior": "student_t(3, 0, 2.5)" }
+      ],
+      "sampling": { "chains": 4, "iter": 4000, "warmup": 1000, "adapt_delta": 0.95, "max_treedepth": 12, "elapsed_seconds": 21.2 },
+      "diagnostics": { "max_rhat": 1.001, "min_bulk_ess": 2900, "min_tail_ess": 2200, "n_divergent": 0, "max_treedepth_hits": 0, "ebfmi_min": 0.99, "status": "ok" },
+      "loo": { "elpd_loo": -3.81, "se_elpd_loo": 2.40, "p_loo": 6.1, "looic": 7.62, "pareto_k_bad_count": 0 }
+    }
+  ],
+  "selected_model": {
+    "model_id": "M2",
+    "selection_reason": "Highest elpd_loo with elpd_diff > 2*se_diff vs M1 on this fixture.",
+    "caveats": [
+      "Fixture is synthetic and tiny; effect sizes are illustrative."
+    ]
+  },
+  "posterior_summaries": {
+    "population_effects": [
+      { "term": "Intercept",  "mean": 1.16, "sd": 0.09, "q05": 1.01, "q50": 1.16, "q95": 1.31, "rhat": 1.001, "bulk_ess": 3800 },
+      { "term": "factorA",    "mean": 0.39, "sd": 0.07, "q05": 0.27, "q50": 0.39, "q95": 0.51, "rhat": 1.000, "bulk_ess": 4200 },
+      { "term": "stime_numeric_1", "mean": 0.10, "sd": 0.02, "q05": 0.06, "q50": 0.10, "q95": 0.14, "rhat": 1.001, "bulk_ess": 3500 }
+    ],
+    "group_effects": [
+      { "unit": "U01", "term": "Intercept", "mean": -0.02, "sd": 0.10, "q05": -0.18, "q50": -0.02, "q95": 0.13 },
+      { "unit": "U02", "term": "Intercept", "mean":  0.04, "sd": 0.10, "q05": -0.12, "q50":  0.04, "q95": 0.20 },
+      { "unit": "U03", "term": "Intercept", "mean": -0.10, "sd": 0.10, "q05": -0.26, "q50": -0.10, "q95": 0.06 },
+      { "unit": "U04", "term": "Intercept", "mean":  0.00, "sd": 0.10, "q05": -0.16, "q50":  0.00, "q95": 0.16 },
+      { "unit": "U05", "term": "Intercept", "mean": -0.11, "sd": 0.10, "q05": -0.28, "q50": -0.11, "q95": 0.05 }
+    ],
+    "factor_effects": [
+      { "factor": "factor", "level": "A", "contrast_to": "B", "mean": 0.39, "q05": 0.27, "q50": 0.39, "q95": 0.51 }
+    ],
+    "variance_components": [
+      { "term": "sd_unit__Intercept", "mean": 0.12, "q05": 0.04, "q95": 0.24 },
+      { "term": "sigma",              "mean": 0.13, "q05": 0.10, "q95": 0.18 }
+    ]
+  },
+  "expected_values": [
+    { "unit": "U01", "time": 1, "expected_mean": 0.96, "expected_q05": 0.78, "expected_q50": 0.96, "expected_q95": 1.13, "prediction_q05": 0.69, "prediction_q50": 0.96, "prediction_q95": 1.23 },
+    { "unit": "U01", "time": 6, "expected_mean": 1.36, "expected_q05": 1.20, "expected_q50": 1.36, "expected_q95": 1.52, "prediction_q05": 1.10, "prediction_q50": 1.36, "prediction_q95": 1.62 },
+    { "unit": "U02", "time": 6, "expected_mean": 1.79, "expected_q05": 1.62, "expected_q50": 1.79, "expected_q95": 1.95, "prediction_q05": 1.52, "prediction_q50": 1.79, "prediction_q95": 2.05 }
+  ],
+  "observations_with_scores": [
+    { "unit": "U01", "time": 6, "observed": 1.42, "expected_q50": 1.36, "prediction_q05": 1.10, "prediction_q95": 1.62, "tail_probability": 0.32, "posterior_predictive_percentile": 0.68, "standardized_residual_like_score": 0.46, "flag": "normal" },
+    { "unit": "U02", "time": 6, "observed": 1.81, "expected_q50": 1.79, "prediction_q05": 1.52, "prediction_q95": 2.05, "tail_probability": 0.42, "posterior_predictive_percentile": 0.58, "standardized_residual_like_score": 0.15, "flag": "normal" },
+    { "unit": "U03", "time": 6, "observed": 1.34, "expected_q50": 1.27, "prediction_q05": 1.01, "prediction_q95": 1.53, "tail_probability": 0.28, "posterior_predictive_percentile": 0.72, "standardized_residual_like_score": 0.54, "flag": "normal" },
+    { "unit": "U05", "time": 6, "observed": 1.30, "expected_q50": 1.23, "prediction_q05": 0.97, "prediction_q95": 1.49, "tail_probability": 0.27, "posterior_predictive_percentile": 0.73, "standardized_residual_like_score": 0.58, "flag": "normal" },
+    { "unit": "U04", "time": 6, "observed": 1.70, "expected_q50": 1.49, "prediction_q05": 1.23, "prediction_q95": 1.75, "tail_probability": 0.061, "posterior_predictive_percentile": 0.939, "standardized_residual_like_score": 1.62, "flag": "watch" }
+  ],
+  "figures": [
+    { "id": "observed_vs_expected_by_time", "path": "output/figures/observed_vs_expected_by_time.png", "title": "Observed vs expected by time", "description": "Posterior expected mean (line) with 90% credible ribbon vs observed points." }
+  ],
+  "diagnostics": {
+    "overall_status": "ok",
+    "warnings": [],
+    "recommended_next_steps": [
+      "On a real dataset, consider M3 (varying intercept + slope per unit) once each unit has more observations."
+    ]
+  }
+}

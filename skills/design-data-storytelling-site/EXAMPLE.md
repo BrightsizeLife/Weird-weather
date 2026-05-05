@@ -1,44 +1,65 @@
 # Worked example — Promo Lift, by store
 
 A retail analyst has 12 stores × 104 weeks of sales, a `promo` flag,
-and wants to publish "did promo work?" The brief and what the LLM
-returns.
+and a Bayesian fit from the
+[`bayesian-panel-modeling-in-r`](../bayesian-panel-modeling-in-r/) skill.
+They want to publish a single-page narrative.
+
+## The pipeline
+
+1. Run the Bayesian R skill on the panel:
+
+   ```yaml
+   data_path:      "data/sales.csv"
+   unit_col:       "store"
+   time_col:       "week"
+   outcome_col:    "sales"
+   factor_cols:    ["promo"]
+   candidate_models: ["M0", "M1", "M2", "M3"]
+   family:         "gaussian"
+   ```
+
+   That writes `output/results.json`, `output/figures/*.png`, etc.
+
+2. Run the site skill with the brief below; point
+   `input_results_json_path` at the JSON.
 
 ## The brief
 
 ```yaml
-project_title:        "Promo Lift"
-project_kicker:       "104 weeks · 12 stores · what the promo actually did"
-homepage_url:         "https://acme-analytics.example"
-author_name:          "Sam Patel"
-author_url:           "https://www.linkedin.com/in/sampatel"
+project_title:    "Promo Lift"
+subtitle:         "104 weeks · 12 stores · what the promo actually did"
+author:           "Sam Patel"
+homepage_url:     "https://acme-analytics.example"
+audience:         "RGM team and finance — numerate, not statisticians"
+thesis:           "Across 12 stores and 104 weeks, promo weeks shifted the posterior expected mean upward; per-store deviations vary."
 
-data_description:     "12 stores, 104 weeks of revenue, with a corporate
-                       promo flag for ~30% of weeks."
-unit_var:             "store"
-time_var:             "week"
-outcome_vars:         ["sales"]
-factors:              ["promo"]
+data_shape:       "12 stores × 104 weeks of revenue with a corporate promo flag for ~30% of weeks."
+source_notes:     "Internal sales DB; promo flag from corporate calendar."
+unit_label:       "store"
+time_label:       "week"
+outcome_label:    "weekly sales ($)"
 
-thesis:               "Promo weeks added an average $842/store/week, but
-                       the lift varies 3× across stores."
-audience:             "RGM team + finance · numerate but not statisticians"
-tone:                 "punchy"
+tabs:             ["essay", "summary", "model", "loo", "expected_values",
+                   "anomalies", "diagnostics", "methodology", "artifacts"]
+default_tab:      "essay"
+visual_style:     "weird_weather_dark"
+include_methodology:        true
+include_code_blocks:        true
+include_exportable_posters: true
 
-tabs:
-  essay:        true
-  analysis:     true
-  code:         true
-  map:          false
-  summary:      true
-  matrix:       false
-  table:        true
-  ts_overview:  true
-  ts_city:      true
-  artifacts:    true
+input_results_json_path:    "output/results.json"
+embed_figures_paths:        ["output/figures/posterior_expected_ribbons.png",
+                             "output/figures/anomaly_score_heatmap.png",
+                             "output/figures/factor_effect_posteriors.png"]
 
-include_kofi:         false
-ga_or_plausible_id:   ""
+output_file:      "index.html"
+allow_cdn:        false
+use_d3:           false
+respect_light_scheme: false
+include_kofi:     false
+kofi_username:    null
+analytics_id:     null
 ```
 
 ## What the LLM should return (sketch)
@@ -46,82 +67,109 @@ ga_or_plausible_id:   ""
 A complete `index.html` with:
 
 ### Header
+
 - Title "Promo Lift" with the gradient text treatment.
-- Kicker "104 weeks · 12 stores · what the promo actually did."
-- Home link to `acme-analytics.example`.
+- Subtitle "104 weeks · 12 stores · what the promo actually did."
+- Byline.
+- Home link.
 
 ### Tabs
-Essay → Analysis → Code → Summary → Data Table → Time Series:
-Overview → Time Series: Store → Artifacts.
 
-(The Map and Matrix tabs are skipped per the brief.)
+essay → summary → model → loo → expected_values → anomalies →
+diagnostics → methodology → artifacts.
 
 ### Essay tab
-~700–1200 words. Three sections: "the promo, in one chart," "what the
-data says about which stores benefit," "why the variation matters."
+
+~700–1200 words of serif prose. Three sections:
+
+1. *What the promo did, in one ribbon.* Posterior expected weekly
+   sales by store, with and without promo, 50% / 90% credible bands.
+2. *Where the lift concentrates.* Posterior contrast distributions
+   for `promo` per store from `posterior_summaries.factor_effects`.
+3. *Why the uncertainty matters.* The cautious sentence about LOO
+   and the descriptive-not-causal disclaimer.
+
 Stat-tip annotations on every numeric claim.
 
-### Analysis tab
-The recipe: data shape, normalization (none here — single outcome,
-single scale), the model (`sales ~ s(week) + promo + s(store, bs="re")
-+ s(week, store, bs="re")`), CV procedure, what the diagnostics show.
-
-### Code tab
-Five editable code blocks:
-1. Loading the data
-2. The mgcv formula
-3. The block-CV loop
-4. Per-store σ computation
-5. Per-store z-scores at the latest week
-
-Each with Copy + Reset buttons. Followed by a "If we did this by the
-books — in R" link section pointing back to this skill repo.
-
 ### Summary tab
-Six stat cards:
-- Average promo lift (red, $842)
-- Best-performing store (red, "Store F, +$1,810/wk")
-- Worst-performing store (blue, "Store J, +$210/wk")
-- Block CV RMSE improvement (yellow, "12.6%")
-- Stores with >2σ promo lift (green, "3 of 12")
-- Average baseline weekly sales (text)
 
-### Data Table tab
-12 rows × 7 columns: store, baseline mean, promo mean, lift $, lift %,
-promo σ, latest-week z-score. Sortable, with hot/cold coloring on lift.
+Six stat cards, populated from the JSON:
 
-### Time Series: Overview
-12 small-multiple charts, one per store. Each shows: actual sales
-line, model fit (smooth), promo weeks marked.
+- Posterior population mean lift in $/week (with 90% credible
+  interval).
+- Number of stores flagged `unusual` or `extreme` in the latest
+  observed week.
+- Posterior `sd_unit__factor_promo` if M3 was selected (cross-store
+  variability).
+- LOO `elpd_diff` between the selected model and `M1`.
+- `diagnostics.overall_status` badge.
+- Total observations and store/week coverage.
 
-### Time Series: Store
-Single store deep-dive with metric toggles, ENSO-style overlay (here:
-promo overlay), comparison-to-other-stores spaghetti option.
+### Model tab
+
+The model ladder cards from `candidate_models[]`. Each card shows
+formula, fit status, diagnostics badge, and elpd_loo with SE.
+
+### LOO tab
+
+The `loo_compare`-style table with elpd_diff ± SE bars. The
+verbatim cautious sentence about LOO appears as a `.callout-box`.
+
+### Expected values tab
+
+Posterior expected ribbons (50% and 90%) for the population, plus
+a small-multiples grid per store. Anomaly heatmap legend appears
+in this tab as well, since flags are derived from
+`observations_with_scores`.
+
+### Anomalies tab
+
+Unit × time heatmap colored by `tail_probability`, with the four
+flag bands (`normal | watch | unusual | extreme`). A sortable table
+below.
+
+### Diagnostics tab
+
+`diagnostics.overall_status` badge. Per-model diagnostics cards.
+`metadata.warnings` rendered as bullets. If `overall_status` is
+`"warning"` or `"failed"`, a callout at the top of every other
+chapter says "interpret with caution" or "do not trust the
+posterior summaries."
+
+### Methodology tab
+
+Editable code blocks for the resolved priors, the model formula,
+the call to `brm()`, and the LOO comparison code. Each has Copy +
+Reset buttons. The chapter ends with a "this is descriptive, not
+causal" line.
 
 ### Artifacts tab
-Seven posters:
-1. **The Promo Lift Map** — but since `map: false` in the brief, this
-   becomes "The Promo Lift Bar Chart": one bar per store, sorted by
-   lift, colored by significance.
-2. **Lift × significance scatter** — x = lift $, y = z-score, dot size
-   = baseline sales.
-3. **Per-store time series, faceted** — small multiples poster.
-4. **The Model** — formula card + 3-pane CV/AIC/BIC.
-5. **Scoreboard** — compact 12-row table of every store.
-6. **The Variance Story** — promo σ per store, ranked.
-7. **Strange but True** — 9 callouts, the headline numbers.
 
-Every poster: 1200×1500, exportable to 4800×6000 PNG.
+Three posters at 1200×1500, scaled to fit:
+
+1. **Posterior expected ribbons by store.** Selected model's
+   per-store epred ribbons, sorted by posterior median deviation.
+2. **The flag heatmap.** Unit × time tiles with the four flag bands.
+3. **The model card.** Formula, priors, and the LOO comparison
+   table on a single shareable poster.
+
+Each poster has an Export button. Because `allow_cdn: false`, the
+export button uses a canvas fallback rather than `html-to-image`.
 
 ### Footer
-"Data: internal sales DB · Model: sales ~ s(week) + promo + (week |
-store) · Sam Patel, 2026"
 
-## Re-running with a different brief
+"Data: internal sales DB · Model: M3 (varying intercept and slope per
+store, gaussian, weakly informative priors) · Sam Patel, 2026 ·
+Descriptive, not causal."
 
-Change `tabs: { map: true }` to `false`, the LLM will skip map code.
-Change `factors` to add another column, the LLM threads it through the
-model formula and the time-series tab.
+## Iterating
+
+- Want a serif body in the essay only? Already there.
+- Want to swap out the JSON without regenerating the page? Edit
+  `output/results.json` and reload.
+- Want a CDN-powered version with html-to-image and D3? Set
+  `allow_cdn: true` and `use_d3: true` in the brief and re-prompt.
+- Want a light theme? Set `respect_light_scheme: true`.
 
 The skill is the prompt. The output is one file. Iterating means
-changing the brief and asking again.
+changing the brief or the JSON and re-running.
