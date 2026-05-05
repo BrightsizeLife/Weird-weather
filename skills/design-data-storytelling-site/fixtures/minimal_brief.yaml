@@ -1,0 +1,34 @@
+# Minimal smoke-test brief.
+# Paste this into the BRIEF block at the bottom of PROMPT.md.
+
+project_title:    "Weird Weather (smoke test)"
+subtitle:         "Five stations × six winters; synthetic fixture data"
+author:           "Skill smoke test"
+homepage_url:     "https://example.com"
+audience:         "skill maintainers running smoke tests"
+thesis:           "Three of five stations had at least one season flagged 'watch' or above."
+
+data_shape:       "5 stations × 6 winter seasons; outcome is a synthetic anomaly."
+source_notes:     "Synthetic; see fixtures/minimal_panel.csv in the Bayesian R skill."
+unit_label:       "station"
+time_label:       "year"
+outcome_label:    "synthetic anomaly"
+
+tabs:             ["essay", "summary", "model", "loo", "expected_values",
+                   "anomalies", "diagnostics", "methodology", "artifacts"]
+default_tab:      "essay"
+visual_style:     "weird_weather_dark"
+include_methodology:        true
+include_code_blocks:        true
+include_exportable_posters: true
+
+input_results_json_path:    "output/results.json"
+embed_figures_paths:        []
+
+output_file:      "index.html"
+allow_cdn:        false
+use_d3:           false
+respect_light_scheme: false
+include_kofi:     false
+kofi_username:    null
+analytics_id:     null

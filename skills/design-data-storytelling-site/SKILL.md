@@ -1,173 +1,155 @@
-# Skill · Design a data-storytelling website like Weird Weather
+---
+name: design-data-storytelling-site
+description: Generates a self-contained single-page HTML/CSS/JS data-storytelling site in the Weird Weather visual language, with narrative chapters, accessible tabs, methodology/code sections, responsive layout, exportable share graphics, and support for Bayesian model output JSON. Use when the user wants a publishable narrative data story, not a generic dashboard, authenticated app, or marketing page.
+---
 
-> Drop this in front of any LLM. Describe what your data is and who it's
-> for. Get back a complete, opinionated single-file HTML/CSS/JS scaffold
-> in the same visual language as
-> [weather.cheapsensationalism.com](https://weather.cheapsensationalism.com)
-> — dark theme, monospace typography, tabbed structure, editable code
-> blocks, exportable infographic posters, mobile-friendly.
+# Skill · Design a data-storytelling site, Weird Weather visual language
+
+A reusable, agent-agnostic prompt kit for turning a finished analysis
+(ideally the JSON output of the
+[`bayesian-panel-modeling-in-r`](../bayesian-panel-modeling-in-r/) skill)
+into a single, self-contained `index.html` you can host on any static
+host.
+
+The aesthetic is the Weird Weather one: dark, monospace, literate,
+serious about uncertainty. The skill is opinionated on purpose. If
+you fight the opinions, you should pick a different skill.
 
 ---
 
-## What the design language is for
+## When to use
 
-A *data-storytelling* site is one that:
+All of these should be true:
 
-- Tells a story end-to-end, not just shows charts.
-- Lives at one URL, on one page, with **tabs** as chapters.
-- Treats the **essay** as the primary artifact, with charts as supporting
-  evidence that you can drill into.
-- Ships **shareable artifacts** (high-res PNG posters) so readers can
-  carry the story to LinkedIn / Twitter / a deck.
-- Shows the **methodology and code** plainly. No black boxes. People
-  trust what they can read.
-- Loads fast. No frameworks. One HTML file, vanilla JS, D3 only when
-  charts demand it.
+- You have **finished an analysis** with a clear thesis and ready
+  data (ideally results JSON from the Bayesian R skill).
+- You want a **publishable narrative**, not a dashboard, marketing
+  page, or auth-gated app.
+- The audience is technical-curious — analysts, journalists,
+  decision-makers who can read a chart but might not run R.
+- You will host **static HTML** somewhere (Vercel / Netlify / GitHub
+  Pages / Cloudflare Pages).
 
-If that pattern fits your project, this skill produces a scaffold that
-already does it. If your need is different (a marketing site, a
-dashboard with auth, a data app with real interactivity), this skill is
-the wrong tool.
+## When **not** to use
 
----
-
-## When to use this skill
-
-Reach for it when **all** of these apply:
-
-- You have **finished an analysis** and want to publish it on the web.
-- The audience is technical-curious — analysts, journalists, data
-  hobbyists, decision-makers who can read a chart but might not run R.
-- You want to **own the URL** and the design — not pour the work into a
-  Substack or Notion template.
-- You want it **shareable** in the LinkedIn / Twitter sense, not the
-  pay-walled-newsletter sense.
-- You can host static HTML somewhere (Vercel, Netlify, GitHub Pages,
-  Cloudflare Pages — all free, all 5-minute setups).
+- You need authentication, multi-user state, or write-back. This is
+  a static document.
+- You need real-time interactivity beyond reading-and-filtering.
+- You want a generic admin dashboard.
+- You want a marketing page with conversion CTAs. The voice and
+  visual language are wrong for that.
 
 ---
 
-## What you get back
+## Required inputs
 
-One file: `index.html`. Self-contained. Open it in a browser and it
-works. Inside:
+Filled into the YAML block at the top of [`PROMPT.md`](./PROMPT.md):
 
-- **Header** with project title, gradient brand text, kicker subtitle,
-  link back to your homepage.
-- **Sticky tab bar** with the chapters of your story.
-- **Tab panels** — one per chapter. The skill generates a sensible
-  default set: Essay, Analysis, Code, Map / Time Series / Matrix
-  (whichever fit your data), Summary, Artifacts.
-- **Editable code blocks** in the Code tab — readers can copy your
-  source.
-- **Exportable posters** in the Artifacts tab — 1200×1500 designed,
-  4800×6000 PNG via `html-to-image`.
-- **Mobile responsive** — tested down to ~360px.
-- **Dark theme** matching the Weird Weather palette (or a swap, if
-  you'd rather).
-- **Tip jar / call-to-action** card at the bottom (optional).
-- **Footer** with attribution and source link.
-- **No frameworks**. d3, topojson, html-to-image are the only CDN deps,
-  loaded only on tabs that use them.
+- A **brief** (project title, audience, thesis, tabs, etc.) — full
+  schema in [`BRIEF_SCHEMA.md`](./BRIEF_SCHEMA.md).
+- Optionally, a path to a **results JSON** produced by the Bayesian
+  R skill — schema in [`RESULTS_INPUT_SCHEMA.md`](./RESULTS_INPUT_SCHEMA.md).
+- Optional pre-rendered figure paths to embed.
+
+## Generated outputs
+
+- **One file** (`index.html` by default) — fully self-contained when
+  `allow_cdn: false`.
+- Inline CSS, inline JS, no build step.
+- A consistent set of chapters (essay, summary cards, model section,
+  posterior expected values, anomalies, methodology, artifacts).
 
 ---
 
-## How to use it
+## Workflow
 
-1. Open [`PROMPT.md`](./PROMPT.md). Copy the full prompt.
-2. Fill in the `BRIEF` block with what your project is.
-3. Paste into Claude / ChatGPT / Gemini.
-4. The LLM returns a complete `index.html`. Save it, open it.
-5. Drop your data into a `data/` folder, swap in your assets, ship.
+1. Fill the brief.
+2. Optionally point `input_results_json_path` at the Bayesian skill's
+   `output/results.json`.
+3. Paste [`PROMPT.md`](./PROMPT.md) (with brief filled in) into your
+   LLM.
+4. Save the response as `index.html`.
+5. Run validators in [`scripts/`](./scripts/) (`check_css_units.js`,
+   `validate_single_file_html.js`).
+6. Open in a browser. Test responsive width down to 360px.
 
-For visual reference and the underlying system, see:
+Detailed docs:
 
-- [`DESIGN-SYSTEM.md`](./DESIGN-SYSTEM.md) — colors, typography, spacing,
-  the rules
-- [`COMPONENTS.md`](./COMPONENTS.md) — copy-pasteable HTML/CSS for every
-  block (tabs, stat cards, chart frames, callouts, posters)
-- [`EXAMPLE.md`](./EXAMPLE.md) — a worked brief and the resulting site
-
----
-
-## What "robust" means here
-
-This skill is opinionated about a handful of things on purpose. Honoring
-them produces sites that look like they belong to the same family;
-breaking them produces sites that don't.
-
-- **One file deploys everywhere.** No build step, no bundler, no
-  package.json. If your asset pipeline has more steps than `git push`,
-  you've taken a wrong turn.
-- **Dark theme, monospace primary type.** It signals "made for reading,
-  not for converting." It also degrades better on cheap monitors than a
-  bright theme.
-- **Tabs are chapters, not navigation.** A visitor reads them in order.
-  The default order is Essay → Analysis / Code → Map / Charts →
-  Artifacts.
-- **Every chart is also a poster.** If a chart is interesting enough to
-  put on a tab, it's interesting enough to be exportable. The Artifacts
-  pattern encodes this.
-- **Code is editable, not read-only.** A `<textarea>` with a Copy button
-  beats a syntax-highlighted `<pre>` for "I want to fork this."
-- **Mobile is not an afterthought.** Test at 360px before you ship.
-  Most LinkedIn clicks come from phones.
-- **No tracking, no ads, no paywall.** This is the cultural glue. Tip
-  jars are fine.
+- [`BRIEF_SCHEMA.md`](./BRIEF_SCHEMA.md) — input brief contract.
+- [`RESULTS_INPUT_SCHEMA.md`](./RESULTS_INPUT_SCHEMA.md) — how the
+  results JSON maps onto chapters.
+- [`DESIGN-SYSTEM.md`](./DESIGN-SYSTEM.md) — colors, type, spacing.
+- [`COMPONENTS.md`](./COMPONENTS.md) — copy-pasteable HTML/CSS.
+- [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) — accessibility
+  requirements that gate "done."
+- [`EXAMPLE.md`](./EXAMPLE.md) — worked brief.
+- [`EVALS.md`](./EVALS.md) — eval plan and validation entry points.
 
 ---
 
-## Color palette (the Weird Weather defaults)
+## Failure modes (the generated file must handle them)
 
-| token | hex | use |
-|---|---|---|
-| `--bg` | `#000` | page background |
-| `--card` | `#111` | card / surface |
-| `--card-deep` | `#0d0d0d` | code blocks, math cards |
-| `--border` | `#222` | dividers |
-| `--text` | `#E0E0E0` | body |
-| `--muted` | `#888` | secondary, captions |
-| `--red` | `#E8594F` | hot / brand accent |
-| `--yellow` | `#F5A623` | warm / file names |
-| `--blue` | `#4A90D9` | cool / variables |
-| `--green` | `#69f0ae` | normal / success / strings |
-
-The palette is climate-coded but transposes: red = positive/hot/important,
-blue = negative/cool/calm, yellow = warning/highlight, green =
-normal/healthy. If your domain inverts that (e.g., red = bad, green =
-good), swap in `PROMPT.md`.
+| failure | response |
+|---|---|
+| brief asks for tabs unsupported by data | emit the file with a clearly-marked `TODO` comment naming what was skipped and why; never silently drop |
+| `input_results_json_path` is provided but missing required keys | emit the file with placeholder content for affected chapters and a console.warn at runtime; `data-status="degraded"` on `<body>` |
+| `allow_cdn: false` but a chapter requires D3 | downgrade to inline SVG / Canvas; do not emit `<script src="cdn">` |
+| browser does not support clipboard API | Copy buttons fall back to manual selection, no error |
+| `prefers-reduced-motion: reduce` | suppress non-essential transitions |
+| user opens the file from `file://` | works without a server (no fetch from the network unless `allow_cdn`) |
+| poster export fails (e.g., html-to-image not loaded) | show a textual fallback, do not crash the page |
 
 ---
 
-## Typography
+## Validation entry points
 
-- **Primary:** `'SF Mono', 'Fira Code', 'Consolas', monospace` — the
-  whole site, including body copy. This is the visual signature.
-- **Titles:** the same monospace, but rendered with a 3-stop linear
-  gradient (`red → yellow → blue`) and `-webkit-background-clip: text`.
-- **Essay body:** Iowan Old Style or Charter — in just the Essay tab,
-  for readability of long-form. Everything else stays mono.
+```sh
+node skills/design-data-storytelling-site/scripts/check_css_units.js skills/design-data-storytelling-site
+node skills/design-data-storytelling-site/scripts/validate_single_file_html.js path/to/index.html
+```
+
+`check_css_units.js` scans the skill's own markdown for invalid CSS
+unit spacing (e.g., `1 px`, `220 px`, `1 fr`, `90 deg`).
+
+`validate_single_file_html.js` checks a generated `index.html` for
+the structural and accessibility properties listed in
+[`EVALS.md`](./EVALS.md).
 
 ---
 
-## Adapting beyond weather
+## Quality bar (operative)
 
-The pattern works for any analysis with a longitudinal or panel
-structure. Swap the words and the data:
+- One file deploys everywhere. No build step, no bundler.
+- Self-contained by default. CDNs only when explicitly enabled.
+- Mobile-responsive down to 360px width.
+- Accessible tabs (real `<button>`, `aria-selected`, keyboard
+  navigation, visible focus).
+- Color is never the only channel. `prefers-reduced-motion`
+  respected. All charts have a textual fallback.
+- Every CSS unit is **valid** — `1px` not `1 px`, `1fr` not `1 fr`,
+  `90deg` not `90 deg`.
+- Voice is calm and specific. Never "amazing/incredible/shocking."
+  Never "best/worst." Use the anomaly flag vocabulary (`watch`,
+  `unusual`, `extreme`).
 
-| Project | Essay tab | Map tab | Time Series | Artifacts |
-|---|---|---|---|---|
-| 50 cities × 30 winters | "Where winter went" | nearest-match map | per-city trend | "Where winter went" poster |
-| 12 stores × 104 weeks | "What promo did" | store map | per-store sales | "Promo-lift scoreboard" |
-| 200 hospitals × 24 months | "The admit pattern" | hospital map | per-hospital trend | "Outliers we should call" |
+---
 
-The skill prompt asks for your data shape and the question you're
-answering, then generates the right tabs.
+## Pairing with the Bayesian R skill
+
+Both skills together are designed as a pipeline:
+
+1. `bayesian-panel-modeling-in-r` → `output/results.json`
+2. `design-data-storytelling-site` reads that JSON and renders the
+   chapters described in
+   [`RESULTS_INPUT_SCHEMA.md`](./RESULTS_INPUT_SCHEMA.md).
+
+The site skill works without the JSON — the brief alone is enough —
+but it produces stronger output when it has structured posterior
+information to render.
 
 ---
 
 ## License
 
-Part of the [Weird Weather repo](https://github.com/BrightsizeLife/Weird-weather).
-Inherits its license. Use it, fork it, change it, attribution is
-appreciated but not required.
+Part of [Weird Weather](https://github.com/BrightsizeLife/Weird-weather).
+Use, fork, change. Attribution welcome but not required.

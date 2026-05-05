@@ -1,4 +1,11 @@
-# Skill · Replicate the Weird Weather analysis in R, on your own data
+> **DEPRECATED.** This skill is kept for historical reference. The
+> supported successor is
+> [`../bayesian-panel-modeling-in-r/`](../bayesian-panel-modeling-in-r/),
+> which uses brms / Stan, PSIS-LOO, posterior predictive checks, and a
+> JSON output schema the site skill consumes. See
+> [`README.md`](./README.md) for migration notes.
+
+# Skill · Replicate the Weird Weather analysis in R, on your own data (deprecated, frequentist)
 
 > Drop this in front of any LLM (Claude, ChatGPT, Gemini, Llama, …) along
 > with your parameters. You get back a single runnable R script that does:
